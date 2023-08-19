@@ -49,6 +49,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<?= base_url('assets/') ?>dist/js/demo.js"></script>
 
+<script src="<?= base_url('assets/'); ?>sw/sweetalert2.all.min.js"></script>
+<script src="<?= base_url('assets/'); ?>sw/my-notif.js"></script>
 <script>
     $(function() {
         $(".select2").select2();

@@ -75,7 +75,11 @@ class Absensi extends CI_Controller
             }
 
             if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'Rekap Absen Berhasil');
                 redirect('absensi/detail/' . $id);
+            } else {
+                $this->session->set_flashdata('error', 'Rekap Absen Gagal');
+                redirect('absensi');
             }
         }
     }
@@ -179,6 +183,10 @@ class Absensi extends CI_Controller
             }
 
             if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'Input Absen Berhasil');
+                redirect('absensi/input');
+            } else {
+                $this->session->set_flashdata('error', 'Input Absen Gagal');
                 redirect('absensi/input');
             }
         }
@@ -188,6 +196,10 @@ class Absensi extends CI_Controller
     {
         $this->model->hapus('harian', 'kode', $kode);
         if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Hapus Absen Berhasil');
+            redirect('absensi/input');
+        } else {
+            $this->session->set_flashdata('ok', 'Hapus Absen Gagal');
             redirect('absensi/input');
         }
     }
@@ -197,6 +209,10 @@ class Absensi extends CI_Controller
         $this->model->hapus('absensi', 'id_absen', $id);
         $this->model->hapus('detail_absen', 'id_absen', $id);
         if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Hapus Absen Berhasil');
+            redirect('absensi');
+        } else {
+            $this->session->set_flashdata('ok', 'Hapus Absen Gagal');
             redirect('absensi');
         }
     }

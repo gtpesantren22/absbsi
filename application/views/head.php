@@ -28,6 +28,7 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?= base_url('assets/') ?>dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/') ?>sw/sweetalert2.min.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -80,7 +81,7 @@
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="<?= base_url('login/logout') ?>" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="<?= base_url('login/logout') ?>" class="btn btn-default btn-flat tbl-confirm" value="Anda akan keluar dari sistem">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -147,3 +148,6 @@
             </section>
             <!-- /.sidebar -->
         </aside>
+
+        <div class="flash-data" data-flashdata="<?= $this->session->flashdata('ok') ?>"></div>
+        <div class="flash-data-error" data-flashdata="<?= $this->session->flashdata('error') ?>"></div>

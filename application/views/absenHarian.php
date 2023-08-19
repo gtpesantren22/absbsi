@@ -49,7 +49,7 @@
                                                   <td><?= $row->mapel ?></td>
                                                   <td><?= $row->guru ?></td>
                                                   <td><?= $row->dari . ' - ' . $row->sampai ?></td>
-                                                  <td><a href="<?= base_url('absensi/hapusHarian/') . $row->kode ?>" class="btn btn-xs btn-danger" onclick="return confirm('Yakin akan dihapus ?')">Hapus</a></td>
+                                                  <td><a href="<?= base_url('absensi/hapusHarian/') . $row->kode ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a></td>
                                               </tr>
                                           <?php endforeach ?>
                                       </tbody>
@@ -61,7 +61,6 @@
                   <!-- /.box-body -->
               </div>
               <!-- /.box -->
-
           </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 

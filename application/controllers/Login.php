@@ -39,31 +39,12 @@ class Login extends CI_Controller
 
         if ($this->Auth_model->login($username, $password)) {
             $user = $this->Auth_model->current_user();
+            $this->session->set_flashdata('ok', 'Login Berhasil');
             redirect('welcome');
-            // if ($user->level === 'admin' && $tujuan === 'bunda') {
-            //     redirect('welcome');
-            // } elseif ($user->level === 'admin' && $tujuan === 'adm') {
-            //     redirect('admin');
-            // } elseif ($user->level === 'bunda' && $tujuan === 'bunda') {
-            //     redirect('welcome');
-            // } elseif ($user->level === 'adm' && $tujuan === 'adm') {
-            // } else {
-            //     echo "
-            // <script>
-            //     alert('Maaf tujuan anda salah');
-            //     window.location = '" . base_url('login') . "';
-            // </script>
-            // ";
-            // }
         } else {
             // $this->session->set_flashdata('message_login_error', 'Login Gagal, pastikan username dan passwrod benar!');
-            echo "
-            <script>
-                alert('Maaf username atau password salah');
-                window.location = '" . base_url('login') . "';
-            </script>
-            ";
-            // $this->load->view('login');
+            $this->session->set_flashdata('error', 'Maaf username atau password salah');
+            redirect('login');
         }
     }
 
@@ -99,7 +80,9 @@ class Login extends CI_Controller
     public function logout()
     {
         // $this->load->model('Auth_model');
-        $this->Auth_model->logout();
-        redirect('login');
+        if ($this->Auth_model->logout()) {
+            $this->session->set_flashdata('ok', 'Anda Berhasil Keluar');
+            redirect('login');
+        }
     }
 }
