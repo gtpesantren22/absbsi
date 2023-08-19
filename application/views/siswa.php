@@ -17,8 +17,7 @@
 
               <div class="box">
                   <div class="box-header">
-                      <h3 class="box-title text-primary">Data di Database : <?= $dataTtl->num_rows() ?></h3> | <h3 class="box-title text-danger">Data di Server Pusat : <?= $jmlPusat ?></h3>
-                      <a href="<?= base_url('welcome/sincr') ?>" class="btn btn-sm btn-success pull-right" onclick="return confirm('Yakin akan disinkron data ?')">Sinkron Data Pusat</a>
+                      <h3 class="box-title text-primary">Data di Database : <?= $dataTtl->num_rows() ?></h3>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">

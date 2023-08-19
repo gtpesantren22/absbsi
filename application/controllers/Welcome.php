@@ -29,10 +29,19 @@ class Welcome extends CI_Controller
 		$data['data'] = $this->model->getBy3('tb_santri', 'aktif', 'Y', 't_formal', 'SMK', 'jkl', $jkl);
 
 		$data['dataTtl'] = $this->model->getBy2('tb_santri', 'aktif', 'Y', 't_formal', 'SMK');
-		$data['jmlPusat'] = is_array($this->dataPusat()) ? count($this->dataPusat()) : 'Bukan Array';
 
 		$this->load->view('head');
 		$this->load->view('siswa', $data);
+		$this->load->view('foot');
+	}
+
+	public function sinkron()
+	{
+		$data['jmlPusat'] = is_array($this->dataPusat()) ? count($this->dataPusat()) : 'Bukan Array';
+		$data['dataTtl'] = $this->model->getBy2('tb_santri', 'aktif', 'Y', 't_formal', 'SMK');
+
+		$this->load->view('head');
+		$this->load->view('sinkron', $data);
 		$this->load->view('foot');
 	}
 

@@ -131,6 +131,7 @@
                         <ul class="treeview-menu">
                             <li><a href="<?= base_url('welcome/santri/putra') ?>"><i class="fa fa-circle-o"></i> Santri Putra</a></li>
                             <li><a href="<?= base_url('welcome/santri/putri') ?>"><i class="fa fa-circle-o"></i> Santri Putri</a></li>
+                            <li><a href="<?= base_url('welcome/sinkron') ?>"><i class="fa fa-circle-o"></i> Sinkronisasi Data</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
