@@ -81,7 +81,7 @@ class Login extends CI_Controller
     {
         // $this->load->model('Auth_model');
         if ($this->Auth_model->logout()) {
-            $this->session->set_flashdata('ok', 'Anda Berhasil Keluar');
+            // $this->session->set_flashdata('ok', 'Anda Berhasil Keluar');
             redirect('login');
         }
     }

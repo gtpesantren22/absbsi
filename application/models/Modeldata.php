@@ -71,4 +71,20 @@ class Modeldata extends CI_Model
         $this->db->where($where1, $dtwhere1);
         $this->db->delete($tbl);
     }
+
+    function getJadwal()
+    {
+        $this->db->from('jadwal');
+        $this->db->join('guru', 'ON guru.kode_guru=jadwal.guru');
+        $this->db->join('mapel', 'ON mapel.kode_mapel=jadwal.mapel');
+        // $this->db->group_by('hari');
+        return $this->db->get();
+    }
+
+    function getJoin($tbl1, $tbl2, $on1, $on2)
+    {
+        $this->db->from($tbl1);
+        $this->db->join($tbl2, 'ON ' . $tbl1 . '.' . $on1 . '=' . $tbl2 . '.' . $on2);
+        return $this->db->get();
+    }
 }

@@ -14,6 +14,7 @@ class Absensi extends CI_Controller
 
         $user = $this->Auth_model->current_user();
 
+        $this->user = $user->nama;
         if (!$this->Auth_model->current_user() || $user->level != 'adm' && $user->level != 'admin') {
             redirect('login/logout');
         }
@@ -214,6 +215,54 @@ class Absensi extends CI_Controller
         } else {
             $this->session->set_flashdata('ok', 'Hapus Absen Gagal');
             redirect('absensi');
+        }
+    }
+
+    public function inputGuru()
+    {
+        $thisDay = date('Y-m-d');
+        $data['data'] = $this->db->query("SELECT * FROM harian_guru WHERE tanggal = '$thisDay' GROUP BY kelas ORDER BY kelas ASC ");
+
+        $this->load->view('head');
+        $this->load->view('absenGuru', $data);
+        $this->load->view('foot');
+    }
+
+    public function generate()
+    {
+        $hariIni = date('l');
+        $tglNow = date('Y-m-d');
+
+        $cek = $this->model->getBy('harian_guru', 'tanggal', $tglNow);
+        if ($cek->num_rows() > 0) {
+            $this->session->set_flashdata('error', 'Maaf Absensi Hari ini sudah ada');
+            redirect('absensi/inputGuru');
+        } else {
+            $jadwal = $this->model->getBy('jadwal', 'hari', 'Saturday')->result();
+
+            foreach ($jadwal as $dataJadwal) {
+                $jumlahJam = ($dataJadwal->jam_sampai - $dataJadwal->jam_dari) + 1;
+
+                for ($i = 1; $i <= $jumlahJam; $i++) {
+                    $data = [
+                        'id_harian' => $this->uuid->v4(),
+                        'tanggal' => $tglNow,
+                        'kelas' => $dataJadwal->kelas,
+                        'guru' => $dataJadwal->guru,
+                        'mapel' => $dataJadwal->mapel,
+                        'jam' => $dataJadwal->jam_dari + $i - 1,
+                        'hadir' => 0,
+                        'izin' => 0,
+                        'petugas' => $this->user,
+                        'at' => date('Y-m-d H:i:s'),
+                    ];
+
+                    $this->model->simpan('harian_guru', $data);
+                    // echo "Data yang akan disimpan: ";
+                    // print_r($data);
+                    // echo "<br><br>";
+                }
+            }
         }
     }
 }
