@@ -182,6 +182,12 @@
                             <li><a href="<?= base_url('absensi/inputGuru') ?>"><i class="fa fa-circle-o"></i> Input Absen Guru</a></li>
                         </ul>
                     </li>
+                    <li class="header">ABSENSI</li>
+                    <li>
+                        <a href="<?= base_url('guru/absenSiswa') ?>">
+                            <i class="fa fa-newspaper-o"></i> <span>Absensi Siswa</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
             <!-- /.sidebar -->
