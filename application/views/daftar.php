@@ -36,14 +36,22 @@
             <a href="<?= base_url('') ?>"><b>Absensi</b>APP</a>
         </div><!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
-            <form action="<?= base_url('login/masuk') ?>" method="post">
+            <p class="login-box-msg">Daftar Akun Baru</p>
+            <form action="<?= base_url('login/daftarAct') ?>" method="post">
+                <div class="form-group has-feedback">
+                    <input type="number" class="form-control" name="kode" placeholder="Kode Guru" required>
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" name="username" placeholder="Username" required>
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="password2" class="form-control" placeholder="Ulangi Password" required>
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -60,7 +68,7 @@
                 </div>
             </form>
 
-            <a href="<?= base_url('login/register') ?>" class="text-center">Daftar Akun Baru</a>
+            <a href="<?= base_url('login') ?>" class="text-center">Kembali ke halaman login</a>
         </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
 

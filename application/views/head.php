@@ -97,15 +97,15 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Administrator</span>
+                                <span class="hidden-xs"><?= $userData->nama ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
                                     <img src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                     <p>
-                                        Administrator - admin
-                                        <small>Pengelola Sistem</small>
+                                        <?= $userData->nama ?>
+                                        <small><?= $userData->level ?></small>
                                     </p>
                                 </li>
 
@@ -135,57 +135,71 @@
                         <img src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Administrator</p>
+                        <p><?= $userData->nama ?></p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
-                    <li>
-                        <a href="<?= base_url() ?>">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-folder"></i> <span>Master Data</span> <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="<?= base_url('master/guru') ?>"><i class="fa fa-circle-o"></i> Guru</a></li>
-                            <li><a href="<?= base_url('master/mapel') ?>"><i class="fa fa-circle-o"></i> Mapel</a></li>
-                            <li><a href="<?= base_url('master/jadwal') ?>"><i class="fa fa-circle-o"></i> Jadwal</a></li>
-                            <li><a href="<?= base_url('master/piket') ?>"><i class="fa fa-circle-o"></i> Jadwal Piket</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-files-o"></i>
-                            <span>Data Santri</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="<?= base_url('welcome/santri/putra') ?>"><i class="fa fa-circle-o"></i> Santri Putra</a></li>
-                            <li><a href="<?= base_url('welcome/santri/putri') ?>"><i class="fa fa-circle-o"></i> Santri Putri</a></li>
-                            <li><a href="<?= base_url('welcome/sinkron') ?>"><i class="fa fa-circle-o"></i> Sinkronisasi Data</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-th"></i>
-                            <span>Absensi</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="<?= base_url('absensi') ?>"><i class="fa fa-circle-o"></i> Rekap Absensi</a></li>
-                            <li><a href="<?= base_url('absensi/input') ?>"><i class="fa fa-circle-o"></i> Input Absen Siswa</a></li>
-                            <li><a href="<?= base_url('absensi/inputGuru') ?>"><i class="fa fa-circle-o"></i> Input Absen Guru</a></li>
-                        </ul>
-                    </li>
+                    <?php if ($userData->level == 'admin') : ?>
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li>
+                            <a href="<?= base_url() ?>">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-folder"></i> <span>Master Data</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('master/guru') ?>"><i class="fa fa-circle-o"></i> Guru</a></li>
+                                <li><a href="<?= base_url('master/mapel') ?>"><i class="fa fa-circle-o"></i> Mapel</a></li>
+                                <li><a href="<?= base_url('master/jadwal') ?>"><i class="fa fa-circle-o"></i> Jadwal</a></li>
+                                <li><a href="<?= base_url('master/piket') ?>"><i class="fa fa-circle-o"></i> Jadwal Piket</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-files-o"></i>
+                                <span>Data Santri</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('welcome/santri/putra') ?>"><i class="fa fa-circle-o"></i> Santri Putra</a></li>
+                                <li><a href="<?= base_url('welcome/santri/putri') ?>"><i class="fa fa-circle-o"></i> Santri Putri</a></li>
+                                <li><a href="<?= base_url('welcome/sinkron') ?>"><i class="fa fa-circle-o"></i> Sinkronisasi Data</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-th"></i>
+                                <span>Absensi</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('absensi') ?>"><i class="fa fa-circle-o"></i> Rekap Absensi</a></li>
+                                <li><a href="<?= base_url('absensi/input') ?>"><i class="fa fa-circle-o"></i> Input Absen Siswa</a></li>
+                                <li><a href="<?= base_url('absensi/inputGuru') ?>"><i class="fa fa-circle-o"></i> Input Absen Guru</a></li>
+                            </ul>
+                        </li>
+                    <?php endif ?>
                     <li class="header">ABSENSI</li>
+                    <?php if ($userData->level == 'guru') : ?>
+                        <li>
+                            <a href="<?= base_url('guru') ?>">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                    <?php endif ?>
                     <li>
                         <a href="<?= base_url('guru/absenSiswa') ?>">
                             <i class="fa fa-newspaper-o"></i> <span>Absensi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('guru/hasilAbsen') ?>">
+                            <i class="fa fa-newspaper-o"></i> <span>List Absensi</span>
                         </a>
                     </li>
                 </ul>

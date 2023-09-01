@@ -158,6 +158,117 @@
                                         echo '</tr>';
                                     }
                                     ?>
+                                  <tr>
+                                      <th colspan="6" class="text-center"></th>
+                                  </tr>
+                                  <tr>
+                                      <th colspan="6" class="text-center" style="background-color: #ECF0F5;">SENIN</th>
+                                  </tr>
+                                  <?php
+                                    $noMonday = 1;
+                                    $jumMonday = 1;
+                                    foreach ($Monday->result() as $rowMonday) {
+
+                                        if ($jumMonday <= 1) {
+                                            echo '<tr>';
+                                            echo '<td align="center" rowspan="' .  $rowMonday->jumlah . '">' . $noMonday . '</td>';
+                                            echo '<td rowspan="' . $rowMonday->jumlah . '">' . $rowMonday->kelas . '</td>';
+                                            $jumMonday = $rowMonday->jumlah;
+                                            $noMonday++;
+                                        } else {
+                                            $jumMonday = $jumMonday - 1;
+                                        }
+                                        echo '<td>' . $rowMonday->jam_dari . ' - ' . $rowMonday->jam_sampai . '</td>';
+                                        echo '<td>' . $rowMonday->nama_mapel . '</td>';
+                                        echo '<td>' . $rowMonday->nama_guru . '</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowMonday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+
+                                  <tr>
+                                      <th colspan="6" class="text-center"></th>
+                                  </tr>
+                                  <tr>
+                                      <th colspan="6" class="text-center" style="background-color: #ECF0F5;">SELASA</th>
+                                  </tr>
+                                  <?php
+                                    $noTuesday = 1;
+                                    $jumTuesday = 1;
+                                    foreach ($Tuesday->result() as $rowTuesday) {
+
+                                        if ($jumTuesday <= 1) {
+                                            echo '<tr>';
+                                            echo '<td align="center" rowspan="' .  $rowTuesday->jumlah . '">' . $noTuesday . '</td>';
+                                            echo '<td rowspan="' . $rowTuesday->jumlah . '">' . $rowTuesday->kelas . '</td>';
+                                            $jumTuesday = $rowTuesday->jumlah;
+                                            $noTuesday++;
+                                        } else {
+                                            $jumTuesday = $jumTuesday - 1;
+                                        }
+                                        echo '<td>' . $rowTuesday->jam_dari . ' - ' . $rowTuesday->jam_sampai . '</td>';
+                                        echo '<td>' . $rowTuesday->nama_mapel . '</td>';
+                                        echo '<td>' . $rowTuesday->nama_guru . '</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowTuesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+
+                                  <tr>
+                                      <th colspan="6" class="text-center"></th>
+                                  </tr>
+                                  <tr>
+                                      <th colspan="6" class="text-center" style="background-color: #ECF0F5;">RABU</th>
+                                  </tr>
+                                  <?php
+                                    $noWednesday = 1;
+                                    $jumWednesday = 1;
+                                    foreach ($Wednesday->result() as $rowWednesday) {
+
+                                        if ($jumWednesday <= 1) {
+                                            echo '<tr>';
+                                            echo '<td align="center" rowspan="' .  $rowWednesday->jumlah . '">' . $noWednesday . '</td>';
+                                            echo '<td rowspan="' . $rowWednesday->jumlah . '">' . $rowWednesday->kelas . '</td>';
+                                            $jumWednesday = $rowWednesday->jumlah;
+                                            $noWednesday++;
+                                        } else {
+                                            $jumWednesday = $jumWednesday - 1;
+                                        }
+                                        echo '<td>' . $rowWednesday->jam_dari . ' - ' . $rowWednesday->jam_sampai . '</td>';
+                                        echo '<td>' . $rowWednesday->nama_mapel . '</td>';
+                                        echo '<td>' . $rowWednesday->nama_guru . '</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowWednesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+
+                                  <tr>
+                                      <th colspan="6" class="text-center"></th>
+                                  </tr>
+                                  <tr>
+                                      <th colspan="6" class="text-center" style="background-color: #ECF0F5;">KAMIS</th>
+                                  </tr>
+                                  <?php
+                                    $noThursday = 1;
+                                    $jumThursday = 1;
+                                    foreach ($Thursday->result() as $rowThursday) {
+
+                                        if ($jumThursday <= 1) {
+                                            echo '<tr>';
+                                            echo '<td align="center" rowspan="' .  $rowThursday->jumlah . '">' . $noThursday . '</td>';
+                                            echo '<td rowspan="' . $rowThursday->jumlah . '">' . $rowThursday->kelas . '</td>';
+                                            $jumThursday = $rowThursday->jumlah;
+                                            $noThursday++;
+                                        } else {
+                                            $jumThursday = $jumThursday - 1;
+                                        }
+                                        echo '<td>' . $rowThursday->jam_dari . ' - ' . $rowThursday->jam_sampai . '</td>';
+                                        echo '<td>' . $rowThursday->nama_mapel . '</td>';
+                                        echo '<td>' . $rowThursday->nama_guru . '</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowThursday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
 
                               </tbody>
                           </table>

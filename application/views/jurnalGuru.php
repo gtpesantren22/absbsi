@@ -63,7 +63,7 @@
                   <!-- /.box-header -->
                   <div class="box-body">
 
-                      <?= form_open('absensi/save_multiple_data') ?>
+                      <?= form_open('guru/save_multiple_data') ?>
                       <div class="form-group">
                           <label for="">Nama Guru</label>
                           <input type="text" class="form-control" name="guru" value="<?= $user ?>" readonly>
@@ -128,7 +128,7 @@
                   var dppk = $(this).val();
 
                   $.ajax({
-                      url: '<?= base_url('absensi/cariKelas'); ?>',
+                      url: '<?= base_url('guru/cariKelas'); ?>',
                       type: 'POST',
                       data: {
                           dppk: dppk

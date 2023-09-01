@@ -28,7 +28,22 @@ class Modeldata extends CI_Model
         $this->db->where($where3, $dtwhere3);
         return $this->db->get($tbl);
     }
+    public function getBy4($tbl, $where1, $dtwhere1, $where2, $dtwhere2, $where3, $dtwhere3, $where4, $dtwhere4)
+    {
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        $this->db->where($where3, $dtwhere3);
+        $this->db->where($where4, $dtwhere4);
+        return $this->db->get($tbl);
+    }
 
+    public function getBy2Ord($tbl, $where1, $dtwhere1, $where2, $dtwhere2, $ord, $ls)
+    {
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        $this->db->order_by($ord, $ls);
+        return $this->db->get($tbl);
+    }
     public function getBy3Ord($tbl, $where1, $dtwhere1, $where2, $dtwhere2, $where3, $dtwhere3, $ord, $ls)
     {
         $this->db->where($where1, $dtwhere1);
@@ -49,6 +64,12 @@ class Modeldata extends CI_Model
         $this->db->insert($tbl, $data);
     }
 
+    public function edit($table, $data, $where, $dtwhere)
+    {
+        $this->db->where($where, $dtwhere);
+        $this->db->update($table, $data);
+    }
+
     public function absenDetail($id)
     {
         $this->db->select('detail_absen.*, tb_santri.nama, tb_santri.k_formal, tb_santri.r_formal, tb_santri.jurusan');
@@ -61,6 +82,20 @@ class Modeldata extends CI_Model
     public function absenHarian()
     {
         $this->db->from('harian');
+        $this->db->join('guru', 'ON harian.guru=guru.kode_guru');
+        $this->db->join('mapel', 'ON harian.mapel=mapel.kode_mapel');
+        $this->db->group_by('kode');
+        $this->db->order_by('tanggal', 'DESC');
+        return $this->db->get();
+    }
+
+    public function absenHarianDay($user)
+    {
+        $this->db->from('harian');
+        $this->db->join('guru', 'ON harian.guru=guru.kode_guru');
+        $this->db->join('mapel', 'ON harian.mapel=mapel.kode_mapel');
+        $this->db->where('tanggal', date('Y-m-d'));
+        $this->db->where('harian.guru', $user);
         $this->db->group_by('kode');
         $this->db->order_by('tanggal', 'DESC');
         return $this->db->get();

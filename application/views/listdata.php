@@ -1,11 +1,10 @@
     <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="<?= base_url('assets/') ?>plugins/iCheck/all.css">
 
     <style>
         /* Gaya umum */
         .custom-radio {
             display: inline-block;
-            margin-right: 2px;
+            margin-right: 1px;
             cursor: pointer;
         }
 
@@ -60,30 +59,39 @@
     <div class="table-responsive">
         <table id="example1" class="table table-bordered table-striped table-sm">
             <tbody>
+                <input type="hidden" name="guru" value="<?= $jadwal->guru ?>">
+                <input type="hidden" name="mapel" value="<?= $jadwal->mapel ?>">
+                <input type="hidden" name="kelas" value="<?= $jadwal->kelas ?>">
+                <input type="hidden" name="dari" value="<?= $jadwal->jam_dari ?>">
+                <input type="hidden" name="sampai" value="<?= $jadwal->jam_sampai ?>">
+                <tr>
+                    <td colspan="2" style="background-color: #3C8DBC; color: #fff;"><b>Mapel : <?= $mapel->nama_mapel ?></b></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color: #3C8DBC; color: #fff;"><b>Jam ke : <?= $jadwal->jam_dari . ' - ' . $jadwal->jam_sampai ?></b></td>
+                </tr>
                 <?php
                 $no = 1;
                 foreach ($listdata->result() as $row) :
                 ?>
                     <tr>
-                        <td>
-                            <?= $row->nama ?><br>
-                        </td>
+                        <td><?= $row->nama ?></td>
                         <td>
                             <input type="hidden" name="data[<?= $no ?>][nis]" value="<?= $row->nis ?>">
                             <!--  -->
-                            <label class="custom-radio ">
-                                <input type="radio" name="data[<?= $no ?>][ket]" value="hadir" checked>
+                            <label class="custom-radio">
+                                <input type="radio" name="data[<?= $no ?>][ket]" value="hadir" checked="checked">
                                 <span class="custom-radio-label success">H</span>
                             </label>
-                            <label class="custom-radio ">
-                                <input type="radio" name="data[<?= $no ?>][ket]" value="izin">
+                            <label class="custom-radio">
+                                <input type="radio" name="data[<?= $no ?>][ket]" value="sakit">
                                 <span class="custom-radio-label warning">S</span>
                             </label>
-                            <label class="custom-radio ">
-                                <input type="radio" name="data[<?= $no ?>][ket]" value="sakit">
+                            <label class="custom-radio">
+                                <input type="radio" name="data[<?= $no ?>][ket]" value="izin">
                                 <span class="custom-radio-label primary">I</span>
                             </label>
-                            <label class="custom-radio ">
+                            <label class="custom-radio">
                                 <input type="radio" name="data[<?= $no ?>][ket]" value="alpha">
                                 <span class="custom-radio-label danger">A</span>
                             </label>
@@ -91,17 +99,7 @@
                     </tr>
                 <?php
                     $no++;
-                endforeach;
-                ?>
+                endforeach; ?>
             </tbody>
         </table>
     </div>
-
-    <!-- iCheck 1.0.1 -->
-    <script src="<?= base_url('assets/') ?>plugins/iCheck/icheck.min.js"></script>
-    <script>
-        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-            checkboxClass: 'icheckbox_flat-green',
-            radioClass: 'iradio_flat-green'
-        });
-    </script>

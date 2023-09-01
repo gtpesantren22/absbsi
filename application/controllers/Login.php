@@ -7,7 +7,7 @@ class Login extends CI_Controller
     {
         parent::__construct();
 
-        // $this->load->model('DataModel');
+        $this->load->model('Modeldata', 'model');
         $this->load->model('Auth_model');
     }
 
@@ -40,7 +40,12 @@ class Login extends CI_Controller
         if ($this->Auth_model->login($username, $password)) {
             $user = $this->Auth_model->current_user();
             $this->session->set_flashdata('ok', 'Login Berhasil');
-            redirect('welcome');
+
+            if ($user->level === 'admin') {
+                redirect('welcome');
+            } elseif ($user->level === 'guru') {
+                redirect('guru');
+            }
         } else {
             // $this->session->set_flashdata('message_login_error', 'Login Gagal, pastikan username dan passwrod benar!');
             $this->session->set_flashdata('error', 'Maaf username atau password salah');
@@ -48,32 +53,54 @@ class Login extends CI_Controller
         }
     }
 
-    public function daftar()
+    public function register()
     {
         $this->load->view('daftar');
     }
 
     public function daftarAct()
     {
+        $kode = $this->input->post('kode', true);
         $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
+        $password2 = $this->input->post('password2', true);
+
         $passOk = password_hash($password, PASSWORD_BCRYPT);
 
-        $data = [
-            'id_user' => $this->uuid->v4(),
-            'nama' => strtoupper($this->input->post('nama', true)),
-            'jabatan' => $this->input->post('jabatan', true),
-            'username' => $username,
-            'password' => $passOk,
-            'aktif' => 'T',
-            'level' => 'adm',
+        $cekGuru = $this->model->getBy('guru', 'kode_guru', $kode);
+        $cekAkunGuru = $this->model->getBy('user', 'kode_guru', $kode);
 
-        ];
+        if ($cekGuru->num_rows() < 1) {
+            $this->session->set_flashdata('error', 'Maaf. Kode guru anda tidak terdaftar');
+            redirect('login/register');
+        } else {
+            if ($cekAkunGuru->num_rows() > 0) {
+                $this->session->set_flashdata('error', 'Maaf. Anda sudah pernah melakukan pendaftaran. silahkan hub Admin');
+                redirect('login/register');
+            } else {
+                if ($password != $password2) {
+                    $this->session->set_flashdata('error', 'Maaf. Password yang anda masukan tidak sama');
+                    redirect('login/register');
+                } else {
+                    $data = [
+                        'id_user' => $this->uuid->v4(),
+                        'nama' => $cekGuru->row('nama_guru'),
+                        'jabatan' => 'Guru',
+                        'username' => $username,
+                        'password' => $passOk,
+                        'aktif' => 'Y',
+                        'level' => 'guru',
+                        'kode_guru' => $kode,
 
-        $this->Auth_model->tambah('user', $data);
-        if ($this->db->affected_rows()) {
-            $this->session->set_flashdata('ok', 'Akun sudah dibuat. Silahkan menghubungi admin untuk aktifasi akun anda');
-            redirect('login/daftar');
+                    ];
+
+                    $this->model->simpan('user', $data);
+                    if ($this->db->affected_rows()) {
+                        $this->session->set_flashdata('ok', 'Akun sudah dibuat. Anda sudah bisa menggunakannya');
+                        redirect('login');
+                    }
+                }
+            }
         }
     }
 

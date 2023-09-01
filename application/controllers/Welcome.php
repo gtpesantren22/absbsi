@@ -11,14 +11,15 @@ class Welcome extends CI_Controller
 		$this->load->model('Auth_model');
 		$user = $this->Auth_model->current_user();
 
-		if (!$this->Auth_model->current_user() || $user->level != 'adm' && $user->level != 'admin') {
+		if (!$this->Auth_model->current_user() || $user->level != 'admin') {
 			redirect('login/logout');
 		}
 	}
 
 	public function index()
 	{
-		$this->load->view('head');
+		$data['userData'] = $this->Auth_model->current_user();
+		$this->load->view('head', $data);
 		$this->load->view('index');
 		$this->load->view('foot');
 	}
@@ -30,7 +31,8 @@ class Welcome extends CI_Controller
 
 		$data['dataTtl'] = $this->model->getBy2('tb_santri', 'aktif', 'Y', 't_formal', 'SMK');
 
-		$this->load->view('head');
+		$data['userData'] = $this->Auth_model->current_user();
+		$this->load->view('head', $data);
 		$this->load->view('siswa', $data);
 		$this->load->view('foot');
 	}
@@ -40,7 +42,8 @@ class Welcome extends CI_Controller
 		$data['jmlPusat'] = is_array($this->dataPusat()) ? count($this->dataPusat()) : 'Bukan Array';
 		$data['dataTtl'] = $this->model->getBy2('tb_santri', 'aktif', 'Y', 't_formal', 'SMK');
 
-		$this->load->view('head');
+		$data['userData'] = $this->Auth_model->current_user();
+		$this->load->view('head', $data);
 		$this->load->view('sinkron', $data);
 		$this->load->view('foot');
 	}

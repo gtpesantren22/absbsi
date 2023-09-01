@@ -27,7 +27,8 @@ class Master extends CI_Controller
     {
         $data['guru'] = $this->model->getAll('guru')->result();
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('guru', $data);
         $this->load->view('foot');
     }
@@ -35,7 +36,8 @@ class Master extends CI_Controller
     {
         $data['mapel'] = $this->model->getAll('mapel')->result();
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('mapel', $data);
         $this->load->view('foot');
     }
@@ -45,7 +47,8 @@ class Master extends CI_Controller
         $data['mapel'] = $this->db->query("SELECT * FROM piket JOIN guru ON piket.guru=guru.kode_guru ORDER BY piket.hari ASC, piket.tempat ASC")->result();
         $data['guru'] = $this->model->getAll('guru');
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('piket', $data);
         $this->load->view('foot');
     }
@@ -77,8 +80,13 @@ class Master extends CI_Controller
 
         $data['Saturday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Saturday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Saturday' ORDER BY A.kelas ASC, A.jam_dari ASC");
         $data['Sunday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Sunday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Sunday' ORDER BY A.kelas ASC, A.jam_dari ASC");
+        $data['Monday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Monday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Monday' ORDER BY A.kelas ASC, A.jam_dari ASC");
+        $data['Tuesday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Tuesday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Tuesday' ORDER BY A.kelas ASC, A.jam_dari ASC");
+        $data['Wednesday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Wednesday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Wednesday' ORDER BY A.kelas ASC, A.jam_dari ASC");
+        $data['Thursday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Thursday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Thursday' ORDER BY A.kelas ASC, A.jam_dari ASC");
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('jadwal', $data);
         $this->load->view('foot');
     }
