@@ -136,4 +136,13 @@ class Master extends CI_Controller
             redirect('master/piket');
         }
     }
+
+    public function sendMapel()
+    {
+        $days = date('l');
+
+        $jadwal = $this->model->getBy('jadwal', 'hari', $days);
+        foreach ($jadwal->result() as $jdwl) {
+        }
+    }
 }

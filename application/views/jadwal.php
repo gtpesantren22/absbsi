@@ -18,6 +18,7 @@
               <div class="box">
                   <div class="box-header">
                       <h3 class="box-title">Daftar Mata Pelajaran</h3>
+                      <a href="<?= base_url('master/sendMapel') ?>" class="btn btn-sm btn-success pull-right tbl-confirm" value="Jadwal hari ini akan terkirikan kepada guru mapel terkait">Kirim Informasi Jadwal</a>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">
