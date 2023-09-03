@@ -58,7 +58,7 @@
 
               <div class="box">
                   <div class="box-header">
-                      <h3 class="box-title text-primary">Jadwal saya hari ini : <?= translateDay(date('l'), 'id') . ', ' . date('d/m/Y') ?></h3>
+                      <h3 class="box-title text-primary">Jadwal saya hari ini : <?= translateDay(date('l'), 'id') . ', ' . date('d/m/Y H:i') ?></h3>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">
