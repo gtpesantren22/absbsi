@@ -36,6 +36,15 @@ class Modeldata extends CI_Model
         $this->db->where($where4, $dtwhere4);
         return $this->db->get($tbl);
     }
+    public function getBy5($tbl, $where1, $dtwhere1, $where2, $dtwhere2, $where3, $dtwhere3, $where4, $dtwhere4, $where5, $dtwhere5)
+    {
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        $this->db->where($where3, $dtwhere3);
+        $this->db->where($where4, $dtwhere4);
+        $this->db->where($where5, $dtwhere5);
+        return $this->db->get($tbl);
+    }
 
     public function getBy2Ord($tbl, $where1, $dtwhere1, $where2, $dtwhere2, $ord, $ls)
     {

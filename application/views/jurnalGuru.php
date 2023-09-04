@@ -73,7 +73,7 @@
                           <select name="kelas" id="selectDppk" class="form-control select2" style="width: 100%;" required>
                               <option value=""> -pilih kelas- </option>
                               <?php foreach ($kelas->result() as $gr) : ?>
-                                  <option value="<?= $gr->kelas ?>"><?= $gr->kelas ?></option>
+                                  <option value="<?= $gr->id_jadwal ?>"><?= $gr->kelas . ' (' . $gr->jam_dari . '-' . $gr->jam_sampai . ')' ?></option>
                               <?php endforeach ?>
                           </select>
                       </div>

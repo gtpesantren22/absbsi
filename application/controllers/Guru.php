@@ -42,7 +42,7 @@ class Guru extends CI_Controller
         $data['mapel'] = $this->model->getAll('mapel');
 
         $isDay = date('l');
-        $data['kelas'] = $this->db->query("SELECT * FROM jadwal WHERE hari = '$isDay' AND guru = '$this->userKode' GROUP BY kelas ORDER BY kelas ASC ");
+        $data['kelas'] = $this->db->query("SELECT * FROM jadwal WHERE hari = '$isDay' AND guru = '$this->userKode' ORDER BY jam_dari ASC ");
 
         $data['userData'] = $this->Auth_model->current_user();
         $this->load->view('head', $data);
@@ -52,8 +52,10 @@ class Guru extends CI_Controller
 
     public function cariKelas()
     {
-        $hslKelas = $this->input->post('dppk', true);
-        $kls = explode('-', $hslKelas);
+        $idJadwal = $this->input->post('dppk', true);
+        $data['jadwal'] = $this->model->getBy('jadwal', 'id_jadwal', $idJadwal)->row();
+
+        $kls = explode('-', $data['jadwal']->kelas);
 
         $kelas = $kls[0];
         $jur = $kls[1];
@@ -62,7 +64,6 @@ class Guru extends CI_Controller
         $dyas = date('l');
 
         $data['listdata'] = $this->model->getBy3Ord('tb_santri', 'k_formal', $kelas, 'r_formal', $rombel, 'jurusan', $jur, 'nama', 'ASC');
-        $data['jadwal'] = $this->model->getBy3('jadwal', 'hari', $dyas, 'guru', $this->userKode, 'kelas', $hslKelas)->row();
         $data['mapel'] = $this->model->getBy('mapel', 'kode_mapel', $data['jadwal']->mapel)->row();
 
         $this->load->view('listdata', $data);
@@ -83,7 +84,7 @@ class Guru extends CI_Controller
 
         $jmlAbs = ($sampai - $dari) + 1;
 
-        $cek = $this->model->getBy4('harian', 'guru', $guru, 'mapel', $mapel, 'kelas', $kelas, 'tanggal', $tanggal)->row();
+        $cek = $this->model->getBy5('harian', 'guru', $guru, 'mapel', $mapel, 'kelas', $kelas, 'tanggal', $tanggal, 'dari', $dari)->row();
 
         $nmGuru = $this->model->getBy('guru', 'kode_guru', $guru)->row();
         $nmMapel = $this->model->getBy('mapel', 'kode_mapel', $mapel)->row();
@@ -163,8 +164,8 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
                     $psn .= "\n" . "\n" . '_Demikian Laporan ini kami sampaikan terimakasih_';
 
                     // echo $psn;
-                    // kirim_person('085258800849', $psn);
-                    kirim_group('6285258800849-1471341787@g.us', $psn);
+                    kirim_person('085236924510', $psn);
+                    // kirim_group('6285258800849-1471341787@g.us', $psn);
 
                     $this->session->set_flashdata('ok', 'Input Absen Berhasil');
                     redirect('guru/absenSiswa');

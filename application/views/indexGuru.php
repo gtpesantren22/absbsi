@@ -37,16 +37,23 @@
                           <div class="box-body">
                               <?php foreach ($jadwal->result() as $jadwal) :
                                     $mapel = $this->db->query("SELECT * FROM mapel WHERE kode_mapel = '$jadwal->mapel' ")->row();
+                                    $day = date('Y-m-d');
+                                    $cek = $this->db->query("SELECT * FROM harian WHERE tanggal = '$day' AND guru = '$jadwal->guru' AND mapel = '$jadwal->mapel' AND dari = '$jadwal->jam_dari' AND sampai = '$jadwal->jam_sampai' AND kelas = '$jadwal->kelas' ")->row();
                                 ?>
                                   <strong><i class="fa fa-institution  margin-r-5"></i> <?= $jadwal->kelas ?></strong><br>
                                   <!-- <strong><i class="fa fa-book margin-r-5"></i> Education</strong><br> -->
                                   <p class="text-muted">
                                       <i class="fa fa-book margin-r-5"></i> <?= $mapel->nama_mapel ?> <br>
-                                      <i class="fa fa-clock-o margin-r-5"></i> Jam ke <?= $jadwal->jam_dari . '-' . $jadwal->jam_sampai ?>
+                                      <i class="fa fa-clock-o margin-r-5"></i> Jam ke <?= $jadwal->jam_dari . '-' . $jadwal->jam_sampai ?><br>
+                                      <?php if ($cek) { ?>
+                                          <span class="label label-success"><i class="fa fa-check-circle-o"></i> Sudah Absen</span>
+                                      <?php } else { ?>
+                                          <span class="label label-danger"><i class="fa fa-times"></i> Belum isi absen</span>
+                                      <?php } ?>
                                   </p>
                                   <hr>
                               <?php endforeach ?>
-                              <a href="<?= base_url('guru/absenSiswa') ?>" class="btn btn-sm btn-block btn-success">Cek Jadwal Saya</a>
+                              <a href="<?= base_url('guru/absenSiswa') ?>" class="btn btn-sm btn-block btn-primary">Cek Jadwal Saya</a>
                           </div><!-- /.box-body -->
                       </div><!-- /.box -->
                   </div><!-- /.col -->
