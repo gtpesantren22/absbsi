@@ -141,8 +141,42 @@ class Master extends CI_Controller
     {
         $days = date('l');
 
-        $jadwal = $this->model->getBy('jadwal', 'hari', $days);
+        $jadwal = $this->db->query("SELECT * FROM jadwal WHERE hari = '$days' GROUP BY guru");
+        // $jadwal = $this->db->query("SELECT * FROM jadwal WHERE hari = '$days' AND guru = '15' GROUP BY guru");
+        $piketPa = $this->db->query("SELECT * FROM piket JOIN guru ON piket.guru=guru.kode_guru WHERE hari = '$days' AND tempat = 'putra' ");
+        $piketPi = $this->db->query("SELECT * FROM piket JOIN guru ON piket.guru=guru.kode_guru WHERE hari = '$days' AND tempat = 'putri' ");
+
         foreach ($jadwal->result() as $jdwl) {
+            $jdlHasil = $this->db->query("SELECT * FROM jadwal WHERE hari = '$days' AND guru = '$jdwl->guru' ");
+            $guru = $this->model->getBy('guru', 'kode_guru', $jdwl->guru)->row();
+
+            $psn = 'Assalamualaikum Wr. Wb.
+Kpd Yth. *' . $guru->nama_guru . '*
+
+Berikut jadwal mengajar Ustd/Ustdh Hari ini di SMK DWK : 
+';
+            foreach ($jdlHasil->result() as $jdlHsl) {
+                $mapel = $this->model->getBy('mapel', 'kode_mapel', $jdlHsl->mapel)->row();
+                $psn .= "\n" . '*Mapel : ' . $mapel->nama_mapel . "*\n";
+                $psn .= '*Jam ke : ' . $jdlHsl->jam_dari . ' - ' . $jdlHsl->jam_sampai . "*\n";
+                $psn .= '*Kelas : ' . $jdlHsl->kelas . "*\n";
+            }
+
+            $psn .= "\n";
+            $psn .= 'Jika berhalangan hadir, silahkan konfirmasi kepada guru piket berikut :';
+            $psn .= "\n";
+            $psn .= "\n" . '*Piket Putra*' . "\n";
+            foreach ($piketPa->result() as $value) {
+                $psn .= '- ' . $value->nama_guru . "\n";
+            }
+            $psn .= "\n" . '*Piket Putri*' . "\n";
+            foreach ($piketPi->result() as $value) {
+                $psn .= '- ' . $value->nama_guru . "\n";
+            }
+            $psn .= "\n";
+            $psn .= '_Atas perhatiannya kami sampaikan terimakasih_';
+
+            kirim_person($guru->no_hp, $psn);
         }
     }
 }

@@ -33,7 +33,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="<?= base_url('') ?>"><b>Absensi</b>APP</a>
+            <a href="<?= base_url('') ?>"><b>E-ABSENS</b> SMKDWK</a>
         </div><!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
