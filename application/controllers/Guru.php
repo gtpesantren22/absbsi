@@ -164,8 +164,8 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
                     $psn .= "\n" . "\n" . '_Demikian Laporan ini kami sampaikan terimakasih_';
 
                     // echo $psn;
-                    kirim_person('085236924510', $psn);
-                    // kirim_group('6285258800849-1471341787@g.us', $psn);
+                    // kirim_person('085236924510', $psn);
+                    kirim_group('6285258800849-1471341787@g.us', $psn);
 
                     $this->session->set_flashdata('ok', 'Input Absen Berhasil');
                     redirect('guru/absenSiswa');
