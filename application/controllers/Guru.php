@@ -262,4 +262,49 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
             }
         }
     }
+
+    public function profile()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+
+        $data['jadwal'] = $this->model->getBy2Ord('jadwal', 'hari', date('l'), 'guru', $this->userKode, 'jam_dari', 'ASC');
+
+        $this->load->view('head', $data);
+        $this->load->view('profile');
+        $this->load->view('foot');
+    }
+
+    public function uploadFoto()
+    {
+
+        $user = $this->Auth_model->current_user();
+
+        $file_name = 'PROFILE-' . $user->kode_guru . '.' . rand(0, 99999);
+        $config['upload_path']          = './assets/foto/';
+        $config['allowed_types']        = 'jpg|jpeg|png';
+        $config['file_name']            = $file_name;
+        $config['overwrite']            = true;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('foto')) {
+            $data['error'] = $this->upload->display_errors();
+        } else {
+            $uploaded_data = $this->upload->data();
+
+            $new_data = [
+                'foto' =>  $uploaded_data['file_name']
+            ];
+            $this->model->update('user', $new_data, 'id_user', $user->id_user);
+            // unlink('./vertical/assets/uploads/honor/' . $file->files);
+
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'Upload foto sukses');
+                redirect('foto/profile');
+            } else {
+                $this->session->set_flashdata('error', 'Upload foto gagal');
+                redirect('foto/profile');
+            }
+        }
+    }
 }
