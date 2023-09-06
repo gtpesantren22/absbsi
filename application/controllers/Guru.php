@@ -276,35 +276,55 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
 
     public function uploadFoto()
     {
-
         $user = $this->Auth_model->current_user();
 
-        $file_name = 'PROFILE-' . $user->kode_guru . '.' . rand(0, 99999);
-        $config['upload_path']          = './assets/foto/';
-        $config['allowed_types']        = 'jpg|jpeg|png';
-        $config['file_name']            = $file_name;
-        $config['overwrite']            = true;
+        if (isset($_FILES["gambar"]) && $_FILES["gambar"]["error"] == 0) {
+            $targetDirectory = "assets/foto/"; // Gantilah dengan direktori yang sesuai
+            $imageFileType = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
+            $fotoName = 'PROFILE-' . $user->kode_guru . '.' . rand(0, 99999) . '.' . $imageFileType;
+            $targetFile = $targetDirectory . $fotoName;
 
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('foto')) {
-            $data['error'] = $this->upload->display_errors();
-        } else {
-            $uploaded_data = $this->upload->data();
-
-            $new_data = [
-                'foto' =>  $uploaded_data['file_name']
-            ];
-            $this->model->update('user', $new_data, 'id_user', $user->id_user);
-            // unlink('./vertical/assets/uploads/honor/' . $file->files);
-
-            if ($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('ok', 'Upload foto sukses');
-                redirect('foto/profile');
-            } else {
-                $this->session->set_flashdata('error', 'Upload foto gagal');
-                redirect('foto/profile');
+            // Periksa jenis file yang diizinkan
+            $allowedMimeTypes = ["image/jpeg", "image/png"];
+            if (!in_array($_FILES["gambar"]["type"], $allowedMimeTypes)) {
+                echo "Jenis file tidak diizinkan.";
             }
+            // Periksa ukuran file
+            elseif ($_FILES["gambar"]["size"] > 5 * 1024 * 1024) { // Maksimum 5MB
+                echo "Gambar terlalu besar. Maksimum 5MB diperbolehkan.";
+            }
+            // Jika semua validasi berhasil, lanjutkan dengan upload gambar
+            elseif (move_uploaded_file($_FILES["gambar"]["tmp_name"], $targetFile)) {
+                $new_data = [
+                    'foto' =>  $fotoName
+                ];
+                $this->model->edit('user', $new_data, 'id_user', $user->id_user);
+
+                if ($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('ok', 'Upload foto sukses');
+                    redirect('guru/profile');
+                } else {
+                    $this->session->set_flashdata('error', 'Upload foto gagal');
+                    redirect('guru/profile');
+                }
+            } else {
+                echo "Terjadi kesalahan saat mengunggah gambar.";
+            }
+        } else {
+            echo "Error: Gambar tidak berhasil diunggah.";
         }
+    }
+
+    public function kontrolAbsen()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $days = date('l');
+
+        $data['jadwal'] = $this->db->query("SELECT * FROM jadwal WHERE hari = '$days' GROUP BY kelas ORDER BY kelas ASC ");
+        $data['piket'] = $this->db->query("SELECT * FROM piket WHERE hari = '$days' AND guru = '$this->userKode' ");
+
+        $this->load->view('head', $data);
+        $this->load->view('kontrol');
+        $this->load->view('foot');
     }
 }

@@ -22,7 +22,7 @@
                       <!-- Profile Image -->
                       <div class="box box-primary">
                           <div class="box-body box-profile">
-                              <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" alt="User profile picture">
+                              <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/foto/' . $userData->foto) ?>" alt="User profile picture">
                               <h3 class="profile-username text-center">Foto profile saya</h3>
                               <center>
                                   <button class="btn btn-primary btn-sm text-center" data-toggle="modal" data-target="#basicModal">Ganti Foto Profile</button>
@@ -50,7 +50,7 @@
                   <div class="modal-body">
                       <div class="form-gorup">
                           <label for="">Pilih Foto</label>
-                          <input type="file" name="foto" class="form-control" required>
+                          <input type="file" name="gambar" class="form-control" required>
                           <small class="text-danger">- Foto yang diupload berupa JPG/PNG</small><br>
                           <small class="text-danger">- Usahakan menggunakan foto berbentuk PERSEGI agar hasil nya lebih pas</small>
                       </div>
