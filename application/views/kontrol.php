@@ -25,7 +25,7 @@
                               <h3 class="box-title">Absensi Hari ini - <?= translateDay(date('l'), 'id') . ', ' . date('d-m-Y') ?></h3>
                           </div>
                           <div class="box-body">
-                              <?php if ($piket->row()) { ?>
+                              <?php if ($piket->row() || $userData->level === 'admin') { ?>
                                   <div class="table-responsive">
                                       <table class="table table-condensed table-bordered">
                                           <?php foreach ($jadwal->result() as $jadwal) :
