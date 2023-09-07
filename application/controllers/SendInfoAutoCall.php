@@ -101,8 +101,8 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
         $psn .= "\n" . '----------------------------------';
         $psn .= "\n" . "\n" . 'Semangat Mengabdi💪 Barokalloh🤲';
 
-        // kirim_group('085236924510', $psn);
-        kirim_group('6285258800849-1471341787@g.us', $psn);
+        kirim_group('085236924510', $psn);
+        // kirim_group('6285258800849-1471341787@g.us', $psn);
         redirect('master/jadwal');
     }
 }
