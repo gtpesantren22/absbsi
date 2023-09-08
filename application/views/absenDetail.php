@@ -28,6 +28,7 @@
                                       <thead>
                                           <tr>
                                               <th>NO</th>
+                                              <th>NIS</th>
                                               <th>NAMA</th>
                                               <th>KELAS</th>
                                               <th>SAKIT</th>
@@ -42,6 +43,7 @@
                                             ?>
                                               <tr>
                                                   <td><?= $no++ ?></td>
+                                                  <td><?= $row->nis ?></td>
                                                   <td><?= $row->nama ?></td>
                                                   <td><?= $row->k_formal . ' ' . $row->jurusan ?></td>
                                                   <td><?= $row->sakit ?></td>
@@ -57,7 +59,7 @@
                           <div class="col-md-3">
                               <h4>Kirim Informasi</h4>
                               <?php foreach ($kelas->result() as $kelas) : ?>
-                                  <p><button class="btn btn-sm btn-secondary"><i class="fa fa-envelope"></i> <?= $kelas->nm_kelas ?></button></p>
+                                  <p><a href="<?= base_url('absensi/sendAbsen/' . $kelas->nm_kelas . '/' . $row->id_absen) ?>" class="btn btn-sm btn-success tbl-confirm" value="Absen akan dikimkan ke wali santri"><i class="fa fa-envelope"></i> <?= $kelas->nm_kelas ?></a></p>
                               <?php endforeach ?>
                           </div>
                       </div>

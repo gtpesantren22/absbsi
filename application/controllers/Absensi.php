@@ -25,7 +25,8 @@ class Absensi extends CI_Controller
         $data['data'] = $this->model->getAbsensi();
         $data['bln'] = $this->bulan;
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('absen', $data);
         $this->load->view('foot');
     }
@@ -67,6 +68,7 @@ class Absensi extends CI_Controller
                 $dtsnt = [
                     'id_absen' => $id,
                     'nis' => $san->nis,
+                    'kelas' => $san->kelas,
                     'sakit' => $sakit,
                     'izin' => $izin,
                     'alpha' => $alpha,
@@ -93,7 +95,8 @@ class Absensi extends CI_Controller
 
         $data['bln'] = $this->bulan;
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('absenDetail', $data);
         $this->load->view('foot');
     }
@@ -103,7 +106,8 @@ class Absensi extends CI_Controller
         $data['data'] = $this->model->absenHarian();
         $data['bln'] = $this->bulan;
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('absenHarian', $data);
         $this->load->view('foot');
     }
@@ -115,7 +119,8 @@ class Absensi extends CI_Controller
         $data['mapel'] = $this->model->getAll('mapel');
         $data['kelas'] = $this->model->getBy('kl_formal', 'lembaga', 'SMK');
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('inputHarian', $data);
         $this->load->view('foot');
     }
@@ -223,7 +228,8 @@ class Absensi extends CI_Controller
         $thisDay = date('Y-m-d');
         $data['data'] = $this->db->query("SELECT * FROM harian_guru WHERE tanggal = '$thisDay' GROUP BY kelas ORDER BY kelas ASC ");
 
-        $this->load->view('head');
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
         $this->load->view('absenGuru', $data);
         $this->load->view('foot');
     }
@@ -264,5 +270,67 @@ class Absensi extends CI_Controller
                 }
             }
         }
+    }
+
+    public function sendAbsen($kls, $id_absen)
+    {
+        $detail = $this->model->getBy2('detail_absen', 'kelas', $kls, 'id_absen', $id_absen);
+        // $detail = $this->db->query("SELECT * FROM detail_absen WHERE id_absen = '$id_absen' AND nis = '20181269' ");
+        $absen = $this->model->getBy('absensi', 'id_absen', $id_absen)->row();
+
+        foreach ($detail->result() as $hasil) {
+            $dtlS = $this->model->getBy('tb_santri', 'nis', $hasil->nis)->row();
+            $kt = 'Alhamdulillah, Putra bpk/ibu mengikuti semua jam pelajaran dalam 1 minggu ini';
+
+            if ($hasil->sakit == 0) {
+                $sakit = 0;
+            } else {
+                if ($hasil->sakit % 8 == 0) {
+                    $sakit = intval($hasil->sakit / 8) . ' hari';
+                } else {
+                    $sakit = intval($hasil->sakit / 8) . ' hari ' . ($hasil->sakit % 8) . ' jam';
+                }
+            }
+
+            if ($hasil->izin == 0) {
+                $izin = 0;
+            } else {
+                if ($hasil->izin % 8 == 0) {
+                    $izin = intval($hasil->izin / 8) . ' hari';
+                } else {
+                    $izin = intval($hasil->izin / 8) . ' hari ' . ($hasil->izin % 8) . ' jam';
+                }
+            }
+
+            if ($hasil->alpha == 0) {
+                $alpha = 0;
+            } else {
+                if ($hasil->alpha % 8 == 0) {
+                    $alpha = intval($hasil->alpha / 8) . ' hari';
+                } else {
+                    $alpha = intval($hasil->alpha / 8) . ' hari ' . ($hasil->alpha % 8) . ' jam';
+                }
+            }
+
+
+            $psn = '*Assalamualaikum wr wb.*';
+            $psn .= "\n" . "\n";
+            $psn .= 'Yth Wali murid SMK Darul Lughah Wal Karomah,Rekap kehadiran siswa selama 1 minggu (Minggu ke-' . $absen->minggu . ') bulan ' . bulan($absen->bulan) . ' ' . $absen->tahun . ' kls ' . $kls . ' atas :';
+            $psn .= "\n" . "\n";
+            $psn .= 'Nama : ' . $dtlS->nama . "\n";
+            $psn .= 'Sakit : ' . $sakit . "\n";
+            $psn .= 'Izin : ' . $izin . "\n";
+            $psn .= 'Alpha : ' . $alpha . "\n";
+            $psn .=  $sakit == 0 && $izin == 0 && $alpha == 0 ? $kt : '';
+            $psn .= "\n" . "\n";
+            $psn .= '(Dalam 1 hari terdapat 8 jam pelajaran)' . "\n";
+            $psn .= 'Atas Perhatanya kami ucapkan Termakasih.' . "\n" . "\n";
+            $psn .= '*Wassalam Wr. Wb.*';
+
+            // kirim_person('085236924510', $psn);
+            kirim_person($dtlS->hp, $psn);
+        }
+
+        redirect('absensi/detail/' . $id_absen);
     }
 }
