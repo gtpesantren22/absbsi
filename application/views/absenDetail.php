@@ -31,9 +31,9 @@
                                               <th>NIS</th>
                                               <th>NAMA</th>
                                               <th>KELAS</th>
-                                              <th>SAKIT</th>
-                                              <th>IZIN</th>
-                                              <th>ALPHA</th>
+                                              <th>S</th>
+                                              <th>I</th>
+                                              <th>A</th>
                                           </tr>
                                       </thead>
                                       <tbody>

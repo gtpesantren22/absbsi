@@ -22,7 +22,7 @@
                       <!-- Profile Image -->
                       <div class="box box-primary">
                           <div class="box-body box-profile">
-                              <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/') ?>dist/img/user2-160x160.jpg" alt="User profile picture">
+                              <img class="profile-user-img img-responsive img-circle" src="<?= base_url('assets/foto/' . $userData->foto) ?>" alt="User profile picture">
                               <h3 class="profile-username text-center">Selamat datang <br> <?= $userData->nama ?></h3>
                               <p class="text-muted text-center">Anda login sebagai <?= $userData->level ?></p>
 

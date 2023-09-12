@@ -326,11 +326,14 @@ class Absensi extends CI_Controller
             $psn .= '(Dalam 1 hari terdapat 8 jam pelajaran)' . "\n";
             $psn .= 'Atas Perhatanya kami ucapkan Termakasih.' . "\n" . "\n";
             $psn .= '*Wassalam Wr. Wb.*';
+            $psn .= "\n" . "\n";
+            $psn .= 'HP : ' . $dtlS->hp . "\n";
 
             // kirim_person('085236924510', $psn);
-            kirim_person($dtlS->hp, $psn);
+            // kirim_person($dtlS->hp, $psn);
+            echo $psn . '<br>' . '<br>';
         }
 
-        redirect('absensi/detail/' . $id_absen);
+        // redirect('absensi/detail/' . $id_absen);
     }
 }
