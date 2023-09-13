@@ -149,15 +149,15 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
 *Sakit*
 ';
                     foreach ($sakitHsl->result() as $skt) {
-                        $psn .= '- ' . $skt->nama . "\n";
+                        $psn .= '- ' . ucwords(strtolower($skt->nama)) . "\n";
                     }
                     $psn .= "\n" . '*Izin*' . "\n";
                     foreach ($izinHsl->result() as $izn) {
-                        $psn .= '- ' . $izn->nama . "\n";
+                        $psn .= '- ' . ucwords(strtolower($izn->nama)) . "\n";
                     }
                     $psn .= "\n" . '*Alpha*' . "\n";
                     foreach ($alphaHsl->result() as $alp) {
-                        $psn .= '- ' . $alp->nama . "\n";
+                        $psn .= '- ' . ucwords(strtolower($alp->nama)) . "\n";
                     }
 
                     $psn .= "\n" . '*Hadir :*' . "\n" . $hadirHsl->num_rows() . ' siswa';
