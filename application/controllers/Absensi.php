@@ -330,8 +330,8 @@ class Absensi extends CI_Controller
             $psn .= 'HP : ' . $dtlS->hp . "\n";
 
             // kirim_person('085236924510', $psn);
-            // kirim_person($dtlS->hp, $psn);
-            echo $psn . '<br>' . '<br>';
+            kirim_person($dtlS->hp, $psn);
+            // echo $psn . '<br>' . '<br>';
         }
 
         // redirect('absensi/detail/' . $id_absen);
