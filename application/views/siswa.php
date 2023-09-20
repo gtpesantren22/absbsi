@@ -44,7 +44,15 @@
                                           <td><?= $row->nama ?></td>
                                           <td><?= $row->desa . ' - ' . $row->kec . ' - ' . $row->kab ?></td>
                                           <td><?= $row->k_formal . ' ' . $row->jurusan . ' ' . $row->r_formal ?></td>
-                                          <td><?= $row->hp ?></td>
+                                          <td>
+                                              <?= $row->hp ?>
+                                              <?php
+                                                $kirim = cek_nomor($row->hp);
+                                                $hasil = json_decode($kirim, true);
+
+                                                echo $hasil['code'];
+                                                ?>
+                                          </td>
                                       </tr>
                                   <?php endforeach ?>
                               </tbody>
