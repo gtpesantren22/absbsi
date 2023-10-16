@@ -49,13 +49,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<?= base_url('assets/') ?>dist/js/demo.js"></script>
 
-<!-- FLOT CHARTS -->
-<script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.min.js"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.resize.min.js"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.pie.min.js"></script>
-
 <script src="<?= base_url('assets/'); ?>sw/sweetalert2.all.min.js"></script>
 <script src="<?= base_url('assets/'); ?>sw/my-notif.js"></script>
 <script>

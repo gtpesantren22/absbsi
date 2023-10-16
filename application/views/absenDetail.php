@@ -77,20 +77,7 @@
                                       </div>
                                   </div>
                                   <div class="box-body">
-                                      <div class="row">
-                                          <div class="col-md-8">
-                                              <div id="donut-chart45" style="height: 300px;"></div>
-                                          </div>
-                                          <div class="col-md-4">
-                                              <ul class="chart-legend clearfix">
-                                                  <li><i class="fa fa-circle-o text-green"></i> Hadir</li>
-                                                  <li><i class="fa fa-circle-o text-yellow"></i> Sakit</li>
-                                                  <li><i class="fa fa-circle-o text-light-blue"></i> Izin</li>
-                                                  <li><i class="fa fa-circle-o text-red"></i> Alpha</li>
-                                                  <li><i class="fa fa-circle-o text-aqua"></i> Tidak Absen</li>
-                                              </ul>
-                                          </div>
-                                      </div>
+                                      <div id="chart45" style="height: 300px;"></div>
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
                           </div>
@@ -102,14 +89,9 @@
 
           </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-
+      <!-- jQuery 2.1.4 -->
       <script src="<?= base_url('assets/') ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>
-      <!-- FLOT CHARTS -->
-      <script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.min.js"></script>
-      <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-      <script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.resize.min.js"></script>
-      <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-      <script src="<?= base_url('assets/') ?>plugins/flot/jquery.flot.pie.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
       <script>
           $(function() {
               $("#example1").DataTable();
@@ -123,7 +105,7 @@
               });
           });
       </script>
-      <script>
+      <!-- <script>
           $(function() {
               var hadir = Number(<?= $hadir ?>);
               var sakit = Number(<?= $sakit ?>);
@@ -177,15 +159,42 @@
                   }
               });
           });
-
-          /*
-           * Custom Label formatter
-           * ----------------------
-           */
           function labelFormatter(label, series) {
               return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">' +
                   label +
                   "<br>" +
                   Math.round(series.percent) + "%</div>";
           }
+      </script> -->
+      <script>
+          $(function() {
+              var hadir = Number(<?= $hadir ?>);
+              var sakit = Number(<?= $sakit ?>);
+              var izin = Number(<?= $izin ?>);
+              var alpha = Number(<?= $alpha ?>);
+              var tidak = Number(<?= $tidak ?>);
+
+              var options = {
+                  series: [tidak, hadir, sakit, alpha, izin],
+                  chart: {
+                      width: 380,
+                      type: 'pie',
+                  },
+                  labels: ['Tidak Absen', 'Hadir', 'Sakit', 'Alpha', 'Izin'],
+                  responsive: [{
+                      breakpoint: 480,
+                      options: {
+                          chart: {
+                              width: 300
+                          },
+                          legend: {
+                              position: 'bottom'
+                          }
+                      }
+                  }]
+              };
+
+              var chart = new ApexCharts(document.querySelector("#chart45"), options);
+              chart.render();
+          });
       </script>
