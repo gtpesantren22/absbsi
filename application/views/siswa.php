@@ -35,6 +35,8 @@
                               </thead>
                               <tbody>
                                   <?php
+                                    $url = 'http://191.101.3.115:3000/api/isRegisteredNumber';
+                                    $ch = curl_init($url);
                                     $no = 1;
                                     foreach ($data->result() as $row) :
                                     ?>
@@ -45,16 +47,36 @@
                                           <td><?= $row->desa . ' - ' . $row->kec . ' - ' . $row->kab ?></td>
                                           <td><?= $row->k_formal . ' ' . $row->jurusan . ' ' . $row->r_formal ?></td>
                                           <td>
-                                              <?= $row->hp ?>
                                               <?php
-                                                $kirim = cek_nomor($row->hp);
-                                                $hasil = json_decode($kirim, true);
+                                                $postData = [
+                                                    'apiKey' => '66f67201ef1de1c48d5bba3257e46839',
+                                                    'phone' => $row->hp,
+                                                ];
+                                                curl_setopt($ch, CURLOPT_POST, true);
+                                                curl_setopt(
+                                                    $ch,
+                                                    CURLOPT_POSTFIELDS,
+                                                    http_build_query($postData)
+                                                );
+                                                // $response = curl_exec($ch);
 
-                                                echo $hasil['code'];
+                                                //Menampilkan Hasilnya
+                                                // $hasil = json_decode($response, true);
+                                                $responseJson = json_decode(curl_exec($ch), true);
+                                                if ($responseJson !== null && isset($responseJson['code'])) {
+                                                    $code = $responseJson['code'];
+                                                    echo "Kode: " . $code;
+                                                } else {
+                                                    echo "Gagal mengurai JSON atau 'code' tidak ada dalam JSON.";
+                                                }
+                                                // echo $hasil['code'];
                                                 ?>
                                           </td>
                                       </tr>
-                                  <?php endforeach ?>
+                                  <?php
+                                    endforeach;
+                                    curl_close($ch);
+                                    ?>
                               </tbody>
                           </table>
                       </div>

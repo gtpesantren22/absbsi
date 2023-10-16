@@ -93,6 +93,34 @@ class Absensi extends CI_Controller
         $data['detail'] = $this->model->getBy('absensi', 'id_absen', $id);
         $data['kelas'] = $this->model->getBy('kl_formal', 'lembaga', 'SMK');
 
+        $jmlSiswa = $this->model->getBy('tb_santri', 'aktif', 'Y')->num_rows();
+        $rentang = explode(' s/d ', $data['detail']->row('rentang'));
+        $dari = new DateTime($rentang[0]);
+        $sampai = new DateTime($rentang[1]);
+        $selisih = $dari->diff($sampai);
+        $hari = $selisih->format('%a');
+
+        $dariOk = $dari->format('Y-m-d');
+        $sampaiOk = $sampai->format('Y-m-d');
+        $totalAbsen = ($hari * 8) * $jmlSiswa;
+
+        $sakit = $this->db->query("SELECT SUM(sakit) as sakit FROM detail_absen WHERE id_absen = '$id' ")->row();
+        $izin = $this->db->query("SELECT SUM(izin) as izin FROM detail_absen WHERE id_absen = '$id' ")->row();
+        $alpha = $this->db->query("SELECT SUM(alpha) as alpha FROM detail_absen WHERE id_absen = '$id' ")->row();
+        $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
+        $tidak = $totalAbsen - ($sakit->sakit + $izin->izin + $alpha->alpha + $hadir->hadir);
+
+        // echo 'sakit : ' . $sakit->sakit . '<br>';
+        // echo 'izin : ' . $izin->izin . '<br>';
+        // echo 'alpha : ' . $alpha->alpha . '<br>';
+        // echo 'hadir : ' . $hadir->hadir . '<br>';
+        // echo 'total Semua : ' . $totalAbsen . '<br>';
+        $data['sakit'] = round(($sakit->sakit / $totalAbsen) * 100, 1);
+        $data['izin'] = round(($izin->izin / $totalAbsen) * 100, 1);
+        $data['alpha'] = round(($alpha->alpha / $totalAbsen) * 100, 1);
+        $data['hadir'] = round(($hadir->hadir / $totalAbsen) * 100, 1);
+        $data['tidak'] = round(($tidak / $totalAbsen) * 100, 1);
+
         $data['bln'] = $this->bulan;
 
         $data['userData'] = $this->Auth_model->current_user();

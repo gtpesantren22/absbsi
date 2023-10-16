@@ -24,11 +24,19 @@ class Welcome extends CI_Controller
 		$this->load->view('foot');
 	}
 
+	public function chart()
+	{
+		$data['userData'] = $this->Auth_model->current_user();
+		$this->load->view('head', $data);
+		$this->load->view('chart');
+		$this->load->view('foot');
+	}
+
 	public function santri($jkl)
 	{
 		$jkl == 'putra' ? $jkl = 'Laki-laki' : $jkl = 'Perempuan';
 		$data['data'] = $this->model->getBy3('tb_santri', 'aktif', 'Y', 't_formal', 'SMK', 'jkl', $jkl);
-
+		// $data['data'] = $this->db->query("SELECT * FROM tb_santri WHERE aktif= 'Y' AND t_formal = 'SMK' AND jkl = '$jkl' LIMIT 5 ");
 		$data['dataTtl'] = $this->model->getBy2('tb_santri', 'aktif', 'Y', 't_formal', 'SMK');
 
 		$data['userData'] = $this->Auth_model->current_user();
