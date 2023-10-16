@@ -77,7 +77,20 @@
                                       </div>
                                   </div>
                                   <div class="box-body">
-                                      <div id="donut-chart45" style="height: 300px;"></div>
+                                      <div class="row">
+                                          <div class="col-md-8">
+                                              <div id="donut-chart45" style="height: 300px;"></div>
+                                          </div>
+                                          <div class="col-md-4">
+                                              <ul class="chart-legend clearfix">
+                                                  <li><i class="fa fa-circle-o text-green"></i> Hadir</li>
+                                                  <li><i class="fa fa-circle-o text-yellow"></i> Sakit</li>
+                                                  <li><i class="fa fa-circle-o text-light-blue"></i> Izin</li>
+                                                  <li><i class="fa fa-circle-o text-red"></i> Alpha</li>
+                                                  <li><i class="fa fa-circle-o text-aqua"></i> Tidak Absen</li>
+                                              </ul>
+                                          </div>
+                                      </div>
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
                           </div>
