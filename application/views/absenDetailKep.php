@@ -48,6 +48,18 @@
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
                           </div>
+                          <div class="col-md-12">
+                              <!-- Donut chart -->
+                              <div class="box box-primary">
+                                  <div class="box-header with-border">
+                                      <i class="fa fa-bar-chart-o"></i>
+                                      <h3 class="box-title">Prosentase Pengisian Absensi Siswa Oleh Guru</h3>
+                                  </div>
+                                  <div class="box-body">
+                                      <div id="chartGuru" style="height: 200px;"></div>
+                                  </div><!-- /.box-body-->
+                              </div><!-- /.box -->
+                          </div>
                       </div>
                   </div>
                   <!-- /.box-body -->
@@ -225,4 +237,126 @@
               chart.render();
 
           });
+
+          //   Prosentase Guru
+          $(function() {
+              var options = {
+                  series: [{
+                      name: 'Grid',
+                      data: [
+                          <?php
+                            $totalJmlHarus = 0;
+                            foreach ($guru->result() as $gr) {
+                                $kode = $gr->kode_guru;
+                                $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk'")->num_rows();
+                                // echo $jmlNgajar . ',';
+
+                                $startDateTimestamp = strtotime($dariOk);
+                                $endDateTimestamp = strtotime($sampaiOk);
+
+
+                                $currentDateTimestamp = $startDateTimestamp;
+
+                                while ($currentDateTimestamp <= $endDateTimestamp) {
+
+                                    $currentDay = date("l", $currentDateTimestamp);
+                                    $jmlHarus = $this->db->query("SELECT * FROM jadwal WHERE guru = '$kode' AND hari = '$currentDay' ")->num_rows();
+
+                                    $currentDateTimestamp = strtotime("+1 day", $currentDateTimestamp);
+                                    $totalJmlHarus += $jmlHarus;
+                                }
+
+                                // echo "Guru : $gr->nama_guru : Wajib: $totalJmlHarus, Ngisi : $jmlNgajar <br>";
+                                // $peser = $jmlNgajar == 0 ? 0 :  round(($jmlNgajar / $totalJmlHarus) * 100, 1);
+                                // echo "Guru : $gr->nama_guru : $jmlNgajar <> $totalJmlHarus - $peser%<br>";
+
+                                if ($jmlNgajar == 0 || $totalJmlHarus == 0) {
+                                    echo 0 . ',';
+                                } else {
+                                    echo round(($jmlNgajar / $totalJmlHarus) * 100, 1) . ',';
+                                }
+                            }
+                            ?>
+                      ]
+                  }],
+                  chart: {
+                      height: 350,
+                      type: 'bar',
+                  },
+                  plotOptions: {
+                      bar: {
+                          borderRadius: 10,
+                          dataLabels: {
+                              position: 'top', // top, center, bottom
+                          },
+                      }
+                  },
+                  dataLabels: {
+                      enabled: true,
+                      formatter: function(val) {
+                          return val + "%";
+                      },
+                      offsetY: -20,
+                      style: {
+                          fontSize: '12px',
+                          colors: ["#304758"]
+                      }
+                  },
+
+                  xaxis: {
+                      categories: [<?php foreach ($guru->result() as $gr) {
+                                        echo "'" . $gr->nama_guru . "'" . ',';
+                                    } ?>],
+                      position: 'bottom',
+                      axisBorder: {
+                          show: false
+                      },
+                      axisTicks: {
+                          show: false
+                      },
+                      crosshairs: {
+                          fill: {
+                              type: 'gradient',
+                              gradient: {
+                                  colorFrom: '#D8E3F0',
+                                  colorTo: '#BED1E6',
+                                  stops: [0, 100],
+                                  opacityFrom: 0.4,
+                                  opacityTo: 0.5,
+                              }
+                          }
+                      },
+                      tooltip: {
+                          enabled: true,
+                      }
+                  },
+                  yaxis: {
+                      axisBorder: {
+                          show: false
+                      },
+                      axisTicks: {
+                          show: false,
+                      },
+                      labels: {
+                          show: false,
+                          formatter: function(val) {
+                              return val + "%";
+                          }
+                      }
+
+                  },
+                  title: {
+                      text: '',
+                      floating: true,
+                      offsetY: 330,
+                      align: 'center',
+                      style: {
+                          color: '#444'
+                      }
+                  }
+              };
+
+              var chart = new ApexCharts(document.querySelector("#chartGuru"), options);
+              chart.render();
+          })
       </script>

@@ -95,6 +95,7 @@ class Kepala extends CI_Controller
         $data['data'] = $this->model->absenDetail($id);
         $data['detail'] = $this->model->getBy('absensi', 'id_absen', $id);
         $data['kelas'] = $this->model->getByOrd('kl_formal', 'lembaga', 'SMK', 'nm_kelas', 'ASC');
+        $data['guru'] = $this->model->getAll('guru');
 
         $jmlSiswa = $this->model->getBy('tb_santri', 'aktif', 'Y')->num_rows();
         $rentang = explode(' s/d ', $data['detail']->row('rentang'));
