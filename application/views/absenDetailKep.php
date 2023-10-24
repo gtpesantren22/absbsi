@@ -60,7 +60,7 @@
                                         $totalJmlHarus = 0;
                                         foreach ($guru->result() as $gr) {
                                             $kode = $gr->kode_guru;
-                                            $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk'")->num_rows();
+                                            $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' GROUP BY kelas, mapel, dari")->num_rows();
                                             // echo $jmlNgajar . ',';
 
                                             $startDateTimestamp = strtotime($dariOk);
@@ -282,7 +282,7 @@
                             $totalJmlHarus = 0;
                             foreach ($guru->result() as $gr) {
                                 $kode = $gr->kode_guru;
-                                $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk'")->num_rows();
+                                $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' GROUP BY kelas, mapel, dari  ")->num_rows();
                                 // echo $jmlNgajar . ',';
 
                                 $startDateTimestamp = strtotime($dariOk);
