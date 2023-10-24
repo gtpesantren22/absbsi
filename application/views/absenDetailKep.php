@@ -56,40 +56,6 @@
                                       <h3 class="box-title">Prosentase Pengisian Absensi Siswa Oleh Guru</h3>
                                   </div>
                                   <div class="box-body">
-                                      <?php
-                                        $totalJmlHarus = 0;
-                                        foreach ($guru->result() as $gr) {
-                                            $kode = $gr->kode_guru;
-                                            $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' GROUP BY kelas, mapel, dari")->num_rows();
-                                            // echo $jmlNgajar . ',';
-
-                                            $startDateTimestamp = strtotime($dariOk);
-                                            $endDateTimestamp = strtotime($sampaiOk);
-
-
-                                            $currentDateTimestamp = $startDateTimestamp;
-
-                                            while ($currentDateTimestamp <= $endDateTimestamp) {
-
-                                                $currentDay = date("l", $currentDateTimestamp);
-                                                $jmlHarus = $this->db->query("SELECT * FROM jadwal WHERE guru = '$kode' AND hari = '$currentDay' ")->num_rows();
-
-                                                $currentDateTimestamp = strtotime("+1 day", $currentDateTimestamp);
-                                                $totalJmlHarus += $jmlHarus;
-                                            }
-
-                                            // echo "Guru : $gr->nama_guru : Wajib: $totalJmlHarus, Ngisi : $jmlNgajar <br>";
-                                            $peser = $jmlNgajar == 0 ? 0 :  round(($jmlNgajar / $totalJmlHarus) * 100, 1);
-                                            echo "Guru : $gr->nama_guru : $jmlNgajar <> $totalJmlHarus - $peser%<br>";
-
-                                            if ($jmlNgajar == 0 || $totalJmlHarus == 0) {
-                                                echo 0 . ',';
-                                            } else {
-                                                echo round(($jmlNgajar / $totalJmlHarus) * 100, 1) . ',';
-                                            }
-                                        }
-                                        ?>
-                                      <hr>
                                       <div id="chartGuru" style="height: 200px;"></div>
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
