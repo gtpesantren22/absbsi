@@ -110,11 +110,6 @@ class Absensi extends CI_Controller
         $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
         $tidak = $totalAbsen - ($sakit->sakit + $izin->izin + $alpha->alpha + $hadir->hadir);
 
-        // echo 'sakit : ' . $sakit->sakit . '<br>';
-        // echo 'izin : ' . $izin->izin . '<br>';
-        // echo 'alpha : ' . $alpha->alpha . '<br>';
-        // echo 'hadir : ' . $hadir->hadir . '<br>';
-        // echo 'total Semua : ' . $totalAbsen . '<br>';
         $data['sakit'] = round(($sakit->sakit / $totalAbsen) * 100, 1);
         $data['izin'] = round(($izin->izin / $totalAbsen) * 100, 1);
         $data['alpha'] = round(($alpha->alpha / $totalAbsen) * 100, 1);

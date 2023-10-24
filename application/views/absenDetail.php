@@ -65,7 +65,7 @@
                       </div>
 
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                               <!-- Donut chart -->
                               <div class="box box-primary">
                                   <div class="box-header with-border">
@@ -77,7 +77,14 @@
                                       </div>
                                   </div>
                                   <div class="box-body">
-                                      <div id="chart45" style="height: 300px;"></div>
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div id="chart45" style="height: 200px;"></div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div id="chart2" style="height: 200px;"></div>
+                                          </div>
+                                      </div>
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
                           </div>
@@ -105,67 +112,6 @@
               });
           });
       </script>
-      <!-- <script>
-          $(function() {
-              var hadir = Number(<?= $hadir ?>);
-              var sakit = Number(<?= $sakit ?>);
-              var izin = Number(<?= $izin ?>);
-              var alpha = Number(<?= $alpha ?>);
-              var tidak = Number(<?= $tidak ?>);
-
-              var donutData = [{
-                      label: "Hadir",
-                      data: hadir,
-                      color: "#5cb85c"
-                  },
-                  {
-                      label: "Izin",
-                      data: izin,
-                      color: "#337ab7"
-                  },
-                  {
-                      label: "Sakit",
-                      data: sakit,
-                      color: "#f0ad4e"
-                  },
-                  {
-                      label: "Alpha",
-                      data: alpha,
-                      color: "#d9534f"
-                  },
-                  {
-                      label: "Tidak Absen",
-                      data: tidak,
-                      color: "#5bc0de"
-                  }
-              ];
-              $.plot("#donut-chart45", donutData, {
-                  series: {
-                      pie: {
-                          show: true,
-                          radius: 1,
-                          innerRadius: 0.5,
-                          label: {
-                              show: true,
-                              radius: 2 / 3,
-                              formatter: labelFormatter,
-                              threshold: 0.1
-                          }
-
-                      }
-                  },
-                  legend: {
-                      show: false
-                  }
-              });
-          });
-          function labelFormatter(label, series) {
-              return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">' +
-                  label +
-                  "<br>" +
-                  Math.round(series.percent) + "%</div>";
-          }
-      </script> -->
       <script>
           $(function() {
               var hadir = Number(<?= $hadir ?>);

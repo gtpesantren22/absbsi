@@ -61,6 +61,12 @@ class Modeldata extends CI_Model
         $this->db->order_by($ord, $ls);
         return $this->db->get($tbl);
     }
+    public function getByOrd($tbl, $where1, $dtwhere1, $ord, $ls)
+    {
+        $this->db->where($where1, $dtwhere1);
+        $this->db->order_by($ord, $ls);
+        return $this->db->get($tbl);
+    }
 
     public function getAbsensi()
     {
@@ -93,6 +99,17 @@ class Modeldata extends CI_Model
         $this->db->from('harian');
         $this->db->join('guru', 'ON harian.guru=guru.kode_guru');
         $this->db->join('mapel', 'ON harian.mapel=mapel.kode_mapel');
+        $this->db->group_by('kode');
+        $this->db->order_by('tanggal', 'DESC');
+        return $this->db->get();
+    }
+    public function absenHariIni()
+    {
+        $isDay = date('Y-m-d');
+        $this->db->from('harian');
+        $this->db->join('guru', 'ON harian.guru=guru.kode_guru');
+        $this->db->join('mapel', 'ON harian.mapel=mapel.kode_mapel');
+        $this->db->where('harian.tanggal', $isDay);
         $this->db->group_by('kode');
         $this->db->order_by('tanggal', 'DESC');
         return $this->db->get();

@@ -49,8 +49,14 @@
                                                   <td><?= $row->nama_guru ?></td>
                                                   <td><?= $row->dari . ' - ' . $row->sampai ?></td>
                                                   <td>
-                                                      <a href="<?= base_url('guru/hapusHarian/') . $row->kode ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
-                                                      <a href="<?= base_url('guru/editHarian/') . $row->kode ?>" class="btn btn-xs btn-warning">Edit</a>
+                                                      <?php if ($userData->level == 'guru' || $userData->level == 'admin') : ?>
+                                                          <a href="<?= base_url('guru/hapusHarian/') . $row->kode ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
+                                                          <a href="<?= base_url('guru/editHarian/') . $row->kode ?>" class="btn btn-xs btn-warning">Edit</a>
+                                                      <?php
+                                                        endif;
+                                                        if ($userData->level == 'kepala' || $userData->level == 'admin') : ?>
+                                                          <a href="<?= base_url('kepala/detailHarian/') . $row->kode ?>" class="btn btn-xs btn-primary">Lihat Detail</a>
+                                                      <?php endif; ?>
                                                   </td>
                                               </tr>
                                           <?php endforeach ?>

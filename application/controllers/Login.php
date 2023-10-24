@@ -45,6 +45,8 @@ class Login extends CI_Controller
                 redirect('welcome');
             } elseif ($user->level === 'guru') {
                 redirect('guru');
+            } elseif ($user->level === 'kepala') {
+                redirect('kepala');
             }
         } else {
             // $this->session->set_flashdata('message_login_error', 'Login Gagal, pastikan username dan passwrod benar!');

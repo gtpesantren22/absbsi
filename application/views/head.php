@@ -185,28 +185,60 @@
                         </li>
                     <?php endif ?>
                     <li class="header">ABSENSI</li>
-                    <?php if ($userData->level == 'guru') : ?>
+                    <?php if ($userData->level == 'guru' || $userData->level == 'admin') : ?>
                         <li>
                             <a href="<?= base_url('guru') ?>">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('guru/absenSiswa') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>Absensi Siswa</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('guru/hasilAbsen') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>List Absensi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('guru/kontrolAbsen') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>Kontrol Absensi</span>
+                            </a>
+                        </li>
                     <?php endif ?>
-                    <li>
-                        <a href="<?= base_url('guru/absenSiswa') ?>">
-                            <i class="fa fa-newspaper-o"></i> <span>Absensi Siswa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= base_url('guru/hasilAbsen') ?>">
-                            <i class="fa fa-newspaper-o"></i> <span>List Absensi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= base_url('guru/kontrolAbsen') ?>">
-                            <i class="fa fa-newspaper-o"></i> <span>Kontrol Absensi</span>
-                        </a>
-                    </li>
+                    <?php if ($userData->level == 'kepala' || $userData->level == 'admin') : ?>
+                        <li class="header">KEPSEK</li>
+                        <li>
+                            <a href="<?= base_url('kepala') ?>">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-th"></i>
+                                <span>Absensi</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('kepala/hasilAbsenDay') ?>"><i class="fa fa-circle-o"></i> Absensi Hari Ini</a></li>
+                                <li><a href="<?= base_url('kepala/hasilAbsen') ?>"><i class="fa fa-circle-o"></i> Semua Absensi</a></li>
+                                <li><a href="<?= base_url('kepala/kontrolAbsen') ?>"><i class="fa fa-circle-o"></i> Kontrol Absensi</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-th"></i>
+                                <span>Rekap Absensi</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('kepala/rekap') ?>"><i class="fa fa-circle-o"></i> Rekapan Perminggu</a></li>
+                                <li><a href="<?= base_url('kepala/rekapBulan') ?>"><i class="fa fa-circle-o"></i> Rekapan Perbulan</a></li>
+                            </ul>
+                        </li>
+
+                    <?php endif ?>
                 </ul>
             </section>
             <!-- /.sidebar -->
