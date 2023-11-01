@@ -300,8 +300,8 @@ class Absensi extends CI_Controller
 
     public function sendAbsen($kls, $id_absen)
     {
-        // $detail = $this->model->getBy2('detail_absen', 'kelas', $kls, 'id_absen', $id_absen);
-        $detail = $this->db->query("SELECT * FROM detail_absen WHERE id_absen = '$id_absen' LIMIT 1 ");
+        $detail = $this->model->getBy2('detail_absen', 'kelas', $kls, 'id_absen', $id_absen);
+        // $detail = $this->db->query("SELECT * FROM detail_absen WHERE id_absen = '$id_absen' LIMIT 1 ");
         $absen = $this->model->getBy('absensi', 'id_absen', $id_absen)->row();
 
         foreach ($detail->result() as $hasil) {
@@ -355,8 +355,8 @@ class Absensi extends CI_Controller
             $psn .= "\n" . "\n";
             $psn .= '_NB : Nomor ini hanya mengirimkan informasi. Jika ada pertanyaan atau lainnya bisa menghubungi Wali Kelas masing-masing siswa_' . "\n";
 
-            kirim_person('085236924510', $psn);
-            // kirim_person($dtlS->hp, $psn);
+            // kirim_person('085236924510', $psn);
+            kirim_person($dtlS->hp, $psn);
             // echo $psn . '<br>' . '<br>';
         }
 
