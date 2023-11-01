@@ -102,22 +102,23 @@ class Kepala extends CI_Controller
         $dari = new DateTime($rentang[0]);
         $sampai = new DateTime($rentang[1]);
         $selisih = $dari->diff($sampai);
-        $hari = $selisih->format('%a');
+        $hari = $selisih->format('%a') + 1;
+        $libur = $this->model->getBy2('libur', 'tanggal >=', $rentang[0], 'tanggal <=', $rentang[1])->num_rows();
+        $hariEfektif = $hari - $libur;
 
         $dariOk = $dari->format('Y-m-d');
         $sampaiOk = $sampai->format('Y-m-d');
-        $totalAbsen = ($hari * 8) * $jmlSiswa;
+        $totalAbsen = ($hariEfektif * 8) * $jmlSiswa;
 
         $data['id'] = $id;
         $data['dariOk'] = $dariOk;
         $data['sampaiOk'] = $sampaiOk;
-        $data['hari'] = $hari;
-
+        $data['hari'] = $hariEfektif;
 
         $sakit = $this->db->query("SELECT SUM(sakit) as sakit FROM detail_absen WHERE id_absen = '$id' ")->row();
         $izin = $this->db->query("SELECT SUM(izin) as izin FROM detail_absen WHERE id_absen = '$id' ")->row();
         $alpha = $this->db->query("SELECT SUM(alpha) as alpha FROM detail_absen WHERE id_absen = '$id' ")->row();
-        $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
+        $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' ")->row();
         $tidak = $totalAbsen - ($sakit->sakit + $izin->izin + $alpha->alpha + $hadir->hadir);
 
         $data['sakit'] = round(($sakit->sakit / $totalAbsen) * 100, 1);
@@ -129,6 +130,7 @@ class Kepala extends CI_Controller
         $data['bln'] = $this->bulan;
 
         $data['userData'] = $this->Auth_model->current_user();
+
         $this->load->view('head', $data);
         $this->load->view('absenDetailKep', $data);
         $this->load->view('foot');

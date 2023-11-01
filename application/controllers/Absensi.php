@@ -57,7 +57,7 @@ class Absensi extends CI_Controller
         if ($this->db->affected_rows() > 0) {
 
             // $dsan = $this->model->getAll('tb_santri')->result();
-            $absn = $this->db->query("SELECT *, SUM(sakit) AS sakitAll, SUM(izin) AS izinAll, SUM(alpha) AS alphaAll FROM harian WHERE tanggal BETWEEN '$dari' AND '$sampai' GROUP BY nis ")->result();
+            $absn = $this->db->query("SELECT *, SUM(sakit) AS sakitAll, SUM(izin) AS izinAll, SUM(alpha) AS alphaAll FROM harian WHERE tanggal >= '$dari' AND tanggal <= '$sampai' GROUP BY nis ")->result();
 
             foreach ($absn as $san) {
 
@@ -98,16 +98,18 @@ class Absensi extends CI_Controller
         $dari = new DateTime($rentang[0]);
         $sampai = new DateTime($rentang[1]);
         $selisih = $dari->diff($sampai);
-        $hari = $selisih->format('%a');
+        $hari = $selisih->format('%a') + 1;
+        $libur = $this->model->getBy2('libur', 'tanggal >=', $rentang[0], 'tanggal <=', $rentang[1])->num_rows();
+        $hariEfektif = $hari - $libur;
 
         $dariOk = $dari->format('Y-m-d');
         $sampaiOk = $sampai->format('Y-m-d');
-        $totalAbsen = ($hari * 8) * $jmlSiswa;
+        $totalAbsen = ($hariEfektif * 8) * $jmlSiswa;
 
         $sakit = $this->db->query("SELECT SUM(sakit) as sakit FROM detail_absen WHERE id_absen = '$id' ")->row();
         $izin = $this->db->query("SELECT SUM(izin) as izin FROM detail_absen WHERE id_absen = '$id' ")->row();
         $alpha = $this->db->query("SELECT SUM(alpha) as alpha FROM detail_absen WHERE id_absen = '$id' ")->row();
-        $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
+        $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' ")->row();
         $tidak = $totalAbsen - ($sakit->sakit + $izin->izin + $alpha->alpha + $hadir->hadir);
 
         $data['sakit'] = round(($sakit->sakit / $totalAbsen) * 100, 1);
@@ -119,6 +121,7 @@ class Absensi extends CI_Controller
         $data['bln'] = $this->bulan;
 
         $data['userData'] = $this->Auth_model->current_user();
+
         $this->load->view('head', $data);
         $this->load->view('absenDetail', $data);
         $this->load->view('foot');
@@ -297,8 +300,8 @@ class Absensi extends CI_Controller
 
     public function sendAbsen($kls, $id_absen)
     {
-        $detail = $this->model->getBy2('detail_absen', 'kelas', $kls, 'id_absen', $id_absen);
-        // $detail = $this->db->query("SELECT * FROM detail_absen WHERE id_absen = '$id_absen' AND nis = '20181269' ");
+        // $detail = $this->model->getBy2('detail_absen', 'kelas', $kls, 'id_absen', $id_absen);
+        $detail = $this->db->query("SELECT * FROM detail_absen WHERE id_absen = '$id_absen' LIMIT 1 ");
         $absen = $this->model->getBy('absensi', 'id_absen', $id_absen)->row();
 
         foreach ($detail->result() as $hasil) {
@@ -350,13 +353,67 @@ class Absensi extends CI_Controller
             $psn .= 'Atas Perhatanya kami ucapkan Termakasih.' . "\n" . "\n";
             $psn .= '*Wassalam Wr. Wb.*';
             $psn .= "\n" . "\n";
-            $psn .= 'HP : ' . $dtlS->hp . "\n";
+            $psn .= '_NB : Nomor ini hanya mengirimkan informasi. Jika ada pertanyaan atau lainnya bisa menghubungi Wali Kelas masing-masing siswa_' . "\n";
 
-            // kirim_person('085236924510', $psn);
-            kirim_person($dtlS->hp, $psn);
+            kirim_person('085236924510', $psn);
+            // kirim_person($dtlS->hp, $psn);
             // echo $psn . '<br>' . '<br>';
         }
 
         // redirect('absensi/detail/' . $id_absen);
+    }
+
+    public function libur()
+    {
+        $data['data'] = $this->model->getAllOrd('libur', 'tanggal', 'DESC');
+        $data['bln'] = $this->bulan;
+
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
+        $this->load->view('libur', $data);
+        $this->load->view('foot');
+    }
+
+    public function liburSave()
+    {
+        $dari = strtotime($this->input->post('dari', true));
+        $sampai = strtotime($this->input->post('sampai', true));
+        $ket = $this->input->post('ket', true);
+        $pelaksana = $this->input->post('pelaksana', true);
+        // $interval = $dari->diff($sampai);
+        // $jmlHari = $interval->days;
+
+        while ($dari <= $sampai) {
+            $currentDate = date("Y-m-d", $dari);
+            $dari = strtotime("+1 day", $dari);
+
+            $data = [
+                'tanggal' => $currentDate,
+                'ket' => $ket,
+                'pelaksana' => $pelaksana,
+            ];
+
+            $this->model->simpan('libur', $data);
+        }
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Simpan libur berhasil');
+            redirect('absensi/libur');
+        } else {
+            $this->session->set_flashdata('ok', 'Simpan libur gagal');
+            redirect('absensi/libur');
+        }
+    }
+
+    public function delLibur($kode)
+    {
+        $this->model->hapus('libur', 'id_libur', $kode);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Hapus Data Libur Berhasil');
+            redirect('absensi/libur');
+        } else {
+            $this->session->set_flashdata('ok', 'Hapus Data Libur Gagal');
+            redirect('absensi/libur');
+        }
     }
 }

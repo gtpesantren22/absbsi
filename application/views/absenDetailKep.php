@@ -56,7 +56,42 @@
                                       <h3 class="box-title">Prosentase Pengisian Absensi Siswa Oleh Guru</h3>
                                   </div>
                                   <div class="box-body">
-                                      <div id="chartGuru" style="height: 200px;"></div>
+                                      <?php
+                                        $totalJmlHarus = 0;
+                                        $totalJmlNgisi = 0;
+                                        foreach ($guru->result() as $gr) {
+                                            $kode = $gr->kode_guru;
+
+                                            $sql = $this->db->query("SELECT (sampai-dari)+1 as jml_jam FROM harian WHERE guru = '$kode' AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' GROUP BY kelas, mapel, dari ")->result();
+
+                                            $tglSaja = $this->db->query("SELECT tanggal FROM harian WHERE guru = '$kode' AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' GROUP BY tanggal ");
+                                            foreach ($sql as $ngisi) {
+                                                $jmlNgisi = $ngisi->jml_jam;
+                                                $totalJmlNgisi += $jmlNgisi;
+                                            }
+
+                                            foreach ($tglSaja->result() as $hasil) {
+
+                                                $currentDay = date("l", strtotime($hasil->tanggal));
+                                                $jmlHarus = $this->db->query("SELECT (jam_sampai - jam_dari)+1 as jml_jam FROM jadwal WHERE guru = '$kode' AND hari = '$currentDay' ")->row('jml_jam');
+
+                                                // $currentDateTimestamp = strtotime("+1 day", $currentDateTimestamp);
+                                                $totalJmlHarus += $jmlHarus;
+
+                                                echo ($hasil->tanggal) . ' ' . $currentDay . ' : ' . $jmlHarus . '<br>';
+                                            }
+                                            echo $gr->kode_guru . ' - ' . $gr->nama_guru . '<br> ';
+                                            echo 'Jml Hrus Ngisi : ' . $totalJmlHarus . '<br> ';
+                                            echo 'Jml Ngisi : ' . $totalJmlNgisi . '<br> ';
+                                            echo '<hr>';
+                                            // if ($jmlNgisi == 0 || $totalJmlHarus == 0) {
+                                            //     echo 0 . ',';
+                                            // } else {
+                                            //     echo round(($jmlNgisi / $totalJmlHarus) * 100, 1) . ',';
+                                            // }
+                                        }
+                                        ?>
+                                      <!-- <div id="chartGuru" style="height: 200px;"></div> -->
                                   </div><!-- /.box-body-->
                               </div><!-- /.box -->
                           </div>
@@ -130,7 +165,7 @@
                                     $sakit = $this->db->query("SELECT SUM(sakit) as sakit FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
                                     $izin = $this->db->query("SELECT SUM(izin) as izin FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
                                     $alpha = $this->db->query("SELECT SUM(alpha) as alpha FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
-                                    $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND kelas = '$kelasOk' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
+                                    $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND kelas = '$kelasOk' AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' ")->row();
                                     $tidak = $totalAbsen - ($sakit->sakit + $izin->izin + $alpha->alpha + $hadir->hadir);
 
                                     echo round(($tidak / $totalAbsen) * 100, 1) . ',';
@@ -147,7 +182,7 @@
                                     $sakit = $this->db->query("SELECT SUM(sakit) as sakit FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
                                     $izin = $this->db->query("SELECT SUM(izin) as izin FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
                                     $alpha = $this->db->query("SELECT SUM(alpha) as alpha FROM detail_absen WHERE id_absen = '$id' AND kelas = '$kelasOk' ")->row();
-                                    $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND kelas = '$kelasOk' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' ")->row();
+                                    $hadir = $this->db->query("SELECT SUM((sampai-dari)+1) as hadir FROM harian WHERE alpha = 0 AND izin = 0 AND sakit = 0 AND kelas = '$kelasOk' AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' ")->row();
 
                                     echo round(($hadir->hadir / $totalAbsen) * 100, 1) . ',';
                                 } ?>]
@@ -248,7 +283,7 @@
                             $totalJmlHarus = 0;
                             foreach ($guru->result() as $gr) {
                                 $kode = $gr->kode_guru;
-                                $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal BETWEEN '$dariOk' AND '$sampaiOk' GROUP BY kelas, mapel, dari  ")->num_rows();
+                                $jmlNgajar = $this->db->query("SELECT * FROM harian WHERE guru = '$kode' AND tanggal >= '$dariOk' AND tanggal <= '$sampaiOk' GROUP BY kelas, mapel, dari  ")->num_rows();
                                 // echo $jmlNgajar . ',';
 
                                 $startDateTimestamp = strtotime($dariOk);

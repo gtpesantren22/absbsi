@@ -75,6 +75,10 @@
             hideLoading();
         });
     });
+
+    $('.datepicker').datepicker({
+        autoclose: true
+    })
 </script>
 
 </body>

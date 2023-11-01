@@ -16,6 +16,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- daterange picker -->
+    <link rel="stylesheet" href="<?= base_url('assets/') ?>plugins/datepicker/datepicker3.css">
     <link rel="stylesheet" href="<?= base_url('assets/') ?>plugins/daterangepicker/daterangepicker-bs3.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="<?= base_url('assets/') ?>plugins/datatables/dataTables.bootstrap.css" />
@@ -181,6 +182,7 @@
                                 <li><a href="<?= base_url('absensi') ?>"><i class="fa fa-circle-o"></i> Rekap Absensi</a></li>
                                 <li><a href="<?= base_url('absensi/input') ?>"><i class="fa fa-circle-o"></i> Input Absen Siswa</a></li>
                                 <li><a href="<?= base_url('absensi/inputGuru') ?>"><i class="fa fa-circle-o"></i> Input Absen Guru</a></li>
+                                <li><a href="<?= base_url('absensi/libur') ?>"><i class="fa fa-circle-o"></i> Hari Libur</a></li>
                             </ul>
                         </li>
                     <?php endif ?>
