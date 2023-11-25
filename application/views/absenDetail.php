@@ -18,6 +18,7 @@
               <div class="box">
                   <div class="box-header">
                       <h3 class="box-title text-primary">Detail Absensi</h3> | <h3 class="box-title text-danger"><?= 'Minggu ke : ' . $detail->row('minggu') . ' Bulan : ' . $bln[$detail->row('bulan')] . ' Tahun : ' . $detail->row('tahun') ?></h3>
+                      <button onclick="window.location='<?= base_url('absensi/exportMinggu/' . $detail->row('id_absen')) ?>' " class="btn btn-sm btn-danger pull-right"><i class="fa fa-download"></i> Export to Excel</button>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">
