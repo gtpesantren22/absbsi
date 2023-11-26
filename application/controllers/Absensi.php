@@ -489,7 +489,7 @@ class Absensi extends CI_Controller
 
             $sheet->mergeCells('A4:G4')->setCellValue('A4', "Minggu : ke-" . $dtlAbsen->minggu)->getStyle('A4')->getFont()->setBold(true);;
 
-            $sheet->mergeCells('A5:G5')->setCellValue('A5', "Bulan : " . bulan($dtlAbsen->minggu) . ' ' . $dtlAbsen->tahun)->getStyle('A5')->getFont()->setBold(true);;
+            $sheet->mergeCells('A5:G5')->setCellValue('A5', "Bulan : " . bulan($dtlAbsen->bulan) . ' ' . $dtlAbsen->tahun)->getStyle('A5')->getFont()->setBold(true);;
 
             $sheet->mergeCells('A6:G6')->setCellValue('A6', "Rentang : " . $dtlAbsen->rentang)->getStyle('A6')->getFont()->setBold(true);;
 
