@@ -429,6 +429,13 @@ class Absensi extends CI_Controller
         $spreadsheet = new Spreadsheet();
 
         // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+        $style_header = [
+            'font' => ['bold' => true], // Set font nya jadi bold
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+        ];
         $style_col = [
             'font' => ['bold' => true], // Set font nya jadi bold
             'alignment' => [
@@ -438,7 +445,7 @@ class Absensi extends CI_Controller
             'borders' => [
                 'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
                 'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
-                'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+                'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOUBLE], // Set border bottom dengan garis tipis
                 'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
             ]
         ];
@@ -455,6 +462,18 @@ class Absensi extends CI_Controller
                 'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
             ]
         ];
+        $style_row_center = [
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, // Set text jadi di tengah secara vertical (middle)
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ],
+            'borders' => [
+                'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+                'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+                'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+                'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+            ]
+        ];
 
         $dataKelas = $this->db->query("SELECT detail_absen.*, tb_santri.nama FROM detail_absen JOIN tb_santri ON tb_santri.nis=detail_absen.nis WHERE id_absen = '$id' GROUP BY kelas")->result();
         foreach ($dataKelas as $dtsk) {
@@ -462,40 +481,43 @@ class Absensi extends CI_Controller
 
             $nmKelas = $dtsk->kelas;
 
-            $sheet->setCellValue('A1', "DATA SANTRI ABSENSI SISWA"); // Set kolom A1 dengan tulisan "DATA SISWA"
-            $sheet->mergeCells('A1:G1'); // Set Merge Cell pada kolom A1 sampai E1
+            $sheet->mergeCells('A1:G1')->setCellValue('A1', "REKAP ABSENSI SISWA")->getStyle('A1')->applyFromArray($style_header); // Set kolom A1 dengan tulisan "DATA SISWA"
 
-            $sheet->setCellValue('A2', "PONDOK PESANTREN DARUL LUGHAH WAL KAROMAH"); // Set kolom A1 dengan tulisan "DATA SISWA"
-            $sheet->mergeCells('A2:G2'); // Set Merge Cell pada kolom A1 sampai E1
+            $sheet->mergeCells('A2:G2')->setCellValue('A2', "SMK DARUL LUGHAH WAL KAROMAH")->getStyle('A2')->applyFromArray($style_header); // Set kolom A1 dengan tulisan "DATA SISWA"
 
-            $sheet->setCellValue('A3', ""); // Set kolom A1 dengan tulisan "DATA SISWA"
-            $sheet->mergeCells('A3:G3'); // Set Merge Cell pada kolom A1 sampai E1
+            $sheet->mergeCells('A3:G3')->setCellValue('A3', ""); // Set kolom A1 dengan tulisan "DATA SISWA"
 
-            $spreadsheet->getActiveSheet()->getStyle('A4:G4')->getFill()
+            $sheet->mergeCells('A4:G4')->setCellValue('A4', "Minggu : ke-" . $dtlAbsen->minggu)->getStyle('A4')->getFont()->setBold(true);;
+
+            $sheet->mergeCells('A5:G5')->setCellValue('A5', "Bulan : " . bulan($dtlAbsen->minggu) . ' ' . $dtlAbsen->tahun)->getStyle('A5')->getFont()->setBold(true);;
+
+            $sheet->mergeCells('A6:G6')->setCellValue('A6', "Rentang : " . $dtlAbsen->rentang)->getStyle('A6')->getFont()->setBold(true);;
+
+            $sheet->mergeCells('A7:G7')->setCellValue('A7', ""); // Set kolom A1 dengan tulisan "DATA SISWA"
+
+            $spreadsheet->getActiveSheet()->getStyle('A8:G8')->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('F7EF00');
 
             // Buat header tabel nya pada baris ke 3
-            $sheet->setCellValue('A4', "NO");
-            $sheet->setCellValue('B4', "NAMA");
-            $sheet->setCellValue('C4', "KELAS");
-            $sheet->setCellValue('D4', "SAKIT");
-            $sheet->setCellValue('E4', "IZIN");
-            $sheet->setCellValue('F4', "ALPHA");
-            $sheet->setCellValue('G4', "KET");
+            $sheet->setCellValue('A8', "NO");
+            $sheet->setCellValue('B8', "NAMA");
+            $sheet->setCellValue('C8', "KELAS");
+            $sheet->setCellValue('D8', "SAKIT");
+            $sheet->setCellValue('E8', "IZIN");
+            $sheet->setCellValue('F8', "ALPHA");
+            $sheet->setCellValue('G8', "KET");
 
 
             // Apply style header yang telah kita buat tadi ke masing-masing kolom header
-            $sheet->getStyle('A1')->applyFromArray($style_col);
-            $sheet->getStyle('B1')->applyFromArray($style_col);
 
-            $sheet->getStyle('A4')->applyFromArray($style_col);
-            $sheet->getStyle('B4')->applyFromArray($style_col);
-            $sheet->getStyle('C4')->applyFromArray($style_col);
-            $sheet->getStyle('D4')->applyFromArray($style_col);
-            $sheet->getStyle('E4')->applyFromArray($style_col);
-            $sheet->getStyle('F4')->applyFromArray($style_col);
-            $sheet->getStyle('G4')->applyFromArray($style_col);
+            $sheet->getStyle('A8')->applyFromArray($style_col);
+            $sheet->getStyle('B8')->applyFromArray($style_col);
+            $sheet->getStyle('C8')->applyFromArray($style_col);
+            $sheet->getStyle('D8')->applyFromArray($style_col);
+            $sheet->getStyle('E8')->applyFromArray($style_col);
+            $sheet->getStyle('F8')->applyFromArray($style_col);
+            $sheet->getStyle('G8')->applyFromArray($style_col);
 
 
             $kls = explode('-', $nmKelas);
@@ -507,10 +529,8 @@ class Absensi extends CI_Controller
             $siswa = $this->db->query("SELECT detail_absen.*, tb_santri.nama FROM detail_absen JOIN tb_santri ON detail_absen.nis=tb_santri.nis WHERE id_absen = '$id' AND kelas = '$nmKelas' ORDER BY nama ASC ")->result();
 
             $no = 1; // Untuk penomoran tabel, di awal set dengan 1
-            $numrow = 5; // Set baris pertama untuk isi tabel adalah baris ke 4
+            $numrow = 9; // Set baris pertama untuk isi tabel adalah baris ke 4
             foreach ($siswa as $data) { // Lakukan looping pada variabel siswa
-
-
 
                 $sheet->setCellValue('A' . $numrow, $no);
                 $sheet->setCellValue('B' . $numrow, $data->nama);
@@ -522,12 +542,12 @@ class Absensi extends CI_Controller
 
 
                 // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
-                $sheet->getStyle('A' . $numrow)->applyFromArray($style_row);
+                $sheet->getStyle('A' . $numrow)->applyFromArray($style_row_center);
                 $sheet->getStyle('B' . $numrow)->applyFromArray($style_row);
-                $sheet->getStyle('C' . $numrow)->applyFromArray($style_row);
-                $sheet->getStyle('D' . $numrow)->applyFromArray($style_row);
-                $sheet->getStyle('E' . $numrow)->applyFromArray($style_row);
-                $sheet->getStyle('F' . $numrow)->applyFromArray($style_row);
+                $sheet->getStyle('C' . $numrow)->applyFromArray($style_row_center);
+                $sheet->getStyle('D' . $numrow)->applyFromArray($style_row_center);
+                $sheet->getStyle('E' . $numrow)->applyFromArray($style_row_center);
+                $sheet->getStyle('F' . $numrow)->applyFromArray($style_row_center);
                 $sheet->getStyle('G' . $numrow)->applyFromArray($style_row);
 
                 $sheet->getStyle('D')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB(colorCell($data->sakit));
