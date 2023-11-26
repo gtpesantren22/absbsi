@@ -155,3 +155,20 @@ function bulan($bulan)
     }
     return $bulan;
 }
+
+function colorCell($grid)
+{
+    if ($grid > 48) {
+        return '990000';
+    } elseif ($grid > 24 && $grid <= 48) {
+        return 'FF0000';
+    } elseif ($grid > 16 && $grid <= 24) {
+        return 'FFFF00';
+    } elseif ($grid > 8 && $grid <= 16) {
+        return '009999';
+    } elseif ($grid > 0 && $grid <= 8) {
+        return '0099FF';
+    } elseif ($grid < 1) {
+        return 'FFFFFF';
+    }
+}

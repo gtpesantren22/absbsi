@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 
 class Absensi extends CI_Controller
 {
@@ -528,6 +529,10 @@ class Absensi extends CI_Controller
                 $sheet->getStyle('E' . $numrow)->applyFromArray($style_row);
                 $sheet->getStyle('F' . $numrow)->applyFromArray($style_row);
                 $sheet->getStyle('G' . $numrow)->applyFromArray($style_row);
+
+                $sheet->getStyle('D')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB(colorCell($data->sakit));
+                $sheet->getStyle('E')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB(colorCell($data->izin));
+                $sheet->getStyle('F')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB(colorCell($data->alpha));
 
 
                 $no++; // Tambah 1 setiap kali looping
