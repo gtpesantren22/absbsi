@@ -59,7 +59,7 @@
                         <?= form_open('absensi/buat') ?>
                         <div class="form-group">
                             <label for="">Minggu</label>
-                            <input type="number" name="minggu" class="form-control" required>
+                            <input type="text" name="minggu" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Rentang Tanggal</label>
