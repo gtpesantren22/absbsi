@@ -112,6 +112,27 @@ class Master extends CI_Controller
             redirect('master/jadwal');
         }
     }
+    public function updateMapel()
+    {
+        $id_jadwal = $this->input->post('idjadwal', true);
+        $data = [
+            'hari' => $this->input->post('hari', true),
+            'jam_dari' => $this->input->post('dari', true),
+            'jam_sampai' => $this->input->post('sampai', true),
+            'guru' => $this->input->post('guru', true),
+            'mapel' => $this->input->post('mapel', true),
+            'kelas' => $this->input->post('kelas', true),
+        ];
+
+        $this->model->edit('jadwal', $data, 'id_jadwal', $id_jadwal);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'update Jadwal Berhasil');
+            redirect('master/jadwal');
+        } else {
+            $this->session->set_flashdata('ok', 'update Jadwal Gagal');
+            redirect('master/jadwal');
+        }
+    }
 
     public function hapusJadwal($id)
     {

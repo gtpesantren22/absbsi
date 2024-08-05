@@ -129,7 +129,7 @@
                                         echo '<td>' . $rowSaturday->jam_dari . ' - ' . $rowSaturday->jam_sampai . '</td>';
                                         echo '<td>' . $rowSaturday->nama_mapel . '</td>';
                                         echo '<td>' . $rowSaturday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowSaturday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowSaturday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowSaturday->id_jadwal . ' data-hari=' . $rowSaturday->hari . ' data-dari=' . $rowSaturday->jam_dari . ' data-sampai=' . $rowSaturday->jam_sampai . ' data-guru=' . $rowSaturday->guru . ' data-mapel=' . $rowSaturday->mapel . ' data-kelas=' . $rowSaturday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -156,7 +156,7 @@
                                         echo '<td>' . $rowSunday->jam_dari . ' - ' . $rowSunday->jam_sampai . '</td>';
                                         echo '<td>' . $rowSunday->nama_mapel . '</td>';
                                         echo '<td>' . $rowSunday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowSunday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowSunday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowSunday->id_jadwal . ' data-hari=' . $rowSunday->hari . ' data-dari=' . $rowSunday->jam_dari . ' data-sampai=' . $rowSunday->jam_sampai . ' data-guru=' . $rowSunday->guru . ' data-mapel=' . $rowSunday->mapel . ' data-kelas=' . $rowSunday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -183,7 +183,7 @@
                                         echo '<td>' . $rowMonday->jam_dari . ' - ' . $rowMonday->jam_sampai . '</td>';
                                         echo '<td>' . $rowMonday->nama_mapel . '</td>';
                                         echo '<td>' . $rowMonday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowMonday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowMonday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowMonday->id_jadwal . ' data-hari=' . $rowMonday->hari . ' data-dari=' . $rowMonday->jam_dari . ' data-sampai=' . $rowMonday->jam_sampai . ' data-guru=' . $rowMonday->guru . ' data-mapel=' . $rowMonday->mapel . ' data-kelas=' . $rowMonday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -211,7 +211,7 @@
                                         echo '<td>' . $rowTuesday->jam_dari . ' - ' . $rowTuesday->jam_sampai . '</td>';
                                         echo '<td>' . $rowTuesday->nama_mapel . '</td>';
                                         echo '<td>' . $rowTuesday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowTuesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowTuesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowTuesday->id_jadwal . ' data-hari=' . $rowTuesday->hari . ' data-dari=' . $rowTuesday->jam_dari . ' data-sampai=' . $rowTuesday->jam_sampai . ' data-guru=' . $rowTuesday->guru . ' data-mapel=' . $rowTuesday->mapel . ' data-kelas=' . $rowTuesday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -239,7 +239,7 @@
                                         echo '<td>' . $rowWednesday->jam_dari . ' - ' . $rowWednesday->jam_sampai . '</td>';
                                         echo '<td>' . $rowWednesday->nama_mapel . '</td>';
                                         echo '<td>' . $rowWednesday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowWednesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowWednesday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowWednesday->id_jadwal . ' data-hari=' . $rowWednesday->hari . ' data-dari=' . $rowWednesday->jam_dari . ' data-sampai=' . $rowWednesday->jam_sampai . ' data-guru=' . $rowWednesday->guru . ' data-mapel=' . $rowWednesday->mapel . ' data-kelas=' . $rowWednesday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -267,7 +267,7 @@
                                         echo '<td>' . $rowThursday->jam_dari . ' - ' . $rowThursday->jam_sampai . '</td>';
                                         echo '<td>' . $rowThursday->nama_mapel . '</td>';
                                         echo '<td>' . $rowThursday->nama_guru . '</td>';
-                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowThursday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</td>';
+                                        echo '<td><a href=' . base_url('master/hapusJadwal/') . $rowThursday->id_jadwal . ' class="btn btn-xs btn-danger tbl-hapus">Hapus</a> <button class="btn btn-warning btn-xs btn-edit" data-idjadwal=' . $rowThursday->id_jadwal . ' data-hari=' . $rowThursday->hari . ' data-dari=' . $rowThursday->jam_dari . ' data-sampai=' . $rowThursday->jam_sampai . ' data-guru=' . $rowThursday->guru . ' data-mapel=' . $rowThursday->mapel . ' data-kelas=' . $rowThursday->kelas . '>edit</button></td>';
                                         echo '</tr>';
                                     }
                                     ?>
@@ -285,12 +285,89 @@
           </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
+      <div class="modal fade" id="edit-modal">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Update Absen Guru</h4>
+                  </div>
+                  <?= form_open('master/updateMapel') ?>
+                  <input type="hidden" name="idjadwal" id="idjadwal-data">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="">Hari</label>
+                          <!-- <input type="text" class="form-control" name="hari" id="hari-data" readonly> -->
+                          <select name="hari" id="hari-data" class="form-control select2" style="width: 100%;" required>
+                              <option value=""> -pilih hari- </option>
+                              <?php
+                                $days = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
+                                foreach ($days as $index => $day) {
+                                    echo "<option value=\"$day\"";
+
+                                    // Periksa apakah nama hari saat ini sesuai dengan $day dalam bahasa Inggris
+                                    if (date('l') === $day) {
+                                        echo "";
+                                    }
+
+                                    echo ">" . translateDay($day, 'id') . "</option>";
+                                }
+                                ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="">Kelas</label>
+                          <input type="text" class="form-control" name="kelas" id="kelas-data" readonly>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="">Jam ke</label>
+                          <div class="row">
+                              <div class="col-xs-6">
+                                  <input type="number" name="dari" id="dari-data" class="form-control" placeholder="Dari Jam" required>
+                              </div>
+                              <div class="col-xs-6">
+                                  <input type="number" name="sampai" id="sampai-data" class="form-control" placeholder="Sampai Jam" required>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="">Nama Guru</label>
+                          <select name="guru" id="guru-data" class="form-control select2" style="width: 100%;" required>
+                              <option value=""> -pilih guru- </option>
+                              <?php foreach ($guru->result() as $gr) : ?>
+                                  <option value="<?= $gr->kode_guru ?>"><?= $gr->nama_guru ?></option>
+                              <?php endforeach ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="">Nama Mapel</label>
+                          <select name="mapel" id="mapel-data" class="form-control select2" style="width: 100%;" required>
+                              <option value=""> -pilih mapel- </option>
+                              <?php foreach ($mapel->result() as $gr) : ?>
+                                  <option value="<?= $gr->kode_mapel ?>"><?= $gr->nama_mapel ?></option>
+                              <?php endforeach ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-save"></i> Simpan Data</button>
+                      </div>
+                  </div>
+                  <?= form_close() ?>
+              </div>
+          </div>
+      </div>
+
       <script src="<?= base_url('assets/') ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
       <script>
-          $(function() {
+          $(document).ready(function() {
               $(".select2").select2();
               $("#example1").DataTable();
               $("#example2").DataTable({
@@ -301,5 +378,25 @@
                   info: true,
                   autoWidth: false,
               });
+
+              $('.btn-edit').on('click', function() {
+                  var idjadwal = $(this).data('idjadwal');
+                  var hari = $(this).data('hari');
+                  var dari = $(this).data('dari');
+                  var sampai = $(this).data('sampai');
+                  var guru = $(this).data('guru');
+                  var mapel = $(this).data('mapel');
+                  var kelas = $(this).data('kelas');
+
+                  $('#idjadwal-data').val(idjadwal);
+                  $('#hari-data').val(hari).change();
+                  $('#dari-data').val(dari);
+                  $('#sampai-data').val(sampai);
+                  $('#kelas-data').val(kelas);
+                  $('#guru-data').val(guru).change();
+                  $('#mapel-data').val(mapel).change();
+
+                  $('#edit-modal').modal('show');
+              })
           });
       </script>
