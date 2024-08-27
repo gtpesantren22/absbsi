@@ -255,11 +255,8 @@
                 </div>
                 <div class="form-group">
                     <label for="">Nama Mapel</label>
-                    <select name="mapel" id="mapel-data" class="form-control select2" style="width: 100%;" required>
+                    <select name="mapel" id="selected-mapel2" class="form-control select2" style="width: 100%;" required>
                         <option value=""> -pilih mapel- </option>
-                        <?php foreach ($mapel->result() as $gr) : ?>
-                            <option value="<?= $gr->kode_mapel ?>"><?= $gr->nama_mapel ?></option>
-                        <?php endforeach ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -317,6 +314,27 @@
             $('#edit-modal').modal('show');
         })
 
+        $('#guru-data').on('change', function() {
+            var guru = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('master/getgurumapel') ?>",
+                dataType: 'json',
+                data: {
+                    guru: guru
+                },
+                success: function(data) {
+                    $('#selected-mapel2').empty();
+                    $('#selected-mapel2').append('<option value="">-pilih mapel-</option>');
+                    $.each(data, function(key, value) {
+                        $('#selected-mapel2').append('<option value="' + value.mapel + '">' + value.kode + '. ' + value.nama_mapel + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error); // Debug jika
+                }
+            });
+        })
         $('#selected-guru').on('change', function() {
             var guru = $(this).val();
             $.ajax({
@@ -328,6 +346,7 @@
                 },
                 success: function(data) {
                     $('#selected-mapel').empty();
+                    $('#selected-mapel').append('<option value="">-pilih mapel-</option>');
                     $.each(data, function(key, value) {
                         $('#selected-mapel').append('<option value="' + value.mapel + '">' + value.kode + '. ' + value.nama_mapel + '</option>');
                     });
