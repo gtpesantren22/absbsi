@@ -156,6 +156,7 @@
                             <ul class="treeview-menu">
                                 <li><a href="<?= base_url('master/guru') ?>"><i class="fa fa-circle-o"></i> Guru</a></li>
                                 <li><a href="<?= base_url('master/mapel') ?>"><i class="fa fa-circle-o"></i> Mapel</a></li>
+                                <li><a href="<?= base_url('master/guru_mapel') ?>"><i class="fa fa-circle-o"></i> Guru Mapel</a></li>
                                 <li><a href="<?= base_url('master/jadwal') ?>"><i class="fa fa-circle-o"></i> Jadwal</a></li>
                                 <li><a href="<?= base_url('master/piket') ?>"><i class="fa fa-circle-o"></i> Jadwal Piket</a></li>
                             </ul>

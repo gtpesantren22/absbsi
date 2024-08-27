@@ -19,9 +19,7 @@ class Master extends CI_Controller
         }
     }
 
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function guru()
     {
@@ -78,12 +76,6 @@ class Master extends CI_Controller
         $data['mapel'] = $this->model->getAll('mapel');
         $data['kelas'] = $this->model->getBy('kl_formal', 'lembaga', 'SMK');
 
-        $data['Saturday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Saturday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Saturday' ORDER BY A.kelas ASC, A.jam_dari ASC");
-        $data['Sunday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Sunday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Sunday' ORDER BY A.kelas ASC, A.jam_dari ASC");
-        $data['Monday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Monday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Monday' ORDER BY A.kelas ASC, A.jam_dari ASC");
-        $data['Tuesday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Tuesday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Tuesday' ORDER BY A.kelas ASC, A.jam_dari ASC");
-        $data['Wednesday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Wednesday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Wednesday' ORDER BY A.kelas ASC, A.jam_dari ASC");
-        $data['Thursday'] = $this->db->query("SELECT *, (SELECT COUNT(kelas) FROM jadwal WHERE kelas=A.kelas AND hari = 'Thursday') AS jumlah FROM jadwal A JOIN guru ON guru.kode_guru=A.guru JOIN mapel ON mapel.kode_mapel=A.mapel WHERE hari = 'Thursday' ORDER BY A.kelas ASC, A.jam_dari ASC");
 
         $data['userData'] = $this->Auth_model->current_user();
         $this->load->view('head', $data);
@@ -129,19 +121,20 @@ class Master extends CI_Controller
             $this->session->set_flashdata('ok', 'update Jadwal Berhasil');
             redirect('master/jadwal');
         } else {
-            $this->session->set_flashdata('ok', 'update Jadwal Gagal');
+            $this->session->set_flashdata('error', 'update Jadwal Gagal');
             redirect('master/jadwal');
         }
     }
 
-    public function hapusJadwal($id)
+    public function hapusJadwal()
     {
+        $id = $this->input->post('idjadwal', true);
         $this->model->hapus('jadwal', 'id_jadwal', $id);
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata('ok', 'Hapus Jadwal Berhasil');
             redirect('master/jadwal');
         } else {
-            $this->session->set_flashdata('ok', 'Hapus Jadwal Gagal');
+            $this->session->set_flashdata('error', 'Hapus Jadwal Gagal');
             redirect('master/jadwal');
         }
     }
@@ -153,7 +146,7 @@ class Master extends CI_Controller
             $this->session->set_flashdata('ok', 'Hapus Jadwal Piket Berhasil');
             redirect('master/piket');
         } else {
-            $this->session->set_flashdata('ok', 'Hapus Jadwal Piket Gagal');
+            $this->session->set_flashdata('error', 'Hapus Jadwal Piket Gagal');
             redirect('master/piket');
         }
     }
@@ -247,5 +240,96 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
         // kirim_group('085236924510', $psn);
         kirim_group('6285258800849-1471341787@g.us', $psn);
         redirect('master/jadwal');
+    }
+
+    public function guru_mapel()
+    {
+        $data['data'] = $this->db->query("SELECT guru_mapel.*, nama_guru, nama_mapel FROM guru_mapel JOIN guru ON guru_mapel.guru=guru.kode_guru JOIN mapel ON guru_mapel.mapel=mapel.kode_mapel ORDER BY guru.kode_guru ASC, guru_mapel.kode ASC")->result();
+        $data['guru'] = $this->model->getAll('guru');
+        $data['mapel'] = $this->model->getAll('mapel');
+
+        $data['userData'] = $this->Auth_model->current_user();
+        $this->load->view('head', $data);
+        $this->load->view('guru_mapel', $data);
+        $this->load->view('foot');
+    }
+
+    public function addGuruMapel()
+    {
+        $guru = $this->input->post('guru', true);
+        $mapel = $this->input->post('mapel', true);
+        $kode = $this->input->post('kode', true);
+        $kodeOk = $guru . $kode;
+
+        $cek = $this->model->getBy('guru_mapel', 'gabung', $kodeOk)->row();
+        if ($cek) {
+            $this->session->set_flashdata('message', 'Data sudah ada');
+            redirect('master/guru_mapel');
+        } else {
+
+            $data = [
+                'guru' => $guru,
+                'mapel' => $mapel,
+                'kode' => $kode,
+                'gabung' => $kodeOk
+            ];
+            $this->model->simpan('guru_mapel', $data);
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('message', 'Data berhasil ditambahkan');
+                redirect('master/guru_mapel');
+            } else {
+                $this->session->set_flashdata('message', 'Data gagal ditambahkan');
+                redirect('master/guru_mapel');
+            }
+        }
+    }
+
+    public function delgurumapel($id)
+    {
+        $this->model->hapus('guru_mapel', 'id_guma', $id);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('message', 'Data berhasil dihapus');
+            redirect('master/guru_mapel');
+        } else {
+            $this->session->set_flashdata('message', 'Data gagal dihapus');
+            redirect('master/guru_mapel');
+        }
+    }
+
+    public function updateGuru()
+    {
+        $kode_guru = $this->input->post('kode_guru', true);
+        $nama_guru = $this->input->post('nama_guru', true);
+        $no_hp = $this->input->post('no_hp', true);
+        $warna = $this->input->post('warna', true);
+        $data = [
+            'kode_guru' => $kode_guru,
+            'nama_guru' => $nama_guru,
+            'no_hp' => $no_hp,
+            'warna' => $warna,
+        ];
+        $this->model->edit('guru', $data, 'kode_guru', $kode_guru);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('message', 'Data berhasil diubah');
+            redirect('master/guru');
+        } else {
+            $this->session->set_flashdata('message', 'Data gagal diubah');
+            redirect('master/guru');
+        }
+    }
+
+    public function getgurumapel()
+    {
+        $kode_guru = $this->input->post('guru', true);
+        $data = $this->db->query(
+            "SELECT mapel.nama_mapel, guru_mapel.* FROM guru_mapel JOIN mapel ON guru_mapel.mapel=mapel.kode_mapel WHERE guru_mapel.guru = ?",
+            array($kode_guru)
+        )->result_array();
+        if (!empty($data)) {
+            echo json_encode($data);
+        } else {
+            // Jika tidak ada data, kirimkan array kosong
+            echo json_encode([]);
+        }
     }
 }
