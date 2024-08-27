@@ -164,7 +164,7 @@
                                             <tr>
                                                 <td><?= $kelas ?></td>
                                                 <?php
-                                                $sql = $this->db->query("SELECT * FROM jadwal WHERE hari = '$hari' AND kelas = '$kelas' ")->result();
+                                                $sql = $this->db->query("SELECT * FROM jadwal WHERE hari = '$hari' AND kelas = '$kelas' ORDER BY jam_dari ASC")->result();
                                                 foreach ($sql as $jdl) :
                                                     $jmlJam = ($jdl->jam_sampai - $jdl->jam_dari) + 1;
                                                     $dtjadwal = $this->db->query("SELECT * FROM guru_mapel WHERE guru = '$jdl->guru' AND mapel = '$jdl->mapel' ")->row();
