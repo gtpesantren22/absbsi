@@ -97,11 +97,13 @@ class Master extends CI_Controller
 
         $this->model->simpan('jadwal', $data);
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('ok', 'input Jadwal Berhasil');
-            redirect('master/jadwal');
+            // $this->session->set_flashdata('ok', 'input Jadwal Berhasil');
+            // redirect('master/jadwal');
+            echo json_encode(['status' => 'success']);
         } else {
-            $this->session->set_flashdata('ok', 'input Jadwal Gagal');
-            redirect('master/jadwal');
+            // $this->session->set_flashdata('ok', 'input Jadwal Gagal');
+            // redirect('master/jadwal');
+            echo json_encode(['status' => 'error']);
         }
     }
     public function updateMapel()
@@ -331,5 +333,10 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
             // Jika tidak ada data, kirimkan array kosong
             echo json_encode([]);
         }
+    }
+
+    public function getMapel()
+    {
+        $this->load->view('jadwalview');
     }
 }

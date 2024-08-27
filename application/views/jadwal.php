@@ -61,130 +61,75 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
-                    <?= form_open('master/saveMapel') ?>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Pilih Hari</label>
-                            <select name="hari" id="" class="form-control select2" style="width: 100%;" required>
-                                <option value=""> -pilih hari- </option>
-                                <?php
-                                $days = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+                    <form action="" method="post" id="form-add">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Pilih Hari</label>
+                                <select name="hari" id="" class="form-control select2" style="width: 100%;" required>
+                                    <option value=""> -pilih hari- </option>
+                                    <?php
+                                    $days = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
-                                foreach ($days as $index => $day) {
-                                    echo "<option value=\"$day\"";
+                                    foreach ($days as $index => $day) {
+                                        echo "<option value=\"$day\"";
 
-                                    // Periksa apakah nama hari saat ini sesuai dengan $day dalam bahasa Inggris
-                                    if (date('l') === $day) {
-                                        echo "";
+                                        // Periksa apakah nama hari saat ini sesuai dengan $day dalam bahasa Inggris
+                                        if (date('l') === $day) {
+                                            echo "";
+                                        }
+
+                                        echo ">" . translateDay($day, 'id') . "</option>";
                                     }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Pilih Kelas</label>
+                                <select name="kelas" class="form-control select2" style="width: 100%;" required>
+                                    <option value=""> -pilih kelas- </option>
+                                    <?php foreach ($kelas->result() as $gr) : ?>
+                                        <option value="<?= $gr->nm_kelas ?>"><?= $gr->nm_kelas ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
 
-                                    echo ">" . translateDay($day, 'id') . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Pilih Kelas</label>
-                            <select name="kelas" class="form-control select2" style="width: 100%;" required>
-                                <option value=""> -pilih kelas- </option>
-                                <?php foreach ($kelas->result() as $gr) : ?>
-                                    <option value="<?= $gr->nm_kelas ?>"><?= $gr->nm_kelas ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Jam ke</label>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <input type="number" name="dari" class="form-control" placeholder="Dari Jam" required>
-                                </div>
-                                <div class="col-xs-6">
-                                    <input type="number" name="sampai" class="form-control" placeholder="Sampai Jam" required>
+                            <div class="form-group">
+                                <label for="">Jam ke</label>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <input type="number" name="dari" class="form-control" placeholder="Dari Jam" required>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input type="number" name="sampai" class="form-control" placeholder="Sampai Jam" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="">Nama Guru</label>
-                            <select name="guru" id="selected-guru" class="form-control select2" style="width: 100%;" required>
-                                <option value=""> -pilih guru- </option>
-                                <?php foreach ($guru->result() as $gr) : ?>
-                                    <option value="<?= $gr->kode_guru ?>"><?= $gr->kode_guru . ' - ' . $gr->nama_guru ?></option>
-                                <?php endforeach ?>
-                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="">Nama Mapel</label>
-                            <select name="mapel" id="selected-mapel" class="form-control select2" style="width: 100%;" required>
-                                <option value=""> -pilih mapel- </option>
-                            </select>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Nama Guru</label>
+                                <select name="guru" id="selected-guru" class="form-control select2" style="width: 100%;" required>
+                                    <option value=""> -pilih guru- </option>
+                                    <?php foreach ($guru->result() as $gr) : ?>
+                                        <option value="<?= $gr->kode_guru ?>"><?= $gr->kode_guru . ' - ' . $gr->nama_guru ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Nama Mapel</label>
+                                <select name="mapel" id="selected-mapel" class="form-control select2" style="width: 100%;" required>
+                                    <option value=""> -pilih mapel- </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-save"></i> Simpan Data</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-save"></i> Simpan Data</button>
-                        </div>
-                    </div>
-                    <?= form_close() ?>
+                    </form>
                 </div>
                 <hr>
-                <div class="row">
-                    <?php
-                    $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday'];
-                    for ($i = 0; $i < count($days); $i++) {
-                        $hariIni = $days[$i];
-                    ?>
-                        <div class="col-md-4">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="9" class="text-center"><?= translateDay($days[$i], 'id') ?></th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Kelas</th>
-                                            <th class="text-center">1</th>
-                                            <th class="text-center">2</th>
-                                            <th class="text-center">3</th>
-                                            <th class="text-center">4</th>
-                                            <th class="text-center">5</th>
-                                            <th class="text-center">6</th>
-                                            <th class="text-center">7</th>
-                                            <th class="text-center">8</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $dataHari = $this->db->query("SELECT * FROM jadwal WHERE  hari = '$hariIni' GROUP BY kelas ORDER BY kelas ASC");
-                                        foreach ($dataHari->result() as $kls):
-                                            $kelas = $kls->kelas;
-                                            $hari = $kls->hari;
-                                        ?>
-                                            <tr>
-                                                <td><?= $kelas ?></td>
-                                                <?php
-                                                $sql = $this->db->query("SELECT * FROM jadwal WHERE hari = '$hari' AND kelas = '$kelas' ORDER BY jam_dari ASC")->result();
-                                                foreach ($sql as $jdl) :
-                                                    $jmlJam = ($jdl->jam_sampai - $jdl->jam_dari) + 1;
-                                                    $dtjadwal = $this->db->query("SELECT * FROM guru_mapel WHERE guru = '$jdl->guru' AND mapel = '$jdl->mapel' ")->row();
-                                                    $guruData = $this->db->query("SELECT * FROM guru WHERE kode_guru = '$jdl->guru' ")->row();
-                                                    for ($rw = 1; $rw <= $jmlJam; $rw++) {
-                                                ?>
-                                                        <td class="text-center" style="color: black; background-color: <?= $guruData->warna ?>;">
-                                                            <a class="btn-edit" href="#" data-idjadwal="<?= $jdl->id_jadwal ?>" data-hari="<?= $jdl->hari ?>" data-dari="<?= $jdl->jam_dari ?>" data-sampai="<?= $jdl->jam_sampai ?>" data-guru="<?= $jdl->guru ?>" data-mapel="<?= $jdl->mapel ?>" data-kelas="<?= $jdl->kelas ?>"><?= $dtjadwal ? (int)$dtjadwal->guru . $dtjadwal->kode : '' ?></a>
-                                                        </td>
-                                                <?php }
-                                                endforeach; ?>
-
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
+                <div id="jadwalview"></div>
 
             </div>
             <!-- /.box-body -->
@@ -282,6 +227,7 @@
 
 <script>
     $(document).ready(function() {
+        showJadwal()
         $(".select2").select2();
         $("#example1").DataTable();
         $("#example2").DataTable({
@@ -293,48 +239,20 @@
             autoWidth: false,
         });
 
-        $('.btn-edit').on('click', function() {
-            var idjadwal = $(this).data('idjadwal');
-            var hari = $(this).data('hari');
-            var dari = $(this).data('dari');
-            var sampai = $(this).data('sampai');
-            var guru = $(this).data('guru');
-            var mapel = $(this).data('mapel');
-            var kelas = $(this).data('kelas');
-
-            $('#idjadwal-data').val(idjadwal);
-            $('#idjadwal-data2').val(idjadwal);
-            $('#hari-data').val(hari).change();
-            $('#dari-data').val(dari);
-            $('#sampai-data').val(sampai);
-            $('#kelas-data').val(kelas);
-            $('#guru-data').val(guru).change();
-            $('#mapel-data').val(mapel).change();
-
-            $('#edit-modal').modal('show');
-        })
-
-        $('#guru-data').on('change', function() {
-            var guru = $(this).val();
+        function showJadwal() {
             $.ajax({
-                type: "POST",
-                url: "<?= base_url('master/getgurumapel') ?>",
-                dataType: 'json',
-                data: {
-                    guru: guru
-                },
+                type: "GET",
+                url: "<?= base_url('master/getMapel') ?>",
+                // dataType: "html",
                 success: function(data) {
-                    $('#selected-mapel2').empty();
-                    $('#selected-mapel2').append('<option value="">-pilih mapel-</option>');
-                    $.each(data, function(key, value) {
-                        $('#selected-mapel2').append('<option value="' + value.mapel + '">' + value.kode + '. ' + value.nama_mapel + '</option>');
-                    });
+                    $('#jadwalview').html(data);
                 },
                 error: function(xhr, status, error) {
-                    console.log("Error: " + error); // Debug jika
+                    console.log(xhr.responseText);
                 }
-            });
-        })
+            })
+        }
+
         $('#selected-guru').on('change', function() {
             var guru = $(this).val();
             $.ajax({
@@ -353,6 +271,31 @@
                 },
                 error: function(xhr, status, error) {
                     console.log("Error: " + error); // Debug jika
+                }
+            });
+        })
+
+        $('#form-add').on('submit', function(e) {
+            e.preventDefault();
+            var formData = $('#form-add').serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '<?= base_url('master/saveMapel'); ?>',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    // alert(response);
+                    if (response.status === 'success') {
+                        showJadwal()
+                        // alert('simpan OK')
+                    } else {
+                        alert('Error simpan');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Gagal menyimpan data. Kesalahan: ' + status + ' - ' + error);
+                    // console.error('AJAX error:', status, error);
                 }
             });
         })
