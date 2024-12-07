@@ -42,7 +42,7 @@
                               <div class="text-center">
                                   <label for="cameraSelect">Pilih Kamera:</label>
                                   <select id="cameraSelect" class="form-control"></select>
-                                  <div id="reader" style="width: 300px; height: 300px;"></div>
+                                  <div id="reader"></div>
                                   <p class="text-danger"><span id="result"></span></p>
                                   <audio id="success-sound" src="<?= base_url('assets/audio/berhasil.mp3') ?>"></audio>
                                   <audio id="error-sound" src="<?= base_url('assets/audio/tidak_ada.mp3') ?>">"></audio>
