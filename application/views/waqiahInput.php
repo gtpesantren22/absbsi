@@ -170,6 +170,7 @@
                       if (data.status == 'ok') {
                           soundToPlay = document.getElementById("success-sound");
                           loadTable()
+                          loadProsentase()
                       } else if (data.status == 'sudah') {
                           soundToPlay = document.getElementById("warning-sound");
                           document.getElementById("result").textContent = '';
