@@ -209,6 +209,11 @@
                                 <i class="fa fa-newspaper-o"></i> <span>Kontrol Absensi</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('pembiasaan') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>Absensi Pembiasaan</span>
+                            </a>
+                        </li>
                     <?php endif ?>
                     <?php if ($userData->level == 'kepala' || $userData->level == 'admin') : ?>
                         <li class="header">KEPSEK</li>
