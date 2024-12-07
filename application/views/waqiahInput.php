@@ -215,7 +215,7 @@
           function startCamera(cameraId) {
               reader.start(
                   cameraId, {
-                      fps: 1,
+                      fps: 5,
                       qrbox: 250
                   },
                   onScanSuccess,
