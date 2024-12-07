@@ -1,3 +1,19 @@
+      <style>
+          #reader {
+              width: 100%;
+              max-width: 400px;
+              /* Sesuaikan ukuran maksimal untuk tampilan lebih baik */
+              margin: 0 auto;
+              border: 2px solid #ddd;
+              /* Tambahkan border untuk memperjelas */
+              border-radius: 8px;
+              /* Radius border agar lebih estetis */
+          }
+
+          .container {
+              margin-top: 30px;
+          }
+      </style>
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
           <!-- Content Header (Page header) -->
@@ -24,6 +40,8 @@
                       <div class="row">
                           <div class="col-md-12">
                               <div class="text-center">
+                                  <label for="cameraSelect">Pilih Kamera:</label>
+                                  <select id="cameraSelect" class="form-control"></select>
                                   <div id="reader" style="width: 300px; height: 300px;"></div>
                                   <p class="text-danger"><span id="result"></span></p>
                                   <audio id="success-sound" src="<?= base_url('assets/audio/berhasil.mp3') ?>"></audio>
@@ -131,6 +149,7 @@
       </script>
       <script>
           const reader = new Html5Qrcode("reader");
+          const cameraSelect = document.getElementById("cameraSelect");
 
           function onScanSuccess(decodedText, decodedResult) {
               // Hasil kode QR
@@ -176,18 +195,37 @@
           // Mulai kamera
           Html5Qrcode.getCameras().then(devices => {
               if (devices && devices.length) {
-                  // Gunakan kamera pertama
-                  reader.start(
-                      devices[0].id, // Kamera default
-                      {
-                          fps: 1, // Frame per detik
-                          qrbox: 250 // Area untuk deteksi QR
-                      },
-                      onScanSuccess,
-                      onScanError
-                  );
+                  // Tambahkan opsi kamera ke dropdown
+                  devices.forEach((device, index) => {
+                      const option = document.createElement("option");
+                      option.value = device.id;
+                      option.text = device.label || `Camera ${index + 1}`;
+                      cameraSelect.appendChild(option);
+                  });
+
+                  // Mulai kamera pertama secara default
+                  startCamera(devices[0].id);
               } else {
-                  console.error("Kamera tidak ditemukan.");
+                  console.error("No cameras found.");
               }
-          }).catch(err => console.error("Error mendapatkan kamera:", err));
+          }).catch(err => console.error("Error getting cameras:", err));
+
+          // Fungsi untuk memulai kamera berdasarkan ID
+          function startCamera(cameraId) {
+              reader.start(
+                  cameraId, {
+                      fps: 1,
+                      qrbox: 250
+                  },
+                  onScanSuccess,
+                  onScanError
+              );
+          }
+          // Event listener untuk mengganti kamera
+          cameraSelect.addEventListener("change", (event) => {
+              const selectedCameraId = event.target.value;
+              reader.stop().then(() => {
+                  startCamera(selectedCameraId);
+              }).catch(err => console.error("Error stopping camera:", err));
+          });
       </script>
