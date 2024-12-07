@@ -18,7 +18,18 @@
               <div class="box">
                   <div class="box-header">
                       <h3 class="box-title text-primary">Absensi Pembiasaan Siswa</h3>
-                      <button class="btn btn-sm btn-primary pull-right" onclick="window.location='<?= base_url('pembiasaan/input') ?>'">Buat Absen</button>
+                      <!-- <button class="btn btn-sm btn-primary pull-right" onclick="window.location='<?= base_url('pembiasaan/input') ?>'">Buat Absen</button> -->
+                      <div class="btn-group pull-right">
+                          <button type="button" class="btn btn-primary">Proses Absensi</button>
+                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                              <span class="caret"></span>
+                              <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="<?= base_url('pembiasaan/input') ?>">Absen by HP Camera</a></li>
+                              <li><a href="<?= base_url('pembiasaan/input2') ?>">Absen by QR Scanner</a></li>
+                          </ul>
+                      </div>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">

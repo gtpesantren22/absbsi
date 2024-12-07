@@ -38,6 +38,15 @@ class Pembiasaan extends CI_Controller
         $this->load->view('waqiahInput', $data);
         $this->load->view('foot');
     }
+    public function input2()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM waqiah GROUP BY tanggal ORDER BY tanggal DESC")->result();
+
+        $this->load->view('head', $data);
+        $this->load->view('waqiahInput2', $data);
+        $this->load->view('foot');
+    }
 
     public function loadAbsen()
     {
