@@ -49,7 +49,7 @@
                                   <audio id="warning-sound" src="<?= base_url('assets/audio/sudah.mp3') ?>">"></audio>
                               </div>
                               <div class="table-responsive">
-                                  <table class="table table-sm" id="table">
+                                  <table class="table table-sm table-condensed" id="table">
                                       <tbody>
                                       </tbody>
                                   </table>
