@@ -88,8 +88,15 @@ class Pembiasaan extends CI_Controller
     public function loadJumlah()
     {
         $tanggal = $this->input->post('tanggal', 'true');
-        $hadir = $this->db->query("SELECT COUNT(*) as jumlah FROM waqiah WHERE tanggal = '$tanggal' AND hadir <= '09:45:00' ")->row();
-        $telat = $this->db->query("SELECT COUNT(*) as jumlah FROM waqiah WHERE tanggal = '$tanggal' AND hadir > '09:45:00' ")->row();
+        $hari = date('l', strtotime($tanggal));
+        if ($hari == 'Sunday') {
+            $batas = '08:45:00';
+        } else {
+            $batas = '09:45:00';
+        }
+
+        $hadir = $this->db->query("SELECT COUNT(*) as jumlah FROM waqiah WHERE tanggal = '$tanggal' AND hadir <= '$batas' ")->row();
+        $telat = $this->db->query("SELECT COUNT(*) as jumlah FROM waqiah WHERE tanggal = '$tanggal' AND hadir > '$batas' ")->row();
         $santri = $this->db->query("SELECT COUNT(*) as jumlah FROM tb_santri WHERE aktif = 'Y'")->row();
 
         echo json_encode([
