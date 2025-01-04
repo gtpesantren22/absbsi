@@ -214,6 +214,11 @@
                                 <i class="fa fa-newspaper-o"></i> <span>Absensi Pembiasaan</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('mengajar') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>Jam Mengajar</span>
+                            </a>
+                        </li>
                     <?php endif ?>
                     <?php if ($userData->level == 'kepala' || $userData->level == 'admin') : ?>
                         <li class="header">KEPSEK</li>

@@ -107,6 +107,7 @@ class Pembiasaan extends CI_Controller
             'telatPrs' => round(($telat->jumlah / $santri->jumlah) * 100),
             'belumPrs' => round((($santri->jumlah - ($hadir->jumlah + $telat->jumlah)) / $santri->jumlah) * 100, 2)
         ]);
+
     }
 
     public function hapus($id)

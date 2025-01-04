@@ -48,7 +48,7 @@ function kirim_person($no_hp, $pesan)
     curl_setopt_array(
         $curl2,
         array(
-            CURLOPT_URL => 'http://191.101.3.115:3000/api/sendMessage',
+            CURLOPT_URL => 'http://103.226.139.1/api/sendMessage',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -69,7 +69,7 @@ function kirim_group($id_group, $pesan)
     curl_setopt_array(
         $curl2,
         array(
-            CURLOPT_URL => 'http://191.101.3.115:3000/api/sendMessageGroup',
+            CURLOPT_URL => 'http://103.226.139.1/api/sendMessageGroup',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -90,7 +90,7 @@ function cek_nomor($no_hp)
     curl_setopt_array(
         $curl2,
         array(
-            CURLOPT_URL => 'http://191.101.3.115:3000/api/isRegisteredNumber',
+            CURLOPT_URL => 'http://103.226.139.1/api/isRegisteredNumber',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
