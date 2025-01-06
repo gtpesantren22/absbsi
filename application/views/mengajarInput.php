@@ -29,6 +29,7 @@
                                       <thead>
                                           <tr>
                                               <th>Nama</th>
+                                              <th>#</th>
                                               <th>1</th>
                                               <th>2</th>
                                               <th>3</th>
@@ -56,6 +57,9 @@
                                             ?>
                                               <tr>
                                                   <td><a id="show-rinci" data-guru="<?= $row['guru'] ?>" href="#"><?= $row['nama_guru'] ?></a></td>
+                                                  <td>
+                                                      <input type="checkbox" name="hadir" class="hobiCheckbox" <?= $row['hadir'] == 1 ? 'checked' : '' ?> value="<?= $guru ?>">
+                                                  </td>
                                                   <th <?= in_array(1, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek1 ? $cek1->ket : '' ?></th>
                                                   <th <?= in_array(2, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek2 ? $cek2->ket : '' ?></th>
                                                   <th <?= in_array(3, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek3 ? $cek3->ket : '' ?></th>
@@ -114,6 +118,27 @@
                   },
                   error: function(xhr, status, error) {
                       console.error('Terjadi kesalahan:', error);
+                  }
+              });
+          });
+          $('.hobiCheckbox').on('click', function() {
+              // Ambil nilai dan data lainnya dari checkbox
+              const value = $(this).val();
+              const checked = $(this).is(':checked'); // true jika dicentang
+
+              // Proses AJAX
+              $.ajax({
+                  url: '<?= base_url('mengajar/kehadiran') ?>', // Ganti dengan endpoint server Anda
+                  type: 'POST',
+                  data: {
+                      guru: value,
+                      status: checked ? '1' : '0'
+                  },
+                  success: function(response) {
+                      console.log('simpan OK');
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error:', error);
                   }
               });
           });

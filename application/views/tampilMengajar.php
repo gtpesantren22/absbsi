@@ -71,15 +71,15 @@
 
 <h4><b><?= $guru->nama_guru ?></b></h4>
 
-<div class="box box-primary p-3 mb-3">
+<div class="box box-primary mb-3">
     <table class="table table-sm table-borderless">
         <?php foreach ($jadwal as $jadwal):
             $mapel = $this->db->query("SELECT * FROM mapel WHERE kode_mapel = '$jadwal->mapel' ")->row();
         ?>
             <tr>
-                <th>Jam <?= $jadwal->jam_dari . '-' . $jadwal->jam_sampai ?></th>
-                <th><?= $jadwal->kelas ?></th>
-                <th><?= $mapel->nama_mapel ?></th>
+                <td>Jam <?= $jadwal->jam_dari . '-' . $jadwal->jam_sampai ?></td>
+                <td><?= $jadwal->kelas ?></td>
+                <td><?= $mapel->nama_mapel ?></td>
             </tr>
         <?php endforeach ?>
     </table>
@@ -102,6 +102,7 @@
             ?>
                 <tr>
                     <td><?= $i ?></td>
+
                     <td>
                         <?php if (in_array($i, $jam)): ?>
                             <label class="custom-radio">
@@ -113,7 +114,7 @@
                                 <span class="custom-radio-label warning">S</span>
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="djam_<?= $i ?>" data-jam="<?= $i ?>" data-guru="<?= $guru->kode_guru ?>" <?= $ket == 'S' ? 'checked' : '' ?> value="S">
+                                <input type="radio" name="djam_<?= $i ?>" data-jam="<?= $i ?>" data-guru="<?= $guru->kode_guru ?>" <?= $ket == 'I' ? 'checked' : '' ?> value="I">
                                 <span class="custom-radio-label primary">I</span>
                             </label>
                             <label class="custom-radio">

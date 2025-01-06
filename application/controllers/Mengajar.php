@@ -14,8 +14,11 @@ class Mengajar extends CI_Controller
 
         $user = $this->Auth_model->current_user();
 
-        if (!$this->Auth_model->current_user() || $user->level != 'admin' || ($user->kode_guru != '07' && $user->kode_guru != '11' && $user->kode_guru != '14' && $user->kode_guru != '13')) {
+        if ($user->kode_guru != '07' && $user->kode_guru != '11' && $user->kode_guru != '14' && $user->kode_guru != '13') {
             redirect('login/logout');
+            // $this->cek = 'benar';
+        } else {
+            // $this->cek = 'salah';
         }
     }
 
@@ -23,6 +26,7 @@ class Mengajar extends CI_Controller
     {
         $data['userData'] = $this->Auth_model->current_user();
         $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM mengajar GROUP BY tanggal ORDER BY tanggal DESC")->result();
+        // $data['cek'] = $this->cek;
 
         $this->load->view('head', $data);
         $this->load->view('mengajar', $data);
@@ -32,24 +36,22 @@ class Mengajar extends CI_Controller
     {
         $data['userData'] = $this->Auth_model->current_user();
         $harini = date('l');
+        $tglni = date('Y-m-d');
         // $harini = 'Monday';
-        $dataJadwal = $this->db->query("SELECT * FROM jadwal WHERE hari = '$harini' GROUP BY guru ORDER BY guru ASC ")->result();
+        $dataJadwal = $this->db->query("SELECT * FROM guru ORDER BY kode_guru ASC ")->result();
         $dataKirim = [];
         foreach ($dataJadwal as $key) {
-            $guru = $this->model->getBy('guru', 'kode_guru', $key->guru)->row();
-            $mapel = $this->model->getBy('mapel', 'kode_mapel', $key->mapel)->row();
-            $jam = $this->db->query("SELECT * FROM jadwal WHERE hari = '$harini' AND guru = '$key->guru' ")->result();
+            $hadir = $this->db->query("SELECT * FROM kehadiran WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' ")->row();
+            $jam = $this->db->query("SELECT * FROM jadwal WHERE hari = '$harini' AND guru = '$key->kode_guru' ")->result();
             $array_hasil = [];
             foreach ($jam as $datas) {
                 $array_range = range($datas->jam_dari, $datas->jam_sampai);
                 $array_hasil = array_merge($array_hasil, $array_range);
             }
             $dataKirim[] = [
-                'id_jadwal' => $key->id_jadwal,
-                'guru' => $key->guru,
-                'kelas' => $key->kelas,
-                'nama_guru' => $guru->nama_guru,
-                'nama_mapel' => $mapel->nama_mapel,
+                'guru' => $key->kode_guru,
+                'hadir' => $hadir ? $hadir->ket : '',
+                'nama_guru' => $key->nama_guru,
                 'jam' => $array_hasil,
             ];
         }
@@ -88,17 +90,51 @@ class Mengajar extends CI_Controller
         $datas = $this->input->post('datas');
 
         foreach ($datas as $data) {
-            $simpan = [
-                'guru' => $data['guru'],
-                'jam' =>  $data['jam'],
-                'ket' =>  $data['value'],
-                'tanggal' =>  date('Y-m-d'),
-            ];
+            $guru = $data['guru'];
+            $jam = $data['jam'];
+            $tanggal = date('Y-m-d');
+            $ket = $data['value'];
 
-            // Simpan data ke database
-            $this->model->simpan('mengajar', $simpan);
+            $cek = $this->model->getBy3('mengajar', 'guru', $guru, 'jam', $jam, 'tanggal', $tanggal)->row();
+            if ($cek) {
+                $this->db->where('guru', $guru);
+                $this->db->where('jam', $jam);
+                $this->db->where('tanggal', $tanggal);
+                $this->db->update('mengajar', ['ket' => $ket]);
+            } else {
+                $simpan = [
+                    'guru' => $guru,
+                    'jam' =>  $jam,
+                    'ket' =>  $ket,
+                    'tanggal' =>  $tanggal,
+                ];
+                $this->model->simpan('mengajar', $simpan);
+            }
         }
 
         echo json_encode(['status' => 'success']);
+    }
+
+    public function kehadiran()
+    {
+        $guru = $this->input->post('guru');
+        $ket = $this->input->post('status');
+        $tanggal = date('Y-m-d');
+        $cek = $this->model->getBy2('kehadiran', 'guru', $guru, 'tanggal', $tanggal)->row();
+        if ($cek) {
+            $this->db->where('guru', $guru);
+            $this->db->where('tanggal', $tanggal);
+            $this->db->update('kehadiran', ['ket' => $ket]);
+
+            echo json_encode(['status' => 'success']);
+        } else {
+            $simpan = [
+                'guru' => $guru,
+                'ket' =>  $ket,
+                'tanggal' =>  $tanggal,
+            ];
+            $this->model->simpan('kehadiran', $simpan);
+            echo json_encode(['status' => 'success']);
+        }
     }
 }
