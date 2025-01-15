@@ -32,11 +32,19 @@ class Mengajar extends CI_Controller
         $this->load->view('mengajar', $data);
         $this->load->view('foot');
     }
-    public function input()
+    public function input($id = null)
     {
+        if ($id == null) {
+            $harini = date('l');
+            $tglni = date('Y-m-d');
+        } else {
+            $dataCari = $this->model->getBy('mengajar', 'id', $id)->row();
+            $harini = date('l', strtotime($dataCari->tanggal));
+            $tglni = $dataCari->tanggal;
+        }
+
+
         $data['userData'] = $this->Auth_model->current_user();
-        $harini = date('l');
-        $tglni = date('Y-m-d');
         // $harini = 'Monday';
         $dataJadwal = $this->db->query("SELECT * FROM guru ORDER BY kode_guru ASC ")->result();
         $dataKirim = [];
@@ -181,5 +189,19 @@ class Mengajar extends CI_Controller
         $this->load->view('head', $data);
         $this->load->view('mengajarRekap', $data);
         $this->load->view('foot');
+    }
+
+    public function hapus($id)
+    {
+        $dataCari = $this->model->getBy('mengajar', 'id', $id)->row();
+
+        $this->model->hapus('mengajar', 'tanggal', $dataCari->tanggal);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Data berhasil dihapus');
+            redirect('mengajar');
+        } else {
+            $this->session->set_flashdata('error', 'Data gagal dihapus');
+            redirect('mengajar');
+        }
     }
 }

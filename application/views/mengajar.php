@@ -44,8 +44,9 @@
                                               <td><?= translateDay(date('l', strtotime($row->tanggal)), 'id') ?></td>
                                               <td><?= $row->tanggal ?></td>
                                               <td>
+                                                  <a href="<?= base_url('mengajar/input/') . $row->id ?>" class="btn btn-xs btn-warning">Edit</a>
+                                                  <a href="<?= base_url('mengajar/rekap/') . $row->id ?>" class="btn btn-xs btn-info">Rekap</a>
                                                   <a href="<?= base_url('mengajar/hapus/') . $row->id ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
-                                                  <a href="<?= base_url('mengajar/rekap/') . $row->id ?>" class="btn btn-xs btn-warning">Rekap</a>
                                               </td>
                                           </tr>
                                       <?php endforeach ?>
