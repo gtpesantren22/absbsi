@@ -95,7 +95,7 @@
         </thead>
         <tbody>
             <?php
-            $hariini = date('Y-m-d');
+            $hariini = $tanggalIni;
             for ($i = 1; $i <= 8; $i++):
                 $cek = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru->kode_guru' AND tanggal = '$hariini' AND jam = $i ")->row();
                 $ket = $cek ? $cek->ket : '';
@@ -164,7 +164,8 @@
             url: '<?= site_url("mengajar/simpanJam") ?>',
             type: 'POST',
             data: {
-                datas: formData
+                datas: formData,
+                tanggal: '<?= $tanggalIni ?>'
             },
             success: function(response) {
                 const res = JSON.parse(response);

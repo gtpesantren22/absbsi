@@ -17,7 +17,7 @@
 
               <div class="box">
                   <div class="box-header">
-                      <h3 class="box-title text-primary">Absensi Jam Mengajar Guru <br> <?= translateDay(date('l'), 'id') . ', ' . date('d-M-Y') ?></h3>
+                      <h3 class="box-title text-primary">Absensi Jam Mengajar Guru <br> <?= translateDay($hari, 'id') . ', ' . $tanggal ?></h3>
                       <button class="btn btn-sm btn-warning pull-right" onclick="window.location='<?= base_url('mengajar') ?>'">Kembali</button>
                   </div>
                   <!-- /.box-header -->
@@ -43,7 +43,7 @@
                                       <tbody>
                                           <?php
                                             $no = 1;
-                                            $hariini = date('Y-m-d');
+                                            $hariini = $tanggal;
                                             foreach ($data as $row) :
                                                 $guru = $row['guru'];
                                                 $cek1 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 1 ")->row();
@@ -110,7 +110,8 @@
                   url: '<?= base_url('mengajar/cekGuru') ?>',
                   method: 'POST',
                   data: {
-                      guru: guru
+                      guru: guru,
+                      tanggal: '<?= $tanggal ?>',
                   },
                   dataType: 'html',
                   success: function(response) {
@@ -133,7 +134,8 @@
                   type: 'POST',
                   data: {
                       guru: value,
-                      status: checked ? '1' : '0'
+                      status: checked ? '1' : '0',
+                      tanggal: '<?= $tanggal ?>',
                   },
                   success: function(response) {
                       console.log('simpan OK');

@@ -64,6 +64,8 @@ class Mengajar extends CI_Controller
             ];
         }
         $data['data'] = $dataKirim;
+        $data['tanggal'] = $tglni;
+        $data['hari'] = $harini;
 
         // echo '<pre>';
         // var_dump($dataKirim);
@@ -75,10 +77,11 @@ class Mengajar extends CI_Controller
 
     public function cekGuru()
     {
-        $kdguru = $this->input->post('guru');
+        $kdguru = $this->input->post('guru', true);
+        $tanggal = $this->input->post('tanggal', true);
+        $harini = date('l', strtotime($tanggal));
 
         $data['guru'] = $this->model->getBy('guru', 'kode_guru', $kdguru)->row();
-        $harini = date('l');
 
         // $mapel = $this->model->getBy('mapel', 'kode_mapel', $key->mapel)->row();
         $data['jadwal'] = $this->db->query("SELECT * FROM jadwal WHERE hari = '$harini' AND guru = '$kdguru' ORDER BY jam_dari ASC ")->result();
@@ -89,18 +92,19 @@ class Mengajar extends CI_Controller
         }
 
         $data['jam'] = $array_hasil;
+        $data['tanggalIni'] = $tanggal;
 
         $this->load->view('tampilMengajar', $data);
     }
 
     public function simpanJam()
     {
-        $datas = $this->input->post('datas');
+        $datas = $this->input->post('datas', true);
+        $tanggal = $this->input->post('tanggal', true);
 
         foreach ($datas as $data) {
             $guru = $data['guru'];
             $jam = $data['jam'];
-            $tanggal = date('Y-m-d');
             $ket = $data['value'];
 
             $cek = $this->model->getBy3('mengajar', 'guru', $guru, 'jam', $jam, 'tanggal', $tanggal)->row();
@@ -125,9 +129,9 @@ class Mengajar extends CI_Controller
 
     public function kehadiran()
     {
-        $guru = $this->input->post('guru');
-        $ket = $this->input->post('status');
-        $tanggal = date('Y-m-d');
+        $guru = $this->input->post('guru', true);
+        $ket = $this->input->post('status', true);
+        $tanggal = $this->input->post('tanggal', true);
         $cek = $this->model->getBy2('kehadiran', 'guru', $guru, 'tanggal', $tanggal)->row();
         if ($cek) {
             $this->db->where('guru', $guru);
