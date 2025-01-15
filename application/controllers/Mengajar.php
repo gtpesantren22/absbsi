@@ -137,4 +137,49 @@ class Mengajar extends CI_Controller
             echo json_encode(['status' => 'success']);
         }
     }
+
+    public function rekap($id)
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $dataCari = $this->model->getBy('mengajar', 'id', $id)->row();
+        $harini = date('l', strtotime($dataCari->tanggal));
+        $tglni = $dataCari->tanggal;
+        // $harini = 'Monday';
+        $dataJadwal = $this->db->query("SELECT * FROM guru ORDER BY kode_guru ASC ");
+        $dataKirim = [];
+        $totalkehadiran = 0;
+        $totaljamwajib = 0;
+        $totaljammasuk = 0;
+        foreach ($dataJadwal->result() as $key) {
+            $hadir = $this->db->query("SELECT * FROM kehadiran WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' ")->row();
+            $jam = $this->db->query("SELECT SUM((jam_sampai-jam_dari)+1) as jmlJam FROM jadwal WHERE hari = '$harini' AND guru = '$key->kode_guru' ")->row();
+            $masuk = $this->db->query("SELECT COUNT(*) as jmlJam FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' AND ket = 'H' ")->row();
+            $jamwajib = $jam->jmlJam != 0 ? $jam->jmlJam : 0;
+            $dataKirim[] = [
+                'guru' => $key->kode_guru,
+                'hadir' => $hadir ? $hadir->ket : '',
+                'nama_guru' => $key->nama_guru,
+                'jam' => $jamwajib,
+                'masuk' => $masuk->jmlJam,
+                'persen' => $jamwajib == 0 ? 0 : ($masuk->jmlJam / $jamwajib) * 100,
+            ];
+            $totalkehadiran += $hadir ? 1 : 0;
+            $totaljamwajib += $jamwajib;
+            $totaljammasuk += $masuk->jmlJam;
+        }
+        $data['data'] = $dataKirim;
+        $data['hari'] = $harini;
+        $data['tanggal'] = $tglni;
+        $data['totalguru'] = $dataJadwal->num_rows();
+        $data['totalkehadiran'] = $totalkehadiran;
+        $data['totaljamwajib'] = $totaljamwajib;
+        $data['totaljammasuk'] = $totaljammasuk;
+
+        // echo '<pre>';
+        // var_dump($dataKirim);
+        // echo '</pre>';
+        $this->load->view('head', $data);
+        $this->load->view('mengajarRekap', $data);
+        $this->load->view('foot');
+    }
 }

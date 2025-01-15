@@ -24,40 +24,41 @@
                   <div class="box-body">
                       <div class="row">
                           <!-- <div class="col-md-12"><h1><?= $cek ?></h1> -->
-                              <div class="table-responsive">
-                                  <table id="example1" class="table table-bordered table-striped">
-                                      <thead>
+                          <div class="table-responsive">
+                              <table id="example1" class="table table-bordered table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>NO</th>
+                                          <th>Hari</th>
+                                          <th>TANGGAL</th>
+                                          <th>#</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <?php
+                                        $no = 1;
+                                        foreach ($data as $row) :
+                                        ?>
                                           <tr>
-                                              <th>NO</th>
-                                              <th>Hari</th>
-                                              <th>TANGGAL</th>
-                                              <th>#</th>
+                                              <td><?= $no++ ?></td>
+                                              <td><?= translateDay(date('l', strtotime($row->tanggal)), 'id') ?></td>
+                                              <td><?= $row->tanggal ?></td>
+                                              <td>
+                                                  <a href="<?= base_url('mengajar/hapus/') . $row->id ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
+                                                  <a href="<?= base_url('mengajar/rekap/') . $row->id ?>" class="btn btn-xs btn-warning">Rekap</a>
+                                              </td>
                                           </tr>
-                                      </thead>
-                                      <tbody>
-                                          <?php
-                                            $no = 1;
-                                            foreach ($data as $row) :
-                                            ?>
-                                              <tr>
-                                                  <td><?= $no++ ?></td>
-                                                  <td><?= translateDay(date('l', strtotime($row->tanggal)), 'id') ?></td>
-                                                  <td><?= $row->tanggal ?></td>
-                                                  <td>
-                                                      <a href="<?= base_url('pembiasaan/hapus/') . $row->id ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
-                                                  </td>
-                                              </tr>
-                                          <?php endforeach ?>
-                                      </tbody>
-                                  </table>
-                              </div>
+                                      <?php endforeach ?>
+                                  </tbody>
+                              </table>
                           </div>
                       </div>
                   </div>
-                  <!-- /.box-body -->
               </div>
-              <!-- /.box -->
-          </section><!-- /.content -->
+              <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+      </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
       <script src="<?= base_url('assets/') ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>

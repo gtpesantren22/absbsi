@@ -4,7 +4,7 @@
           <section class="content-header">
               <h1>
                   Absensi
-                  <small>Data Absensi Mengajar Guru</small>
+                  <small>Rekap Absensi Mengajar Guru</small>
               </h1>
               <ol class="breadcrumb">
                   <li><a href="#"><i class="fa fa-th"></i> Home</a></li>
@@ -17,58 +17,55 @@
 
               <div class="box">
                   <div class="box-header">
-                      <h3 class="box-title text-primary">Absensi Jam Mengajar Guru <br> <?= translateDay(date('l'), 'id') . ', ' . date('d-M-Y') ?></h3>
+                      <h3 class="box-title text-primary">Rekap Mengajar Guru <br> <?= translateDay($hari, 'id') . ', ' . $tanggal ?></h3>
                       <button class="btn btn-sm btn-warning pull-right" onclick="window.location='<?= base_url('mengajar') ?>'">Kembali</button>
                   </div>
                   <!-- /.box-header -->
                   <div class="box-body">
                       <div class="row">
+                          <div class="col-xs-6">
+                              <div class="small-box bg-aqua">
+                                  <div class="inner">
+                                      <h3><?= round($totalkehadiran / $totalguru * 100, 1) ?>%</h3>
+                                  </div>
+                                  <div class="icon">
+                                      <i class="ion ion-bag"></i>
+                                  </div>
+                                  <a href="#" class="small-box-footer">Kehadiran <i class="fa fa-arrow-circle-right"></i></a>
+                              </div>
+                          </div>
+                          <div class="col-xs-6">
+                              <div class="small-box bg-green">
+                                  <div class="inner">
+                                      <h3><?= round($totaljammasuk / $totaljamwajib * 100, 1) ?>%</h3>
+                                  </div>
+                                  <div class="icon">
+                                      <i class="ion ion-stats-bars"></i>
+                                  </div>
+                                  <a href="#" class="small-box-footer">jam Mengajar <i class="fa fa-arrow-circle-right"></i></a>
+                              </div>
+                          </div>
                           <div class="col-md-12">
                               <div class="table-responsive">
                                   <table id="" class="table table-bordered table-sm table-striped">
                                       <thead>
                                           <tr>
                                               <th>Nama</th>
-                                              <th>#</th>
-                                              <th>1</th>
-                                              <th>2</th>
-                                              <th>3</th>
-                                              <th>4</th>
-                                              <th>5</th>
-                                              <th>6</th>
-                                              <th>7</th>
-                                              <th>8</th>
+                                              <th>Hadir</th>
+                                              <th colspan="3">Mengajar</th>
                                           </tr>
                                       </thead>
                                       <tbody>
                                           <?php
                                             $no = 1;
-                                            $hariini = date('Y-m-d');
                                             foreach ($data as $row) :
-                                                $guru = $row['guru'];
-                                                $cek1 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 1 ")->row();
-                                                $cek2 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 2 ")->row();
-                                                $cek3 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 3 ")->row();
-                                                $cek4 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 4 ")->row();
-                                                $cek5 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 5 ")->row();
-                                                $cek6 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 6 ")->row();
-                                                $cek6 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 6 ")->row();
-                                                $cek7 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 7 ")->row();
-                                                $cek8 = $this->db->query("SELECT * FROM mengajar WHERE guru = '$guru' AND tanggal = '$hariini' AND jam = 8 ")->row();
                                             ?>
                                               <tr>
-                                                  <td><a id="show-rinci" data-guru="<?= $row['guru'] ?>" href="#"><?= $row['nama_guru'] ?></a></td>
-                                                  <td>
-                                                      <input type="checkbox" name="hadir" class="hobiCheckbox" <?= $row['hadir'] == 1 ? 'checked' : '' ?> value="<?= $guru ?>">
-                                                  </td>
-                                                  <th <?= in_array(1, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek1 ? $cek1->ket : '' ?></th>
-                                                  <th <?= in_array(2, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek2 ? $cek2->ket : '' ?></th>
-                                                  <th <?= in_array(3, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek3 ? $cek3->ket : '' ?></th>
-                                                  <th <?= in_array(4, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek4 ? $cek4->ket : '' ?></th>
-                                                  <th <?= in_array(5, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek5 ? $cek5->ket : '' ?></th>
-                                                  <th <?= in_array(6, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek6 ? $cek6->ket : '' ?></th>
-                                                  <th <?= in_array(7, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek7 ? $cek7->ket : '' ?></th>
-                                                  <th <?= in_array(8, $row['jam'])  ? "style='background-color: orange;'" : '' ?>><?= $cek8 ? $cek8->ket : '' ?></th>
+                                                  <td><?= $row['nama_guru'] ?></td>
+                                                  <td><?= $row['hadir'] == 1 ? 100 : 0 ?>%</td>
+                                                  <td><?= $row['jam'] ?></td>
+                                                  <td><?= $row['masuk'] ?></td>
+                                                  <td><?= round($row['persen'], 1) ?>%</td>
                                               </tr>
                                           <?php endforeach ?>
                                       </tbody>
