@@ -45,14 +45,20 @@
                                   <a href="#" class="small-box-footer">jam Mengajar <i class="fa fa-arrow-circle-right"></i></a>
                               </div>
                           </div>
-                          <div class="col-md-12">
+                          <div class="col-12 col-sm-12 col-md-12">
                               <div class="table-responsive">
                                   <table id="" class="table table-bordered table-sm table-striped">
                                       <thead>
                                           <tr>
-                                              <th>Nama</th>
-                                              <th>Hadir</th>
-                                              <th colspan="3">Mengajar</th>
+                                              <th rowspan="2">Nama</th>
+                                              <th rowspan="2">Hadir</th>
+                                              <th colspan="4">Mengajar</th>
+                                          </tr>
+                                          <tr>
+                                              <th>W</th>
+                                              <th>H</th>
+                                              <th></th>
+                                              <th>Ket</th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -66,6 +72,7 @@
                                                   <td><?= $row['jam'] ?></td>
                                                   <td><?= $row['masuk'] ?></td>
                                                   <td><?= round($row['persen'], 1) ?>%</td>
+                                                  <td></td>
                                               </tr>
                                           <?php endforeach ?>
                                       </tbody>
