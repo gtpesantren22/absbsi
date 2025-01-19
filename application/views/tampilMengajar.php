@@ -90,6 +90,7 @@
         <thead>
             <tr>
                 <th>Jam</th>
+                <th>Absen</th>
                 <th>Ket</th>
             </tr>
         </thead>
@@ -131,6 +132,11 @@
                             </label>
                         <?php endif ?>
                     </td>
+                    <td>
+                        <?php if (in_array($i, $jam)): ?>
+                            <input type="text" class="form-control form-control-sm ket-input" name="ket[]" value="<?= $cek ? $cek->alasan : '-' ?>">
+                        <?php endif ?>
+                    </td>
                 </tr>
             <?php endfor ?>
         </tbody>
@@ -149,15 +155,20 @@
             const value = $(this).val(); // e.g., "Main"
             const jam = $(this).data('jam'); // e.g., "1"
             const guru = $(this).data('guru'); // e.g., "Hobi bermain"
+            const alasan = $(this).closest('tr').find('input.ket-input').val() || '-';
 
             // Tambahkan data ke array formData
             formData.push({
                 // name: name,
                 value: value,
                 jam: jam,
-                guru: guru
+                guru: guru,
+                alasan: alasan
             });
         });
+
+        console.log(formData);
+
 
         // Kirim data ke server menggunakan AJAX
         $.ajax({

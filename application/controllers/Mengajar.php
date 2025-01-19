@@ -106,19 +106,21 @@ class Mengajar extends CI_Controller
             $guru = $data['guru'];
             $jam = $data['jam'];
             $ket = $data['value'];
+            $alasan = $data['alasan'];
 
             $cek = $this->model->getBy3('mengajar', 'guru', $guru, 'jam', $jam, 'tanggal', $tanggal)->row();
             if ($cek) {
                 $this->db->where('guru', $guru);
                 $this->db->where('jam', $jam);
                 $this->db->where('tanggal', $tanggal);
-                $this->db->update('mengajar', ['ket' => $ket]);
+                $this->db->update('mengajar', ['ket' => $ket, 'alasan' => $alasan]);
             } else {
                 $simpan = [
                     'guru' => $guru,
                     'jam' =>  $jam,
                     'ket' =>  $ket,
                     'tanggal' =>  $tanggal,
+                    'alasan' =>  $alasan,
                 ];
                 $this->model->simpan('mengajar', $simpan);
             }
