@@ -177,7 +177,7 @@ class Mengajar extends CI_Controller
                 'masuk' => $masuk->jmlJam,
                 'persen' => $jamwajib == 0 ? 0 : ($masuk->jmlJam / $jamwajib) * 100,
             ];
-            $totalkehadiran += $hadir ? 1 : 0;
+            $totalkehadiran += $hadir ? $hadir->ket : 0;
             $totaljamwajib += $jamwajib;
             $totaljammasuk += $masuk->jmlJam;
         }
