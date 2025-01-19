@@ -72,7 +72,7 @@
                                                   <td><?= $row['jam'] ?></td>
                                                   <td><?= $row['masuk'] ?></td>
                                                   <td><?= round($row['persen'], 1) ?>%</td>
-                                                  <td></td>
+                                                  <td><?= $row['alasan'] ?></td>
                                               </tr>
                                           <?php endforeach ?>
                                       </tbody>

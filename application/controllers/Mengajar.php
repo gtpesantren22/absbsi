@@ -106,7 +106,7 @@ class Mengajar extends CI_Controller
             $guru = $data['guru'];
             $jam = $data['jam'];
             $ket = $data['value'];
-            $alasan = $data['alasan'];
+            $alasan = !empty($data['alasan']) ? $data['alasan'] : '-';
 
             $cek = $this->model->getBy3('mengajar', 'guru', $guru, 'jam', $jam, 'tanggal', $tanggal)->row();
             if ($cek) {
@@ -168,6 +168,7 @@ class Mengajar extends CI_Controller
             $hadir = $this->db->query("SELECT * FROM kehadiran WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' ")->row();
             $jam = $this->db->query("SELECT SUM((jam_sampai-jam_dari)+1) as jmlJam FROM jadwal WHERE hari = '$harini' AND guru = '$key->kode_guru' ")->row();
             $masuk = $this->db->query("SELECT COUNT(*) as jmlJam FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' AND ket = 'H' ")->row();
+            $alasan = $this->db->query("SELECT * FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' AND alasan != '-' ")->row();
             $jamwajib = $jam->jmlJam != 0 ? $jam->jmlJam : 0;
             $dataKirim[] = [
                 'guru' => $key->kode_guru,
@@ -176,6 +177,7 @@ class Mengajar extends CI_Controller
                 'jam' => $jamwajib,
                 'masuk' => $masuk->jmlJam,
                 'persen' => $jamwajib == 0 ? 0 : ($masuk->jmlJam / $jamwajib) * 100,
+                'alasan' => $alasan ? $alasan->alasan : '-',
             ];
             $totalkehadiran += $hadir && $hadir->ket == 1 ? 1 : 0;
             $totaljamwajib += $jamwajib;

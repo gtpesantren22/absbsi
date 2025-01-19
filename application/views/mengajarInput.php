@@ -24,6 +24,7 @@
                   <div class="box-body">
                       <div class="row">
                           <div class="col-12 col-md-12 col-sm-12">
+                            
                               <div class="table-responsive">
                                   <table id="" class="table table-bordered table-sm table-striped">
                                       <thead>

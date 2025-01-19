@@ -91,7 +91,7 @@
             <tr>
                 <th>Jam</th>
                 <th>Absen</th>
-                <th>Ket</th>
+                <th>Keterangan</th>
             </tr>
         </thead>
         <tbody>
@@ -132,13 +132,17 @@
                             </label>
                         <?php endif ?>
                     </td>
-                    <td>
-                        <?php if (in_array($i, $jam)): ?>
-                            <input type="text" class="form-control form-control-sm ket-input" name="ket[]" value="<?= $cek ? $cek->alasan : '-' ?>">
-                        <?php endif ?>
-                    </td>
+                    <?php
+                    $rowspan = 8;
+                    if ($i % $rowspan === 1) {
+                    ?>
+                        <td rowspan="<?= $rowspan ?>">
+                            <textarea class="form-control form-control-sm" id="ket-input" rows="10" name="alasan"><?= $cek ? $cek->alasan : '-' ?></textarea>
+                        </td>
+                    <?php } ?>
                 </tr>
-            <?php endfor ?>
+            <?php
+            endfor; ?>
         </tbody>
     </table>
     <button type="submit" class="btn btn-sm btn-success" id="saveButton"><i class="fa fa-save"></i> Simpan</button>
@@ -155,11 +159,10 @@
             const value = $(this).val(); // e.g., "Main"
             const jam = $(this).data('jam'); // e.g., "1"
             const guru = $(this).data('guru'); // e.g., "Hobi bermain"
-            const alasan = $(this).closest('tr').find('input.ket-input').val() || '-';
+            const alasan = $(this).closest('tr').find('textarea').val();
 
             // Tambahkan data ke array formData
             formData.push({
-                // name: name,
                 value: value,
                 jam: jam,
                 guru: guru,
@@ -167,8 +170,7 @@
             });
         });
 
-        console.log(formData);
-
+        // console.log(formData);
 
         // Kirim data ke server menggunakan AJAX
         $.ajax({
