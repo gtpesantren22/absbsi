@@ -263,7 +263,7 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
         $kode = $this->input->post('kode', true);
         $kodeOk = $guru . $kode;
 
-        $cek = $this->model->getBy('guru_mapel', 'gabung', $kodeOk)->row();
+        $cek = $this->model->getBy3('guru_mapel', 'guru', $guru, 'mapel', $mapel, 'kode', $kode)->row();
         if ($cek) {
             $this->session->set_flashdata('message', 'Data sudah ada');
             redirect('master/guru_mapel');
@@ -277,10 +277,10 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
             ];
             $this->model->simpan('guru_mapel', $data);
             if ($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('message', 'Data berhasil ditambahkan');
+                $this->session->set_flashdata('ok', 'Data berhasil ditambahkan');
                 redirect('master/guru_mapel');
             } else {
-                $this->session->set_flashdata('message', 'Data gagal ditambahkan');
+                $this->session->set_flashdata('error', 'Data gagal ditambahkan');
                 redirect('master/guru_mapel');
             }
         }
@@ -290,10 +290,10 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
     {
         $this->model->hapus('guru_mapel', 'id_guma', $id);
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('message', 'Data berhasil dihapus');
+            $this->session->set_flashdata('ok', 'Data berhasil dihapus');
             redirect('master/guru_mapel');
         } else {
-            $this->session->set_flashdata('message', 'Data gagal dihapus');
+            $this->session->set_flashdata('error', 'Data gagal dihapus');
             redirect('master/guru_mapel');
         }
     }
@@ -312,10 +312,10 @@ Hari *' . translateDay(date('l'), 'id') . ', ' . date('d-m-Y') . ':*
         ];
         $this->model->edit('guru', $data, 'kode_guru', $kode_guru);
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('message', 'Data berhasil diubah');
+            $this->session->set_flashdata('ok', 'Data berhasil diubah');
             redirect('master/guru');
         } else {
-            $this->session->set_flashdata('message', 'Data gagal diubah');
+            $this->session->set_flashdata('error', 'Data gagal diubah');
             redirect('master/guru');
         }
     }

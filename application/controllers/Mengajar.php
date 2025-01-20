@@ -166,7 +166,8 @@ class Mengajar extends CI_Controller
         $totaljammasuk = 0;
         foreach ($dataJadwal->result() as $key) {
             $hadir = $this->db->query("SELECT * FROM kehadiran WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' ")->row();
-            $jam = $this->db->query("SELECT SUM((jam_sampai-jam_dari)+1) as jmlJam FROM jadwal WHERE hari = '$harini' AND guru = '$key->kode_guru' ")->row();
+            // $jam = $this->db->query("SELECT SUM((jam_sampai-jam_dari)+1) as jmlJam FROM jadwal WHERE hari = '$harini' AND guru = '$key->kode_guru' ")->row();
+            $jam = $this->db->query("SELECT COUNT(*) as jmlJam FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' ")->row();
             $masuk = $this->db->query("SELECT COUNT(*) as jmlJam FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' AND ket = 'H' ")->row();
             $alasan = $this->db->query("SELECT * FROM mengajar WHERE tanggal = '$tglni' AND guru = '$key->kode_guru' AND alasan != '-' ")->row();
             $jamwajib = $jam->jmlJam != 0 ? $jam->jmlJam : 0;
