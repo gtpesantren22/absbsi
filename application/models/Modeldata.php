@@ -138,6 +138,12 @@ class Modeldata extends CI_Model
         $this->db->where($where1, $dtwhere1);
         $this->db->delete($tbl);
     }
+    public function hapus2($tbl, $where1, $dtwhere1, $where2, $dtwhere2)
+    {
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        $this->db->delete($tbl);
+    }
 
     function getJadwal()
     {
