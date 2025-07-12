@@ -1,8 +1,8 @@
 <div class="row">
     <?php
     $days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-    for ($i = 0; $i < count($days); $i++) {
-        $hariIni = $days[$i];
+    for ($hr = 0; $hr < count($days); $hr++) {
+        $hariIni = $days[$hr];
     ?>
         <div class="col-md-4">
             <div class="table-responsive">
