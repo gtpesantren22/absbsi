@@ -9,7 +9,7 @@
                 <table class="table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="9" class="text-center"><?= translateDay($days[$i], 'id') ?></th>
+                            <th colspan="9" class="text-center"><?= translateDay($days[$hr], 'id') ?></th>
                         </tr>
                         <tr>
                             <th class="text-center">Kelas</th>
