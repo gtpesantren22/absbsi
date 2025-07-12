@@ -33,19 +33,47 @@
                             <tr>
                                 <td><?= $kelas ?></td>
                                 <?php
-                                $sql = $this->db->query("SELECT * FROM jadwal WHERE hari = '$hari' AND kelas = '$kelas' ORDER BY jam_dari ASC")->result();
-                                foreach ($sql as $jdl) :
-                                    $jmlJam = ($jdl->jam_sampai - $jdl->jam_dari) + 1;
-                                    $dtjadwal = $this->db->query("SELECT * FROM guru_mapel WHERE guru = '$jdl->guru' AND mapel = '$jdl->mapel' ")->row();
-                                    $guruData = $this->db->query("SELECT * FROM guru WHERE kode_guru = '$jdl->guru' ")->row();
-                                    for ($rw = 1; $rw <= $jmlJam; $rw++) {
-                                ?>
-                                        <td class="text-center" style="color: black; background-color: <?= $guruData->warna ?>;">
-                                            <a class="btn-edit" href="#" data-idjadwal="<?= $jdl->id_jadwal ?>" data-hari="<?= $jdl->hari ?>" data-dari="<?= $jdl->jam_dari ?>" data-sampai="<?= $jdl->jam_sampai ?>" data-guru="<?= $jdl->guru ?>" data-mapel="<?= $jdl->mapel ?>" data-kelas="<?= $jdl->kelas ?>"><?= $dtjadwal ? (int)$dtjadwal->guru . $dtjadwal->kode : '' ?></a>
-                                        </td>
-                                <?php }
-                                endforeach; ?>
+                                $totalJam = 8; // Misal jam pelajaran 1 s.d. 8
+                                $jadwalMap = [];
 
+                                // Ambil semua jadwal untuk hari dan kelas yang dimaksud
+                                $sql = $this->db->query("SELECT * FROM jadwal WHERE hari = '$hari' AND kelas = '$kelas' ORDER BY jam_dari ASC")->result();
+
+                                // Masukkan semua data ke array per jam
+                                foreach ($sql as $j) {
+                                    for ($i = $j->jam_dari; $i <= $j->jam_sampai; $i++) {
+                                        $jadwalMap[$i][] = $j; // ← bisa lebih dari satu jadwal per jam
+                                    }
+                                }
+
+                                // Cetak baris untuk jam 1-8
+                                for ($jam = 1; $jam <= $totalJam; $jam++) {
+                                    echo '<td style="color: black;">';
+
+                                    if (isset($jadwalMap[$jam])) {
+                                        foreach ($jadwalMap[$jam] as $j) {
+                                            $dtjadwal = $this->db->query("SELECT * FROM guru_mapel WHERE guru = '$j->guru' AND mapel = '$j->mapel'")->row();
+                                            $guruData = $this->db->query("SELECT * FROM guru WHERE kode_guru = '$j->guru'")->row();
+                                            $warna = $guruData->warna ?? '#eee';
+
+                                            echo '<div class="text-center" style="background:' . $warna . '; margin-bottom: 2px; padding: 1px; border-radius: 4px;">';
+                                            echo '<a class="btn-edit" href="#" 
+                                                    data-idjadwal="' . $j->id_jadwal . '" 
+                                                    data-hari="' . $j->hari . '" 
+                                                    data-dari="' . $j->jam_dari . '" 
+                                                    data-sampai="' . $j->jam_sampai . '" 
+                                                    data-guru="' . $j->guru . '" 
+                                                    data-mapel="' . $j->mapel . '" 
+                                                    data-kelas="' . $j->kelas . '">';
+                                            echo $dtjadwal ? (int)$dtjadwal->guru . $dtjadwal->kode : $j->guru;
+                                            echo '</a>';
+                                            echo '</div>';
+                                        }
+                                    }
+
+                                    echo '</td>';
+                                }
+                                ?>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
