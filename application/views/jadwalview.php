@@ -55,9 +55,10 @@
                                             $dtjadwal = $this->db->query("SELECT * FROM guru_mapel WHERE guru = '$j->guru' AND mapel = '$j->mapel'")->row();
                                             $guruData = $this->db->query("SELECT * FROM guru WHERE kode_guru = '$j->guru'")->row();
                                             $warna = $guruData->warna ?? '#eee';
+                                            $huruf = $guruData->huruf ?? '#000';
 
                                             echo '<div class="text-center" style="background:' . $warna . '; margin-bottom: 2px; padding: 1px; border-radius: 4px;">';
-                                            echo '<a class="btn-edit" href="#" 
+                                            echo '<a class="btn-edit" style="color:' . $huruf . ';" href="#" 
                                                     data-idjadwal="' . $j->id_jadwal . '" 
                                                     data-hari="' . $j->hari . '" 
                                                     data-dari="' . $j->jam_dari . '" 
