@@ -214,6 +214,11 @@
                                 <i class="fa fa-newspaper-o"></i> <span>Absensi Pembiasaan</span>
                             </a>
                         </li>
+                        <li>
+                            <a target="_blank" href="<?= base_url('laptop') ?>">
+                                <i class="fa fa-newspaper-o"></i> <span>Absensi Pengambilan Laptop</span>
+                            </a>
+                        </li>
                         <?php if ($userData->kode_guru == '07' || $userData->kode_guru == '11' || $userData->kode_guru == '14' || $userData->kode_guru == '13') { ?>
                             <li>
                                 <a href="<?= base_url('mengajar') ?>">

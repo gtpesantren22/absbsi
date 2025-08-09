@@ -48,7 +48,7 @@ function kirim_person($no_hp, $pesan)
     curl_setopt_array(
         $curl2,
         array(
-            CURLOPT_URL => 'http://103.226.139.1/api/sendMessage',
+            CURLOPT_URL => 'http://27.112.78.18:3001/send-personal',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -56,7 +56,7 @@ function kirim_person($no_hp, $pesan)
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => 'apiKey=66f67201ef1de1c48d5bba3257e46839&phone=' . $no_hp . '&message=' . $pesan,
+            CURLOPT_POSTFIELDS => 'number=' . $no_hp . '&message=' . $pesan,
         )
     );
     $response = curl_exec($curl2);
@@ -69,7 +69,7 @@ function kirim_group($id_group, $pesan)
     curl_setopt_array(
         $curl2,
         array(
-            CURLOPT_URL => 'http://103.226.139.1/api/sendMessageGroup',
+            CURLOPT_URL => 'http://27.112.78.18:3001/send-group',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -77,7 +77,7 @@ function kirim_group($id_group, $pesan)
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => 'apiKey=66f67201ef1de1c48d5bba3257e46839&id_group=' . $id_group . '&message=' . $pesan,
+            CURLOPT_POSTFIELDS => 'groupId=' . $id_group . '&message=' . $pesan,
         )
     );
     $response = curl_exec($curl2);
