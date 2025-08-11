@@ -14,9 +14,9 @@ class Laptop extends CI_Controller
 
         $user = $this->Auth_model->current_user();
 
-        if (!$this->Auth_model->current_user() || $user->level != 'admin') {
-            redirect('login/logout');
-        }
+        // if (!$this->Auth_model->current_user() || $user->level != 'admin') {
+        //     redirect('login/logout');
+        // }
     }
 
     public function index()
