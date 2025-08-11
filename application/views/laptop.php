@@ -99,7 +99,7 @@
                             <div id="qr-reader" class="w-full"></div>
                         </div>
 
-                        <p class="text-danger"><span id="result"></span></p>
+                        <p class="text-danger mt-2"><span id="result"></span></p>
                         <audio id="success-sound" src="<?= base_url('assets/audio/berhasil.mp3') ?>"></audio>
                         <audio id="error-sound" src="<?= base_url('assets/audio/tidak_ada.mp3') ?>">"></audio>
                         <audio id="warning-sound" src="<?= base_url('assets/audio/sudah.mp3') ?>">"></audio>
@@ -120,40 +120,22 @@
                 <!-- Form untuk Scanner -->
                 <div id="scanner-section" class="hidden mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Tempelkan Kartu RFID
+                        Arahkan kartu ke Alat Scanner
                     </label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <div class="w-full h-40 bg-gray-100 mb-3 flex items-center justify-center">
+                        <!-- <div class="w-full h-40 bg-gray-100 mb-3 flex items-center justify-center">
                             <i class="fas fa-id-card text-6xl text-gray-400 pulse-animation"></i>
-                        </div>
-                        <p class="text-sm text-gray-500">Tempelkan kartu siswa ke scanner</p>
+                        </div> -->
+                        <input
+                            type="number"
+                            id="qr-input"
+                            placeholder="Scan QR code..."
+                            autocomplete="off"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-center font-semibold tracking-widest" />
+                        <!-- <p class="text-sm text-gray-500 mt-2"><span id="result2">Tempelkan kartu siswa ke scanner</span></p> -->
+                        <div class="mt-2" id="result2"></div>
                     </div>
                 </div>
-
-                <!-- Status Kehadiran -->
-                <!-- <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Konfirmasi Status Kehadiran
-                    </label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                            Hadir
-                        </button>
-                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                            Izin
-                        </button>
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                            Sakit
-                        </button>
-                        <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                            Alpa
-                        </button>
-                    </div>
-                </div>
-                
-                <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                    <i class="fas fa-check-circle mr-2"></i>Simpan Absensi
-                </button> -->
             </div>
 
             <!-- Bagian Kanan - Tampilan Siswa yang Absen -->
@@ -237,6 +219,7 @@
         const reader = new Html5Qrcode(qrRegionId);
         const cameraSelect = document.getElementById("camera-select");
         const placeholder = document.getElementById('camera-placeholder');
+        let availableCameras = [];
 
         function onScanSuccess(decodedText, decodedResult) {
             // Hasil kode QR
@@ -267,18 +250,16 @@
                             document.getElementById('student-status').innerHTML = '<span class="bg-red-100 text-red-800 py-0.5 px-2 rounded-full text-xs">Dikembalikan</span>';
                         }
                         document.getElementById('student-time').textContent = data.waktu;
+                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-green-700 bg-green-100 border border-green-300 rounded-md">✅ ${data.message}</div>`;
 
                     } else if (data.status == 'sudah') {
                         soundToPlay = document.getElementById("warning-sound");
-                        document.getElementById("result").textContent = '';
-                        document.getElementById("result").textContent = data.message;
+                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
                     } else if (data.status == 'not_found') {
                         soundToPlay = document.getElementById("error-sound");
-                        document.getElementById("result").textContent = '';
-                        document.getElementById("result").textContent = data.message;
+                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
                     } else {
-                        document.getElementById("result").textContent = '';
-                        document.getElementById("result").textContent = data.message;
+                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
                     }
                     soundToPlay.play().catch(err => console.error("Error playing sound:", err));
                     // console.log(data);
@@ -292,7 +273,6 @@
             console.warn("Scan error:", errorMessage);
         }
 
-        // Fungsi untuk memulai kamera berdasarkan ID
         function startCamera(cameraId) {
             placeholder.classList.add('hidden');
             reader.start(
@@ -310,18 +290,17 @@
             });
         }
 
-        // Ambil daftar kamera
+        // Ambil daftar kamera saat halaman load (tanpa langsung start)
         Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
+                availableCameras = devices;
+
                 devices.forEach((device, index) => {
                     const option = document.createElement("option");
                     option.value = device.id;
                     option.text = device.label || `Kamera ${index + 1}`;
                     cameraSelect.appendChild(option);
                 });
-
-                // Otomatis mulai dengan kamera pertama
-                startCamera(devices[0].id);
             } else {
                 console.error("❌ Tidak ada kamera ditemukan.");
             }
@@ -338,9 +317,7 @@
                 console.error("❌ Gagal berhenti dari kamera sebelumnya:", err);
             });
         });
-    </script>
 
-    <script>
         function loadTable() {
             $.ajax({
                 type: "POST",
@@ -368,9 +345,7 @@
                 }
             })
         }
-    </script>
 
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Update waktu secara real-time
             function updateDateTime() {
@@ -399,6 +374,11 @@
                 cameraBtn.classList.add('bg-blue-600');
                 scannerBtn.classList.remove('bg-green-600');
                 scannerBtn.classList.add('bg-green-500');
+                if (availableCameras.length > 0) {
+                    startCamera(availableCameras[0].id);
+                } else {
+                    console.error("❌ Kamera belum tersedia.");
+                }
             });
 
             scannerBtn.addEventListener('click', function() {
@@ -407,19 +387,57 @@
                 scannerBtn.classList.add('bg-green-600');
                 cameraBtn.classList.remove('bg-blue-600');
                 cameraBtn.classList.add('bg-blue-500');
+                reader.stop()
 
-                // Simulasi scan kartu setelah 2 detik
-                setTimeout(function() {
-                    showStudentInfo();
-                }, 2000);
+            });
+
+            const qrInput = document.getElementById('qr-input');
+            qrInput.focus();
+            qrInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    // Ambil data dari input QR (setelah pemindaian selesai)
+                    const scannedData = qrInput.value;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url('laptop/addAbsens') ?>",
+                        data: {
+                            "tanggal": "<?= date('Y-m-d') ?>",
+                            "nis": scannedData
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == 'ok') {
+                                soundToPlay = document.getElementById("success-sound");
+                                loadTable()
+                                // loadProsentase()
+                                document.getElementById('student-name').textContent = data.nama;
+                                document.getElementById('student-class').textContent = data.kelas;
+                                document.getElementById('student-nis').textContent = data.nis;
+                                if (data.jenis == 'ambil') {
+                                    document.getElementById('student-status').innerHTML = '<span class="bg-green-100 text-green-800 py-0.5 px-2 rounded-full text-xs">Diambil</span>';
+                                } else {
+                                    document.getElementById('student-status').innerHTML = '<span class="bg-red-100 text-red-800 py-0.5 px-2 rounded-full text-xs">Dikembalikan</span>';
+                                }
+                                document.getElementById('student-time').textContent = data.waktu;
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-green-700 bg-green-100 border border-green-300 rounded-md">✅ ${data.message}</div>`;
+
+                            } else if (data.status == 'sudah') {
+                                soundToPlay = document.getElementById("warning-sound");
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            } else if (data.status == 'not_found') {
+                                soundToPlay = document.getElementById("error-sound");
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            } else {
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            }
+                            soundToPlay.play().catch(err => console.error("Error playing sound:", err));
+                        }
+                    })
+                }
             });
 
 
-
-            // Simulasi absen dengan kamera (untuk demo)
-            document.querySelector('#camera-section button').addEventListener('click', function() {
-                showStudentInfo();
-            });
         });
     </script>
 </body>

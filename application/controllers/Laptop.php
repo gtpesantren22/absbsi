@@ -53,7 +53,7 @@ class Laptop extends CI_Controller
     {
         $tanggal = $this->input->post('tanggal', TRUE);
 
-        $data = $this->db->query("SELECT laptop.*, tb_santri.nama, tb_santri.k_formal, tb_santri.jurusan, tb_santri.r_formal FROM laptop JOIN tb_santri ON laptop.nis=tb_santri.nis WHERE laptop.tanggal = '$tanggal' ORDER BY laptop.id DESC ")->result();
+        $data = $this->db->query("SELECT laptop.*, tb_santri.nama, tb_santri.k_formal, tb_santri.jurusan, tb_santri.r_formal FROM laptop JOIN tb_santri ON laptop.nis=tb_santri.nis WHERE laptop.tanggal = '$tanggal' ORDER BY laptop.updated_at DESC ")->result();
 
         echo json_encode($data);
     }
@@ -76,6 +76,7 @@ class Laptop extends CI_Controller
                         'nis' => $nis,
                         'tanggal' => $tanggal,
                         'ambil' => $waktu,
+                        'updated_at' => $waktu,
                     ];
                     $this->model->simpan('laptop', $dataInput);
                 } else {
@@ -84,7 +85,7 @@ class Laptop extends CI_Controller
                         echo json_encode(['status' => 'not_found', 'message' => 'Belum absen pengambilan']);
                         die();
                     } else {
-                        $this->db->query("UPDATE laptop SET kembali = '$waktu' WHERE nis = $nis AND tanggal = '$tanggal' ");
+                        $this->db->query("UPDATE laptop SET kembali = '$waktu', updated_at = '$waktu' WHERE nis = $nis AND tanggal = '$tanggal' ");
                     }
                 }
 
