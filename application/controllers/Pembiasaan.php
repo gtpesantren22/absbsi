@@ -21,29 +21,29 @@ class Pembiasaan extends CI_Controller
 
     public function index()
     {
-        $data['userData'] = $this->Auth_model->current_user();
+        // $data['userData'] = $this->Auth_model->current_user();
         $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM waqiah GROUP BY tanggal ORDER BY tanggal DESC")->result();
 
-        $this->load->view('head', $data);
+        $this->load->view('head2', $data);
         $this->load->view('waqiah', $data);
         $this->load->view('foot');
     }
 
     public function input()
     {
-        $data['userData'] = $this->Auth_model->current_user();
+        // $data['userData'] = $this->Auth_model->current_user();
         $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM waqiah GROUP BY tanggal ORDER BY tanggal DESC")->result();
 
-        $this->load->view('head', $data);
+        $this->load->view('head2', $data);
         $this->load->view('waqiahInput', $data);
         $this->load->view('foot');
     }
     public function input2()
     {
-        $data['userData'] = $this->Auth_model->current_user();
+        // $data['userData'] = $this->Auth_model->current_user();
         $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM waqiah GROUP BY tanggal ORDER BY tanggal DESC")->result();
 
-        $this->load->view('head', $data);
+        $this->load->view('head2', $data);
         $this->load->view('waqiahInput2', $data);
         $this->load->view('foot');
     }
@@ -107,7 +107,6 @@ class Pembiasaan extends CI_Controller
             'telatPrs' => round(($telat->jumlah / $santri->jumlah) * 100),
             'belumPrs' => round((($santri->jumlah - ($hadir->jumlah + $telat->jumlah)) / $santri->jumlah) * 100, 2)
         ]);
-
     }
 
     public function hapus($id)
