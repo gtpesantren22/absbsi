@@ -29,6 +29,16 @@ class Laptop extends CI_Controller
         $this->load->view('laptop', $data);
         // $this->load->view('foot');
     }
+    public function qrScanner()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $data['jenis'] = $this->model->getBy('settings', 'namaset', 'jenis_absen')->row();
+        $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM waqiah GROUP BY tanggal ORDER BY tanggal DESC")->result();
+
+        // $this->load->view('head', $data);
+        $this->load->view('laptop2', $data);
+        // $this->load->view('foot');
+    }
 
     public function input()
     {

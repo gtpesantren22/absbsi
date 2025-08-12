@@ -71,50 +71,26 @@
                     </div>
                 </div>
 
-                <!-- Form untuk Kamera -->
-                <div id="camera-section" class="mb-6">
-                    <!-- <label class="block text-gray-700 text-sm font-bold mb-2">
-                        Foto Wajah
-                    </label> -->
-
-                    <!-- Pilihan Kamera -->
-                    <div class="mb-3">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Pilih Kamera</label>
-                        <select id="camera-select" class="w-full border border-gray-300 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Memuat daftar kamera...</option>
-                        </select>
-                    </div>
-
+                <audio id="success-sound" src="<?= base_url('assets/audio/berhasil.mp3') ?>"></audio>
+                <audio id="error-sound" src="<?= base_url('assets/audio/tidak_ada.mp3') ?>">"></audio>
+                <audio id="warning-sound" src="<?= base_url('assets/audio/sudah.mp3') ?>">"></audio>
+                <!-- Form untuk Scanner -->
+                <div id="scanner-section" class="hidden mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Arahkan kartu ke Alat Scanner
+                    </label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <!-- Preview Kamera -->
-                        <!-- <select id="camera-select" class="mb-4 p-2 border rounded"></select> -->
-
-                        <div class="relative w-full h-70">
-                            <!-- <video id="camera-preview" autoplay playsinline class="w-full h-full object-cover hidden"></video> -->
-
-                            <div id="camera-placeholder" class="absolute inset-0 flex items-center justify-center bg-gray-200">
-                                <i class="fas fa-camera text-4xl text-gray-400"></i>
-                            </div>
-
-                            <div id="qr-reader" class="w-full"></div>
-                        </div>
-
-                        <p class="text-danger mt-2"><span id="result"></span></p>
-                        <audio id="success-sound" src="<?= base_url('assets/audio/berhasil.mp3') ?>"></audio>
-                        <audio id="error-sound" src="<?= base_url('assets/audio/tidak_ada.mp3') ?>">"></audio>
-                        <audio id="warning-sound" src="<?= base_url('assets/audio/sudah.mp3') ?>">"></audio>
-
-                        <div class="flex justify-center space-x-3">
-                            <button id="capture-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline hidden">
-                                <i class="fas fa-camera mr-2"></i>Ambil Foto
-                            </button>
-                            <button id="retake-btn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline hidden">
-                                <i class="fas fa-redo mr-2"></i>Ulangi
-                            </button>
-                            <button id="save-photo-btn" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline hidden">
-                                <i class="fas fa-check mr-2"></i>Simpan Foto
-                            </button>
-                        </div>
+                        <!-- <div class="w-full h-40 bg-gray-100 mb-3 flex items-center justify-center">
+                            <i class="fas fa-id-card text-6xl text-gray-400 pulse-animation"></i>
+                        </div> -->
+                        <input
+                            type="number"
+                            id="qr-input"
+                            placeholder="Scan QR code..."
+                            autocomplete="off"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-center font-semibold tracking-widest" />
+                        <!-- <p class="text-sm text-gray-500 mt-2"><span id="result2">Tempelkan kartu siswa ke scanner</span></p> -->
+                        <div class="mt-2" id="result2"></div>
                     </div>
                 </div>
             </div>
@@ -187,8 +163,6 @@
         </div>
     </div>
     <script src="<?= base_url('assets/') ?>plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
             loadTable()
@@ -196,110 +170,6 @@
         });
     </script>
     <script>
-        const qrRegionId = "qr-reader";
-        const reader = new Html5Qrcode(qrRegionId);
-        const cameraSelect = document.getElementById("camera-select");
-        const placeholder = document.getElementById('camera-placeholder');
-        let availableCameras = [];
-
-        function onScanSuccess(decodedText, decodedResult) {
-            // Hasil kode QR
-            // Hentikan kamera setelah berhasil
-            //   reader.stop().then(() => {
-            //       console.log("Scanning stopped.");
-            //   }).catch(err => console.error("Error stopping the scanner:", err));
-            //   document.getElementById("result").textContent = '';
-            $.ajax({
-                type: "POST",
-                url: "<?= base_url('laptop/addAbsens') ?>",
-                data: {
-                    "tanggal": "<?= date('Y-m-d') ?>",
-                    "nis": decodedText
-                },
-                dataType: "json",
-                success: function(data) {
-                    if (data.status == 'ok') {
-                        soundToPlay = document.getElementById("success-sound");
-                        loadTable()
-                        // loadProsentase()
-                        document.getElementById('student-name').textContent = data.nama;
-                        document.getElementById('student-class').textContent = data.kelas;
-                        document.getElementById('student-nis').textContent = data.nis;
-                        if (data.jenis == 'ambil') {
-                            document.getElementById('student-status').innerHTML = '<span class="bg-green-100 text-green-800 py-0.5 px-2 rounded-full text-xs">Diambil</span>';
-                        } else {
-                            document.getElementById('student-status').innerHTML = '<span class="bg-red-100 text-red-800 py-0.5 px-2 rounded-full text-xs">Dikembalikan</span>';
-                        }
-                        document.getElementById('student-time').textContent = data.waktu;
-                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-green-700 bg-green-100 border border-green-300 rounded-md">✅ ${data.message}</div>`;
-
-                    } else if (data.status == 'sudah') {
-                        soundToPlay = document.getElementById("warning-sound");
-                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
-                    } else if (data.status == 'not_found') {
-                        soundToPlay = document.getElementById("error-sound");
-                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
-                    } else {
-                        document.getElementById("result").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
-                    }
-                    soundToPlay.play().catch(err => console.error("Error playing sound:", err));
-                    // console.log(data);
-
-                }
-            })
-        }
-
-        function onScanError(errorMessage) {
-            // Kesalahan saat scanning
-            console.warn("Scan error:", errorMessage);
-        }
-
-        function startCamera(cameraId) {
-            placeholder.classList.add('hidden');
-            reader.start(
-                cameraId, {
-                    fps: 10,
-                    qrbox: {
-                        width: 250,
-                        height: 250
-                    }
-                },
-                onScanSuccess,
-                onScanError
-            ).catch(err => {
-                console.error("❌ Gagal memulai kamera:", err);
-            });
-        }
-
-        // Ambil daftar kamera saat halaman load (tanpa langsung start)
-        Html5Qrcode.getCameras().then(devices => {
-            if (devices && devices.length) {
-                availableCameras = devices;
-
-                devices.forEach((device, index) => {
-                    const option = document.createElement("option");
-                    option.value = device.id;
-                    option.text = device.label || `Kamera ${index + 1}`;
-                    cameraSelect.appendChild(option);
-                    startCamera(availableCameras[0].id);
-                });
-            } else {
-                console.error("❌ Tidak ada kamera ditemukan.");
-            }
-        }).catch(err => {
-            console.error("❌ Error mendapatkan kamera:", err);
-        });
-
-        // Ganti kamera saat dropdown berubah
-        cameraSelect.addEventListener("change", (event) => {
-            const selectedCameraId = event.target.value;
-            reader.stop().then(() => {
-                startCamera(selectedCameraId);
-            }).catch(err => {
-                console.error("❌ Gagal berhenti dari kamera sebelumnya:", err);
-            });
-        });
-
         function loadTable() {
             $.ajax({
                 type: "POST",
@@ -345,19 +215,55 @@
             updateDateTime();
 
             // Toggle antara kamera dan scanner
-            const cameraBtn = document.getElementById('camera-btn');
-            const cameraSection = document.getElementById('camera-section');
+            const scannerSection = document.getElementById('scanner-section');
+            const qrInput = document.getElementById('qr-input');
+            scannerSection.classList.remove('hidden');
+            qrInput.focus();
 
-            // scannerBtn.classList.add('bg-green-500');
-            // if (availableCameras.length > 0) {
+            qrInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    // Ambil data dari input QR (setelah pemindaian selesai)
+                    const scannedData = qrInput.value;
 
-            // } else {
-            //     console.error("❌ Kamera belum tersedia.");
-            // }
-            // cameraSection.classList.remove('hidden');
-            // cameraBtn.addEventListener('click', function() {
-            //     cameraBtn.classList.add('bg-blue-600');
-            // });
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url('laptop/addAbsens') ?>",
+                        data: {
+                            "tanggal": "<?= date('Y-m-d') ?>",
+                            "nis": scannedData
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == 'ok') {
+                                soundToPlay = document.getElementById("success-sound");
+                                loadTable()
+                                // loadProsentase()
+                                document.getElementById('student-name').textContent = data.nama;
+                                document.getElementById('student-class').textContent = data.kelas;
+                                document.getElementById('student-nis').textContent = data.nis;
+                                if (data.jenis == 'ambil') {
+                                    document.getElementById('student-status').innerHTML = '<span class="bg-green-100 text-green-800 py-0.5 px-2 rounded-full text-xs">Diambil</span>';
+                                } else {
+                                    document.getElementById('student-status').innerHTML = '<span class="bg-red-100 text-red-800 py-0.5 px-2 rounded-full text-xs">Dikembalikan</span>';
+                                }
+                                document.getElementById('student-time').textContent = data.waktu;
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-green-700 bg-green-100 border border-green-300 rounded-md">✅ ${data.message}</div>`;
+
+                            } else if (data.status == 'sudah') {
+                                soundToPlay = document.getElementById("warning-sound");
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            } else if (data.status == 'not_found') {
+                                soundToPlay = document.getElementById("error-sound");
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            } else {
+                                document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                            }
+                            soundToPlay.play().catch(err => console.error("Error playing sound:", err));
+                        }
+                    })
+                }
+            });
+
 
         });
     </script>
