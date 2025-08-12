@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-gray-50 p-6">
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <div id="capture" class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-1 text-center">Rekap Kehadiran Guru</h1>
         <h1 class="text-xl font-bold text-gray-800 mb-6 text-center">SMK Darul Lughah Wal Karomah</h1>
 

@@ -12,8 +12,8 @@ class Rekap extends CI_Controller
 
     public function mengajar()
     {
-        // $hari_ini = date('Y-m-d');
-        $hari_ini = date('2025-01-07');
+        $hari_ini = date('Y-m-d');
+        // $hari_ini = date('2025-01-07');
         $dataCari = $this->model->getBy('mengajar', 'tanggal', $hari_ini)->row();
         $harini = date('l', strtotime($dataCari->tanggal));
         $tglni = $dataCari->tanggal;
