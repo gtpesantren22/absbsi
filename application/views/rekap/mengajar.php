@@ -75,7 +75,7 @@
         </div>
 
         <div class="mt-6 text-sm text-gray-500">
-            <p>Catatan: Rekap ini dihasilkan secara otomatis pada 12/08/2025 10:15:23</p>
+            <p>Catatan: Rekap ini dihasilkan secara otomatis pada <?= date('d-m-Y H:i:s') ?></p>
         </div>
     </div>
 </body>
