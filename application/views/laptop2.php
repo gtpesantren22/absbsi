@@ -253,12 +253,18 @@
 
                             } else if (data.status == 'sudah') {
                                 soundToPlay = document.getElementById("warning-sound");
+                                qrInput.focus();
+                                qrInput.value = '';
                                 document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
                             } else if (data.status == 'not_found') {
                                 soundToPlay = document.getElementById("error-sound");
+                                qrInput.focus();
+                                qrInput.value = '';
                                 document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
                             } else {
                                 document.getElementById("result2").innerHTML = `<div class="px-4 py-2 text-red-700 bg-red-100 border border-red-300 rounded-md">❌ ${data.message}</div>`;
+                                qrInput.focus();
+                                qrInput.value = '';
                             }
                             soundToPlay.play().catch(err => console.error("Error playing sound:", err));
                         }
