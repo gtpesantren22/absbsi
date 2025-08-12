@@ -238,6 +238,8 @@
                                 soundToPlay = document.getElementById("success-sound");
                                 loadTable()
                                 // loadProsentase()
+                                qrInput.focus();
+                                qrInput.value = '';
                                 document.getElementById('student-name').textContent = data.nama;
                                 document.getElementById('student-class').textContent = data.kelas;
                                 document.getElementById('student-nis').textContent = data.nis;
