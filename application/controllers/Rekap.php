@@ -58,4 +58,24 @@ class Rekap extends CI_Controller
 
         $this->load->view('rekap/mengajar', $data);
     }
+
+    public function apel_guru()
+    {
+        $hari_ini = date('Y-m-d');
+        // $hari_ini = date('2025-01-07');
+        $dataCari = $this->model->getBy('apel_guru', 'tanggal', $hari_ini)->row();
+        $harini = date('l', strtotime($dataCari->tanggal));
+        $tglni = $dataCari->tanggal;
+        // $harini = 'Monday';
+        $dataJadwal = $this->db->query("SELECT a.*, b.nama_guru FROM apel_guru a JOIN guru b ON a.kode_guru=b.kode_guru WHERE a.tanggal = '$tglni' ORDER BY a.kode_guru ASC ");
+        $data['hadir'] = $this->db->query("SELECT COUNT(*) as ttl FROM apel_guru WHERE tanggal = '$tglni' AND ket = 'hadir' ")->row();
+        $data['izin'] = $this->db->query("SELECT COUNT(*) as ttl FROM apel_guru WHERE tanggal = '$tglni' AND ket = 'izin' ")->row();
+        $data['alpha'] = $this->db->query("SELECT COUNT(*) as ttl FROM apel_guru WHERE tanggal = '$tglni' AND ket = 'alpha' ")->row();
+
+        $data['data'] = $dataJadwal->result();
+        $data['hari'] = translateDay($harini, 'id');
+        $data['tanggal'] = $tglni;
+
+        $this->load->view('rekap/apel_guru', $data);
+    }
 }

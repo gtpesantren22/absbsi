@@ -29,6 +29,92 @@ class Pembiasaan extends CI_Controller
         $this->load->view('foot');
     }
 
+    public function guru()
+    {
+        if (!$this->Auth_model->current_user()) {
+            redirect('login/logout');
+        }
+
+        $data['userData'] = $this->Auth_model->current_user();
+        $data['data'] = $this->db->query("SELECT *, COUNT(*) as jumlah FROM apel_guru GROUP BY tanggal ORDER BY tanggal DESC")->result();
+
+        $this->load->view('head', $data);
+        $this->load->view('apel_guru', $data);
+        $this->load->view('foot');
+    }
+
+    public function input_apel()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $harini = date('l');
+        $data['data'] = $this->db->query("SELECT a.*, b.nama_guru FROM apel_sett a JOIN guru b ON a.kode_guru=b.kode_guru WHERE hari = '$harini' ")->result();
+
+        $this->load->view('head', $data);
+        $this->load->view('apelGuruInput', $data);
+        $this->load->view('foot');
+    }
+    public function apelSett()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $gru = $this->model->getAll('guru')->result();
+        $datakirim = [];
+        foreach ($gru as $value) {
+            $haris = $this->db->query("SELECT GROUP_CONCAT(hari ORDER BY hari SEPARATOR ',') AS daftar_hari FROM apel_sett WHERE kode_guru = '$value->kode_guru' GROUP BY kode_guru")->row();
+            $datakirim[] = [
+                'kode_guru' => $value->kode_guru,
+                'nama_guru' => $value->nama_guru,
+                'daftar_hari' => $haris ? $haris->daftar_hari : '0,0,0',
+            ];
+        }
+        $data['data'] = $datakirim;
+
+        $this->load->view('head', $data);
+        $this->load->view('apelSetting', $data);
+        $this->load->view('foot');
+    }
+
+    public function saveApel()
+    {
+        $kode_guru = $this->input->post('kode_guru', true);
+        $hari = $this->input->post('hari', true);
+        $status = $this->input->post('status', true);
+
+        if ($status == 1) {
+            $save = [
+                'kode_guru' => $kode_guru,
+                'hari' => $hari
+            ];
+            $this->model->simpan('apel_sett', $save);
+            echo json_encode(['status' => 'success', 'message' => 'input data success']);
+        } else {
+            $this->model->hapus2('apel_sett', 'kode_guru', $kode_guru, 'hari', $hari);
+            echo json_encode(['status' => 'success', 'message' => 'hapus data success']);
+        }
+    }
+
+    public function saveApelGuru()
+    {
+        $data = $this->input->post('data', true);
+        $tanggal = date('Y-m-d');
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                $dtsm = [
+                    'tanggal' => $tanggal,
+                    'kode_guru' => $item['kode_guru'],
+                    'ket' => $item['ket'],
+                ];
+                $this->model->simpan('apel_guru', $dtsm);
+            }
+        }
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Input Absen Berhasil');
+            redirect('pembiasaan/guru');
+        } else {
+            $this->session->set_flashdata('error', 'Input Absen Gagal');
+            redirect('pembiasaan/guru');
+        }
+    }
+
     public function input()
     {
         // $data['userData'] = $this->Auth_model->current_user();
@@ -38,6 +124,7 @@ class Pembiasaan extends CI_Controller
         $this->load->view('waqiahInput', $data);
         $this->load->view('foot');
     }
+
     public function input2()
     {
         // $data['userData'] = $this->Auth_model->current_user();
@@ -120,6 +207,19 @@ class Pembiasaan extends CI_Controller
         } else {
             $this->session->set_flashdata('error', 'Hapus data gagal');
             redirect('pembiasaan');
+        }
+    }
+    public function hapus_guru($id)
+    {
+        $data = $this->model->getBy('apel_guru', 'id', $id)->row();
+
+        $this->model->hapus('apel_guru', 'tanggal', $data->tanggal);
+        if ($this->db->affected_rows() > 1) {
+            $this->session->set_flashdata('ok', 'Hapus data berhasil');
+            redirect('pembiasaan/guru');
+        } else {
+            $this->session->set_flashdata('error', 'Hapus data gagal');
+            redirect('pembiasaan/guru');
         }
     }
 }

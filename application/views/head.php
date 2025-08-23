@@ -209,10 +209,16 @@
                                 <i class="fa fa-newspaper-o"></i> <span>Kontrol Absensi</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="<?= base_url('pembiasaan') ?>">
-                                <i class="fa fa-newspaper-o"></i> <span>Absensi Pembiasaan</span>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-newspaper-o"></i>
+                                <span>Absensi Pembiasaan</span>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('pembiasaan') ?>"><i class="fa fa-circle-o"></i> Siswa</a></li>
+                                <li><a href="<?= base_url('pembiasaan/guru') ?>"><i class="fa fa-circle-o"></i> Guru</a></li>
+                            </ul>
                         </li>
                         <li>
                             <a target="_blank" href="<?= base_url('laptop') ?>">
