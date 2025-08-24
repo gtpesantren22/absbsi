@@ -14,7 +14,7 @@ class Mengajar extends CI_Controller
 
         $user = $this->Auth_model->current_user();
 
-        if ($user->kode_guru != '07' && $user->kode_guru != '11' && $user->kode_guru != '14' && $user->kode_guru != '13') {
+        if (!$user) {
             redirect('login/logout');
             // $this->cek = 'benar';
         } else {
