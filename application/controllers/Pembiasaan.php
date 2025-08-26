@@ -96,6 +96,12 @@ class Pembiasaan extends CI_Controller
     {
         $data = $this->input->post('data', true);
         $tanggal = date('Y-m-d');
+        $cek = $this->model->getBy('apel_guru', 'tanggal', $tanggal)->row();
+        if ($cek) {
+            $this->session->set_flashdata('error', 'Absensi sudah ada');
+            redirect('pembiasaan/guru');
+            die();
+        }
         if (!empty($data)) {
             foreach ($data as $item) {
                 $dtsm = [

@@ -41,6 +41,23 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .aspect-3-4 {
+            position: relative;
+            width: 100%;
+            padding-top: calc(4 / 3 * 100%);
+            /* tinggi = lebar * 4/3 */
+        }
+
+        .aspect-3-4>img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
     </style>
 </head>
 
@@ -70,7 +87,7 @@
                         </div>
 
                         <!-- Foto full parent -->
-                        <div class="flex-grow w-82 h-100" id="foto-awal">
+                        <div class="aspect-[3/4] w-full" id="foto-awal">
                             <!-- <img src="<?= base_url('assets/foto_siswa/') ?>foto.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white"> -->
                         </div>
                         <!-- Nama & Kelas -->
@@ -93,7 +110,7 @@
                         </div>
 
                         <!-- Foto full parent -->
-                        <div class="flex-grow w-82 h-100" id="foto-akhir">
+                        <div class="aspect-[3/4] w-full" id="foto-akhir">
                             <!-- <img src="<?= base_url('assets/foto_siswa/') ?>foto2.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white"> -->
                         </div>
 
