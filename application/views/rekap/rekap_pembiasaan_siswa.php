@@ -26,6 +26,21 @@
         .photo-frame {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
+        .text-fit {
+            display: inline-block;
+            max-width: 100%;
+            font-size: 2rem;
+            /* ukuran awal */
+            transform-origin: left center;
+        }
+
+        /* trik supaya teks mengecil otomatis */
+        .text-fit {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 
@@ -55,13 +70,18 @@
                         </div>
 
                         <!-- Foto full parent -->
-                        <div class="flex-grow w-82 h-100">
-                            <img src="<?= base_url('assets/foto_siswa/') ?>foto.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white">
+                        <div class="flex-grow w-82 h-100" id="foto-awal">
+                            <!-- <img src="<?= base_url('assets/foto_siswa/') ?>foto.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white"> -->
                         </div>
                         <!-- Nama & Kelas -->
                         <div class="p-4 text-center">
-                            <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900">ASYROFUL IZAZ NAUFAL M.</h3>
-                            <p class="text-lg md:text-xl text-green-700 font-semibold">Kelas XII RPL 1</p>
+                            <div class="w-full max-w-md">
+                                <h3 id="nama-awal"
+                                    class="text-gray-900 font-extrabold text-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis text-fit">
+                                    Nama siswa
+                                </h3>
+                            </div>
+                            <p class="text-lg md:text-xl text-green-700 font-semibold" id="kelas-awal"></p>
                         </div>
                     </div>
 
@@ -73,14 +93,19 @@
                         </div>
 
                         <!-- Foto full parent -->
-                        <div class="flex-grow w-82 h-100">
-                            <img src="<?= base_url('assets/foto_siswa/') ?>foto2.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white">
+                        <div class="flex-grow w-82 h-100" id="foto-akhir">
+                            <!-- <img src="<?= base_url('assets/foto_siswa/') ?>foto2.jpg" alt="Siswa Terawal" class="w-full h-full object-cover rounded-lg shadow-md border-4 border-white"> -->
                         </div>
 
                         <!-- Nama & Kelas -->
                         <div class="p-4 text-center">
-                            <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900">BUSYRO MUQODDAS</h3>
-                            <p class="text-lg md:text-xl text-red-600 font-semibold">Kelas XII RPL 2</p>
+                            <div class="w-full max-w-md">
+                                <h3 id="nama-akhir"
+                                    class="text-gray-900 font-extrabold text-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis text-fit">
+                                    Nama siswa
+                                </h3>
+                            </div>
+                            <p class="text-lg md:text-xl text-red-600 font-semibold" id="kelas-akhir"></p>
                         </div>
                     </div>
                 </div>
@@ -126,6 +151,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         var options = {
             chart: {
@@ -165,6 +191,37 @@
 
         var chart = new ApexCharts(document.querySelector("#rekapChart"), options);
         chart.render();
+    </script>
+    <script>
+        $(document).ready(function() {
+            loadAbsen()
+        })
+        setInterval(loadAbsen, 1000);
+
+        function loadAbsen() {
+            $.ajax({
+                url: "<?= base_url('pembiasaan/loadRekapSiswa') ?>",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === "success") {
+                        $('#foto-awal').html("<img src='<?= base_url('assets/foto_siswa/') ?>" + response.awal.foto + "' alt='" + response.awal.nama + "' class='w-full h-full object-cover rounded-lg shadow-md border-4 border-white'>");
+                        $('#foto-akhir').html("<img src='<?= base_url('assets/foto_siswa/') ?>" + response.akhir.foto + "' alt='" + response.akhir.nama + "' class='w-full h-full object-cover rounded-lg shadow-md border-4 border-white'>");
+                        $('#nama-awal').text(response.awal.nama)
+                        $('#nama-akhir').text(response.akhir.nama)
+                        $('#kelas-awal').text('Kelas ' + response.awal.k_formal + ' ' + response.awal.jurusan + ' ' + response.awal.r_formal)
+                        $('#kelas-akhir').text('Kelas ' + response.akhir.k_formal + ' ' + response.akhir.jurusan + ' ' + response.akhir.r_formal)
+                    } else {
+                        alert("Gagal memuat data siswa");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Terjadi error: " + error);
+                }
+            });
+
+        }
     </script>
 </body>
 

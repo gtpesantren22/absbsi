@@ -227,4 +227,17 @@ class Pembiasaan extends CI_Controller
     {
         $this->load->view('rekap/rekap_pembiasaan_siswa');
     }
+
+    public function loadRekapSiswa()
+    {
+        $hari_ini = date('Y-m-d');
+        $awal = $this->db->query("SELECT a.*, b.nama, b.k_formal, b.r_formal, b.jurusan, b.foto FROM waqiah a JOIN tb_santri b ON a.nis=b.nis WHERE a.tanggal = '$hari_ini' ORDER BY a.hadir ASC LIMIT 1 ")->row();
+        $akhir = $this->db->query("SELECT a.*, b.nama, b.k_formal, b.r_formal, b.jurusan, b.foto FROM waqiah a JOIN tb_santri b ON a.nis=b.nis WHERE a.tanggal = '$hari_ini' ORDER BY a.hadir DESC LIMIT 1 ")->row();
+
+        echo json_encode([
+            'status' => 'success',
+            'awal' => $awal,
+            'akhir' => $akhir,
+        ]);
+    }
 }
