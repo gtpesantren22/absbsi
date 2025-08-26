@@ -222,4 +222,9 @@ class Pembiasaan extends CI_Controller
             redirect('pembiasaan/guru');
         }
     }
+
+    public function rekap()
+    {
+        $this->load->view('rekap/rekap_pembiasaan_siswa');
+    }
 }
