@@ -13,7 +13,7 @@
     <div id="capture" class="max-w-xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 class="text-xl font-bold text-gray-800 mb-1 text-center">Rekap Kehadiran Apel Pembaisaan Guru</h1>
         <h1 class="text-xl font-bold text-gray-800 mb-1 text-center">SMK Darul Lughah Wal Karomah</h1>
-        <h1 class="text-l font-bold text-gray-600 mb-6 text-center"><?= $hari ?>, <?= date('d F Y', strtotime($tanggal)) ?></h1>
+        <h1 class="text-l font-bold text-gray-600 mb-6 text-center"><?= $hari . ', ' . date('d F Y', strtotime($tanggal)) ?></h1>
 
 
         <!-- Wrapper flex agar chart rapi di tengah -->

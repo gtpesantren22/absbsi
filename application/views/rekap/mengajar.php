@@ -64,10 +64,10 @@
                 <tfoot class="bg-gray-100">
                     <tr>
                         <td colspan="2" class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-right">Total:</td>
-                        <td class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-center"><?= round($totalkehadiran / $totalguru * 100, 1) ?>%</td>
+                        <td class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-center"><?= $totalkehadiran && $totalguru != '' ? round($totalkehadiran / $totalguru * 100, 1) : 0 ?>%</td>
                         <td class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-center"><?= $totaljamwajib ?></td>
                         <td class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-center"><?= $totaljammasuk ?></td>
-                        <td class="py-3 px-4 border-t text-sm font-semibold text-blue-600 text-center"><?= round($totaljammasuk / $totaljamwajib * 100, 1) ?>%</td>
+                        <td class="py-3 px-4 border-t text-sm font-semibold text-blue-600 text-center"><?= $totaljammasuk && $totaljamwajib != '' ? round($totaljammasuk / $totaljamwajib * 100, 1) : '' ?>%</td>
                         <td class="py-3 px-4 border-t text-sm font-semibold text-gray-700 text-center">-</td>
                     </tr>
                 </tfoot>

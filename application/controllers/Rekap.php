@@ -15,8 +15,14 @@ class Rekap extends CI_Controller
         $hari_ini = date('Y-m-d');
         // $hari_ini = date('2025-01-07');
         $dataCari = $this->model->getBy('mengajar', 'tanggal', $hari_ini)->row();
-        $harini = date('l', strtotime($dataCari->tanggal));
-        $tglni = $dataCari->tanggal;
+        if ($dataCari) {
+            $harini = date('l', strtotime($dataCari->tanggal));
+            $tglni = $dataCari->tanggal;
+        } else {
+            $harini = date('l', strtotime($hari_ini));
+            $tglni = $hari_ini;
+        }
+
         // $harini = 'Monday';
         $dataJadwal = $this->db->query("SELECT * FROM kehadiran WHERE tanggal = '$tglni' ORDER BY guru ASC ");
         $dataKirim = [];
@@ -64,9 +70,14 @@ class Rekap extends CI_Controller
         $hari_ini = date('Y-m-d');
         // $hari_ini = date('2025-01-07');
         $dataCari = $this->model->getBy('apel_guru', 'tanggal', $hari_ini)->row();
-        $harini = date('l', strtotime($dataCari->tanggal));
-        $tglni = $dataCari->tanggal;
-        // $harini = 'Monday';
+        if ($dataCari) {
+            $harini = date('l', strtotime($dataCari->tanggal));
+            $tglni = $dataCari->tanggal;
+        } else {
+            $harini = date('l', strtotime($hari_ini));
+            $tglni = $hari_ini;
+        }
+
         $dataJadwal = $this->db->query("SELECT a.*, b.nama_guru FROM apel_guru a JOIN guru b ON a.kode_guru=b.kode_guru WHERE a.tanggal = '$tglni' ORDER BY a.kode_guru ASC ");
         $data['hadir'] = $this->db->query("SELECT COUNT(*) as ttl FROM apel_guru WHERE tanggal = '$tglni' AND ket = 'hadir' ")->row();
         $data['izin'] = $this->db->query("SELECT COUNT(*) as ttl FROM apel_guru WHERE tanggal = '$tglni' AND ket = 'izin' ")->row();
@@ -75,6 +86,7 @@ class Rekap extends CI_Controller
         $data['data'] = $dataJadwal->result();
         $data['hari'] = translateDay($harini, 'id');
         $data['tanggal'] = $tglni;
+
 
         $this->load->view('rekap/apel_guru', $data);
     }
