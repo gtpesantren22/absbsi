@@ -172,3 +172,47 @@ function colorCell($grid)
         return 'FFFFFF';
     }
 }
+
+
+function tanggal_indo($tanggal, $tampilkan_hari = false)
+{
+    $hari_array = array(
+        0 => 'Minggu',
+        1 => 'Senin',
+        2 => 'Selasa',
+        3 => 'Rabu',
+        4 => 'Kamis',
+        5 => 'Jumat',
+        6 => 'Sabtu'
+    );
+
+    $bulan_array = array(
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    );
+
+    // Format input harus YYYY-MM-DD
+    $tanggal_obj = strtotime($tanggal);
+    $hari = date('w', $tanggal_obj);
+    $tgl = date('j', $tanggal_obj);
+    $bln = date('n', $tanggal_obj);
+    $thn = date('Y', $tanggal_obj);
+
+    $format_indo = $tgl . ' ' . $bulan_array[$bln] . ' ' . $thn;
+
+    if ($tampilkan_hari) {
+        $format_indo = $hari_array[$hari] . ', ' . $format_indo;
+    }
+
+    return $format_indo;
+}

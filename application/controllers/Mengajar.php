@@ -29,7 +29,7 @@ class Mengajar extends CI_Controller
         // $data['cek'] = $this->cek;
 
         $this->load->view('head', $data);
-        $this->load->view('mengajar', $data);
+        $this->load->view('mengajar/mengajar', $data);
         $this->load->view('foot');
     }
     public function input($id = null)
@@ -82,7 +82,7 @@ class Mengajar extends CI_Controller
         // var_dump($dataKirim);
         // echo '</pre>';
 
-        $this->load->view('mengajarInput', $data);
+        $this->load->view('mengajar/mengajarInput', $data);
     }
 
     public function cekGuru()
@@ -104,7 +104,7 @@ class Mengajar extends CI_Controller
         $data['jam'] = $array_hasil;
         $data['tanggalIni'] = $tanggal;
 
-        $this->load->view('tampilMengajar', $data);
+        $this->load->view('mengajar/tampilMengajar', $data);
     }
 
     public function simpanJam()
@@ -162,7 +162,7 @@ class Mengajar extends CI_Controller
         }
     }
 
-    public function rekap($id)
+    public function rekap_old($id)
     {
         $data['userData'] = $this->Auth_model->current_user();
         $dataCari = $this->model->getBy('mengajar', 'id', $id)->row();
@@ -207,7 +207,7 @@ class Mengajar extends CI_Controller
         // var_dump($dataKirim);
         // echo '</pre>';
         $this->load->view('head', $data);
-        $this->load->view('mengajarRekap', $data);
+        $this->load->view('mengajar/mengajarRekap', $data);
         $this->load->view('foot');
     }
 
@@ -258,6 +258,117 @@ class Mengajar extends CI_Controller
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'success']);
+        }
+    }
+    public function rekap()
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $data['data'] = $this->db->query("SELECT * FROM mengajar_rekap ORDER BY created_at DESC")->result();
+        // $data['cek'] = $this->cek;
+
+        $this->load->view('head', $data);
+        $this->load->view('mengajar/rekap', $data);
+        $this->load->view('foot');
+    }
+
+    public function addRekap()
+    {
+        $bulan = $this->input->post('bulan', TRUE);
+        $dari = $this->input->post('dari', TRUE);
+        $sampai = $this->input->post('sampai', TRUE);
+
+        $cek = $this->model->getBy('mengajar_rekap', 'bulan', $bulan)->row();
+        if ($cek) {
+            $this->session->set_flashdata('error', 'Data absen sudah ada dibulan ini');
+            redirect('mengajar/rekap');
+            die();
+        }
+
+        $simpn = [
+            'id' => $this->uuid->v4(),
+            'bulan' => $bulan,
+            'dari' => $dari,
+            'sampai' => $sampai,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $this->model->simpan('mengajar_rekap', $simpn);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Data berhasil ditambahkan');
+            redirect('mengajar/rekap');
+        } else {
+            $this->session->set_flashdata('error', 'Data gagal ditambahkan');
+            redirect('mengajar/rekap');
+        }
+    }
+    public function cekRekap($id)
+    {
+        $data['userData'] = $this->Auth_model->current_user();
+        $data['dtrekap'] = $this->model->getBy('mengajar_rekap', 'id', $id)->row();
+        $dari = $data['dtrekap']->dari;
+        $sampai = $data['dtrekap']->sampai;
+
+        $data['data'] = $this->db->query("SELECT a.*, b.nama_guru,b.kode_guru FROM mengajar_wajib a JOIN guru b ON a.guru_id=b.kode_guru WHERE rekap_id = '$id'")->result();
+
+        $gurudata = $this->db->query("SELECT a.*, b.nama_guru,b.kode_guru FROM mengajar_wajib a JOIN guru b ON a.guru_id=b.kode_guru WHERE rekap_id = '$id'")->result();
+        $dtkr = [];
+        foreach ($gurudata as $gr) {
+            $dtjam = $this->db->query("SELECT 
+            SUM(CASE WHEN ket = 'H' THEN 1 ELSE 0 END) as hadir,
+            SUM(CASE WHEN ket = 'I' THEN 1 ELSE 0 END) as izin,
+            SUM(CASE WHEN ket = 'S' THEN 1 ELSE 0 END) as sakit,
+            SUM(CASE WHEN ket = 'C' THEN 1 ELSE 0 END) as cuti,
+            SUM(CASE WHEN ket = 'A' THEN 1 ELSE 0 END) as alpha,
+            SUM(CASE WHEN ket = 'T' THEN 1 ELSE 0 END) as telat,
+            SUM(CASE WHEN ket != 'H' THEN 1 ELSE 0 END) as th
+            FROM mengajar WHERE guru = '$gr->kode_guru' AND tanggal >= '$dari' AND tanggal <= '$sampai' ")->row();
+            $dthadir = $this->db->query("SELECT 
+            SUM(CASE WHEN ket = 1 THEN 1 ELSE 0 END) as hadir,
+            SUM(CASE WHEN ket = 0 THEN 1 ELSE 0 END) as izin
+            FROM mengajar WHERE guru = '$gr->kode_guru' AND tanggal >= '$dari' AND tanggal <= '$sampai' ")->row();
+
+            $dtkr[] = [
+                'nama' => $gr->nama_guru,
+                'jam_wajib' => $gr->jam_wajib,
+                'jam_hadir' => $dtjam->hadir,
+                'jam_sakit' => $dtjam->sakit,
+                'jam_izin' => $dtjam->izin,
+                'jam_cuti' => $dtjam->cuti,
+                'jam_alpha' => $dtjam->alpha,
+                'jam_telat' => $dtjam->telat,
+                'jam_th' => $dtjam->th,
+                'jam_prsn' => $dtjam->hadir != 0 ? $dtjam->hadir / $gr->jam_wajib * 100 : 0,
+                // Kehadiran
+                'hadir_wajib' => $gr->hadir_wajib,
+                'hadir_hadir' => $dthadir->hadir,
+                'hadir_izin' => $dthadir->izin,
+                'hadir_prsn' => $dthadir->hadir != 0 ? $dthadir->hadir / $gr->hadir_wajib * 100 : 0,
+            ];
+        }
+        $data['datas'] = $dtkr;
+
+        $this->load->view('head', $data);
+        $this->load->view('mengajar/cek', $data);
+        $this->load->view('foot');
+    }
+    public function saveJam()
+    {
+        $data = $this->input->post('data', true);
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                $dtsm = [
+                    'jam_wajib' => $item['jam'],
+                    'hadir_wajib' => $item['hadir'],
+                ];
+                $this->model->edit('mengajar_wajib', $dtsm, 'id', $item['id']);
+            }
+        }
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Simpan Jam Berhasil');
+            redirect('mengajar/cekRekap/');
+        } else {
+            $this->session->set_flashdata('error', 'Simpan Jam Gagal');
+            redirect('mengajar/cekRekap/');
         }
     }
 }

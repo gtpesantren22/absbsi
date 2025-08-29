@@ -225,11 +225,18 @@
                                 <i class="fa fa-newspaper-o"></i> <span>Absensi Pengambilan Laptop</span>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="<?= base_url('mengajar') ?>">
-                                <i class="fa fa-newspaper-o"></i> <span>Jam Mengajar</span>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-newspaper-o"></i>
+                                <span>Jam Mengajar</span>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?= base_url('mengajar') ?>"><i class="fa fa-circle-o"></i> Input</a></li>
+                                <?php if ($userData->level == 'admin' || $userData->kode_guru == '11'): ?>
+                                    <li><a href="<?= base_url('mengajar/rekap') ?>"><i class="fa fa-circle-o"></i> Rekap</a></li>
+                                <?php endif ?>
+                            </ul>
                         </li>
                     <?php
                     endif ?>
