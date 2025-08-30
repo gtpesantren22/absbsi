@@ -47,8 +47,8 @@
                                                       <td><?= $nou++ ?></td>
                                                       <td><?= bulan($dtrekap->bulan) ?></td>
                                                       <td><?= $row->nama_guru ?></td>
-                                                      <td><input type="number" class="form-control" name="data[<?= $no ?>][jam]" value="<?= $row->jam_wajib ?>"></td>
                                                       <td><input type="number" class="form-control" name="data[<?= $no ?>][hadir]" value="<?= $row->hadir_wajib ?>"></td>
+                                                      <td><input type="number" class="form-control" name="data[<?= $no ?>][jam]" value="<?= $row->jam_wajib ?>"></td>
                                                   </tr>
                                               <?php
                                                     $no++;
@@ -110,7 +110,7 @@
                                                   <td><?= $row['jam_cuti'] ?></td>
                                                   <td><?= $row['jam_alpha'] ?></td>
                                                   <td><?= $row['jam_th'] ?></td>
-                                                  <td><?= $row['jam_prsn'] ?>%</td>
+                                                  <td><?= round($row['jam_prsn'], 1) ?>%</td>
                                                   <!-- Hadir -->
                                                   <td><?= $row['hadir_wajib'] ?></td>
                                                   <td><?= $row['hadir_hadir'] ?></td>
@@ -119,8 +119,8 @@
                                                   <td></td>
                                                   <td></td>
                                                   <td></td>
-                                                  <td><?= $row['hadir_prsn'] ?>%</td>
-                                                  <td><?= ($row['jam_prsn'] + $row['hadir_prsn']) / 2 ?>%</td>
+                                                  <td><?= round($row['hadir_prsn'], 1) ?>%</td>
+                                                  <td><?= round(($row['jam_prsn'] + $row['hadir_prsn']) / 2, 1) ?>%</td>
                                               </tr>
                                           <?php
                                             endforeach ?>

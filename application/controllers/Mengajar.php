@@ -337,7 +337,7 @@ class Mengajar extends CI_Controller
             $dthadir = $this->db->query("SELECT 
             SUM(CASE WHEN ket = 1 THEN 1 ELSE 0 END) as hadir,
             SUM(CASE WHEN ket = 0 THEN 1 ELSE 0 END) as izin
-            FROM mengajar WHERE guru = '$gr->kode_guru' AND tanggal >= '$dari' AND tanggal <= '$sampai' ")->row();
+            FROM kehadiran WHERE guru = '$gr->kode_guru' AND tanggal >= '$dari' AND tanggal <= '$sampai' ")->row();
 
             $dtkr[] = [
                 'nama' => $gr->nama_guru,
