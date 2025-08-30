@@ -349,12 +349,12 @@ class Mengajar extends CI_Controller
                 'jam_alpha' => $dtjam->alpha,
                 'jam_telat' => $dtjam->telat,
                 'jam_th' => $dtjam->th,
-                'jam_prsn' => $dtjam->hadir != 0 && $gr->jam_wajib != 0 ? $dtjam->hadir / $gr->jam_wajib * 100 : 0,
+                'jam_prsn' => $dtjam->hadir != 0 && $gr->jam_wajib != 0 ? ($dtjam->hadir / $gr->jam_wajib) * 100 : 0,
                 // Kehadiran
                 'hadir_wajib' => $gr->hadir_wajib,
                 'hadir_hadir' => $dthadir->hadir,
                 'hadir_izin' => $dthadir->izin,
-                'hadir_prsn' => $dthadir->hadir != 0 && $gr->hadir_wajib != 0 ? $dthadir->hadir / $gr->hadir_wajib * 100 : 0,
+                'hadir_prsn' => $dthadir->hadir != 0 && $gr->hadir_wajib != 0 ? ($dthadir->hadir / $gr->hadir_wajib) * 100 : 0,
             ];
         }
         $data['datas'] = $dtkr;
