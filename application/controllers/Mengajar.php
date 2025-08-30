@@ -301,10 +301,22 @@ class Mengajar extends CI_Controller
             redirect('mengajar/rekap');
         }
     }
+
     public function cekRekap($id)
     {
         $data['userData'] = $this->Auth_model->current_user();
         $data['dtrekap'] = $this->model->getBy('mengajar_rekap', 'id', $id)->row();
+        $cek = $this->model->getBy('mengajar_wajib', 'rekap_id', $id)->row();
+        if (!$cek) {
+            $guru = $this->model->getAll('guru')->result();
+            foreach ($guru as $dr) {
+                $dts = [
+                    'rekap_id' => $id,
+                    'guru_id' => $dr->kode_guru,
+                ];
+                $this->model->simpan('mengajar_wajib', $dts);
+            }
+        }
         $dari = $data['dtrekap']->dari;
         $sampai = $data['dtrekap']->sampai;
 
