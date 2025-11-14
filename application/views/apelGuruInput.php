@@ -73,13 +73,14 @@
 
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title text-primary">Input Absensi Pembiasaan Guru || <?= translateDay(date('l'), 'id') . ', ' . date('d-M-Y') ?></h3>
+                <h3 class="box-title text-primary">Input Absensi Pembiasaan Guru || <?= translateDay($hari, 'id') . ', ' . $tanggal ?></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">
                         <?= form_open('pembiasaan/saveApelGuru') ?>
+                        <input type="hidden" name="tanggal" value="<?= $tanggal ?>">
                         <div class="table-responsive">
                             <table id="" class="table table-bordered table-striped">
                                 <thead>
@@ -95,21 +96,21 @@
                                     $nou = 1;
                                     foreach ($data as $row) :
                                     ?>
-                                        <input type="hidden" name="data[<?= $no ?>][kode_guru]" value="<?= $row->kode_guru ?>">
+                                        <input type="hidden" name="data[<?= $no ?>][kode_guru]" value="<?= $row['kode_guru'] ?>">
                                         <tr>
                                             <td><?= $nou++ ?></td>
-                                            <td><?= $row->nama_guru ?></td>
+                                            <td><?= $row['nama_guru'] ?></td>
                                             <td>
                                                 <label class="custom-radio">
-                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="hadir" checked="checked">
+                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="hadir" <?= $row['ket'] == 'hadir' ? 'checked' : '' ?>>
                                                     <span class="custom-radio-label success">H</span>
                                                 </label>
                                                 <label class="custom-radio">
-                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="izin">
+                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="izin" <?= $row['ket'] == 'izin' ? 'checked' : '' ?>>
                                                     <span class="custom-radio-label primary">I</span>
                                                 </label>
                                                 <label class="custom-radio">
-                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="alpha">
+                                                    <input type="radio" name="data[<?= $no ?>][ket]" value="alpha" <?= $row['ket'] == 'alpha' ? 'checked' : '' ?>>
                                                     <span class="custom-radio-label danger">A</span>
                                                 </label>
                                             </td>

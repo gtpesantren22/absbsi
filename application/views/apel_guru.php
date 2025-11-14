@@ -48,6 +48,7 @@
                                                   <td><?= $row->tanggal ?></td>
                                                   <td><?= $row->jumlah ?></td>
                                                   <td>
+                                                      <a href="<?= base_url('pembiasaan/input_apel/') . $row->tanggal ?>" class="btn btn-xs btn-warning">Edit</a>
                                                       <a href="<?= base_url('pembiasaan/hapus_guru/') . $row->id ?>" class="btn btn-xs btn-danger tombol-hapus">Hapus</a>
                                                   </td>
                                               </tr>

@@ -43,11 +43,32 @@ class Pembiasaan extends CI_Controller
         $this->load->view('foot');
     }
 
-    public function input_apel()
+    public function input_apel($tanggal = null)
     {
+        if ($tanggal == null) {
+            $tanggal = date('Y-m-d');
+            $harini = date('l');
+        } else {
+            $tanggal = $tanggal;
+            $harini = date('l', strtotime($tanggal));
+        }
+
+        $data['tanggal'] = $tanggal;
+        $data['hari'] = $harini;
+
         $data['userData'] = $this->Auth_model->current_user();
-        $harini = date('l');
-        $data['data'] = $this->db->query("SELECT a.*, b.nama_guru FROM apel_sett a JOIN guru b ON a.kode_guru=b.kode_guru WHERE hari = '$harini' ")->result();
+        $datakirim = [];
+        $datas = $this->db->query("SELECT a.*, b.nama_guru FROM apel_sett a JOIN guru b ON a.kode_guru=b.kode_guru WHERE hari = '$harini' ")->result();
+        foreach ($datas as $dr) {
+            $info = $this->db->query("SELECT * FROM apel_guru WHERE tanggal = '$tanggal' AND kode_guru = '$dr->kode_guru' ")->row();
+            $datakirim[] = [
+                'kode_guru' => $dr->kode_guru,
+                'nama_guru' => $dr->nama_guru,
+                'ket' => $info ? $info->ket : '-',
+            ];
+        }
+
+        $data['data'] = $datakirim;
 
         $this->load->view('head', $data);
         $this->load->view('apelGuruInput', $data);
@@ -95,21 +116,20 @@ class Pembiasaan extends CI_Controller
     public function saveApelGuru()
     {
         $data = $this->input->post('data', true);
-        $tanggal = date('Y-m-d');
-        $cek = $this->model->getBy('apel_guru', 'tanggal', $tanggal)->row();
-        if ($cek) {
-            $this->session->set_flashdata('error', 'Absensi sudah ada');
-            redirect('pembiasaan/guru');
-            die();
-        }
+        $tanggal = $this->input->post('tanggal', true);
         if (!empty($data)) {
             foreach ($data as $item) {
+                $cek = $this->model->getBy2('apel_guru', 'tanggal', $tanggal, 'kode_guru', $item['kode_guru'])->row();
                 $dtsm = [
                     'tanggal' => $tanggal,
                     'kode_guru' => $item['kode_guru'],
-                    'ket' => $item['ket'],
+                    'ket' => isset($item['ket']) ? $item['ket'] : '',
                 ];
-                $this->model->simpan('apel_guru', $dtsm);
+                if (!$cek) {
+                    $this->model->simpan('apel_guru', $dtsm);
+                } else {
+                    $this->model->edit2('apel_guru', $dtsm, 'tanggal', $tanggal, 'kode_guru', $item['kode_guru']);
+                }
             }
         }
         if ($this->db->affected_rows() > 0) {

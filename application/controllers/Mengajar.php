@@ -42,8 +42,10 @@ class Mengajar extends CI_Controller
             if (!$cek) {
                 $dataguru = $this->model->getAll('guru')->result();
                 foreach ($dataguru as $data) {
+
                     $instdata = ['guru' => $data->kode_guru, 'tanggal' => $tglni, 'ket' => 0];
                     $this->model->simpan('kehadiran', $instdata);
+                    
                 }
                 redirect('mengajar/input');
             }
