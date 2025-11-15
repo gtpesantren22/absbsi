@@ -46,4 +46,24 @@ class Api extends CI_Controller
             ]);
         }
     }
+    public function update_rfid2()
+    {
+        $rfdata = $this->input->post('rfid', TRUE);
+        $nis = $this->model->getBy('settings', 'namaset', 'nis')->row();
+        $this->model->edit('guru', ['code' => $rfdata], 'nik', $nis->isi);
+        $error = $this->db->error();
+        if ($this->db->affected_rows() > 0) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Data bulan berhasil diperbarui',
+                'test' => $rfdata
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Gagal memperbarui data: ' . $error['message'],
+                'test' => $rfdata
+            ]);
+        }
+    }
 }

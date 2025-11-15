@@ -77,7 +77,7 @@ class Welcome extends CI_Controller
 			)
 		));
 
-		// Mengirim permintaan ke API
+		// Mengirim permintaan ke APIk
 		$response = file_get_contents($api_url, false, $context);
 
 		// Menampilkan hasil dari API
