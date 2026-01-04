@@ -79,6 +79,7 @@ class Guru extends CI_Controller
         $sampai = $this->input->post('sampai', true);
         $data = $this->input->post('data', true);
         $kelas = $this->input->post('kelas', true);
+        $isi = $this->input->post('isi', true);
         $kode = $this->uuid->v4();
         $tanggal = date('Y-m-d');
 
@@ -133,6 +134,10 @@ class Guru extends CI_Controller
 
                 if ($this->db->affected_rows() > 0) {
 
+                    $this->model->simpan('jurnal_guru', [
+                        'kode_absen' => $kode,
+                        'isi' => $isi ? $isi : '-'
+                    ]);
                     $hadirHsl = $this->model->getBy2('harian', 'ket', 'hadir', 'kode', $kode);
                     $sakitHsl = $this->db->query("SELECT harian.*, tb_santri.nama FROM harian JOIN tb_santri ON tb_santri.nis=harian.nis WHERE harian.ket= 'sakit' AND harian.kode = '$kode'");
                     $izinHsl = $this->db->query("SELECT harian.*, tb_santri.nama FROM harian JOIN tb_santri ON tb_santri.nis=harian.nis WHERE harian.ket= 'izin' AND harian.kode = '$kode'");
@@ -165,7 +170,7 @@ Jam ke : ' . $dari . ' - ' . $sampai . '
 
                     // echo $psn;
                     // kirim_person('085236924510', $psn);
-                    kirim_group('6285258800849-1471341787@g.us', $psn);
+                    // kirim_group('6285258800849-1471341787@g.us', $psn);
 
                     $this->session->set_flashdata('ok', 'Input Absen Berhasil');
                     redirect('guru/absenSiswa');

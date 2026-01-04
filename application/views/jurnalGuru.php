@@ -82,6 +82,10 @@
                           <!-- Hasil dari permintaan Ajax akan dimuat di sini -->
                       </div>
                       <div class="form-group">
+                          <label for="">Materi yang disampaikan</label>
+                          <textarea name="isi" class="form-control" rows="3" placeholder="Input materi yang diajarkan"></textarea>
+                      </div>
+                      <div class="form-group">
                           <button type="submit" class="btn btn-success">Simpan Absensi</button>
                       </div>
                       <?= form_close() ?>
